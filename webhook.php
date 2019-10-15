@@ -64,14 +64,19 @@ class repl_webhook extends CDS\Module {
           return false;
       }
 
+      // We absolutely must have each component of the data submitted by Repl
+      $required = ['event_name','classroom','student','assignment','submission' ];
+
       // Format it pretty-like (for later )
       $received = json_encode( $parsed, JSON_PRETTY_PRINT );
-      
+
+       
       $event_name = $parsed['event_name'] ?? '';
       $classroom = $parsed['classroom'] ?? [];
       $student = $parsed['student'] ?? [];
       $assignment = $parsed['assignment'] ?? [];
       $submission = $parsed['submission'] ?? [];
+         
 
       // Move into or make the classroom folder
       $classroomName = trim( $classroom['name'] ?? 'Unknown Classroom');
@@ -85,7 +90,7 @@ class repl_webhook extends CDS\Module {
 
 
       // Move into or make the student folder
-      $studentName = trim( $student['last_name'] . ', ' . $student['first_name']);
+      $studentName = trim( $student['last_name'] ) . ', ' . trim($student['first_name']);
       $studentFolder = $classroomFolder.'/'.$studentName;
       self::VerifyFolder( $studentFolder );
 
@@ -178,3 +183,4 @@ class repl_webhook extends CDS\Module {
 
 
 }
+
