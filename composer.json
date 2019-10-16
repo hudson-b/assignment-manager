@@ -1,5 +1,9 @@
 {
     "require": {
-        "datatables/datatables": "^1.10"
+        "datatables/datatables": "^1.10",
+        "monolog/monolog": "^1.25",
+        "catfan/medoo": "^1.7",
+        "danielstjules/stringy": "^3.1",
+        "slim/psr7": "^0.6.0"
     }
 }
