@@ -1,3 +1,0 @@
-#Ferris, Alex
-
-print("GravityFalls")

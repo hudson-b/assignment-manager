@@ -1,6 +1,0 @@
-goat=input('How many goats? ')
-apples=input('How many apples? ')
-goat=int(goat)
-apples=int(apples)
-print('Each goat will receive', (apples//goat), 'apples')
-print((apples%goat), 'apples will be left in the basket.')
