@@ -1,0 +1,6 @@
+result1 = input ("How many goats?")
+result1= int(result1)
+result2 = input ("How many apples?")
+result2= int(result2)
+print("Each goat will receive", result2//result1, "apples.")
+print(result2%result1,"apples will be left in the basket.")
