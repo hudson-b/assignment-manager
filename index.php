@@ -12,6 +12,7 @@ if ( php_sapi_name() == "cli") {
  $method='POST';
 }
 
+
 // Logger::debug("Answering " . $method );
 
 switch( strtoupper( $method ) ) {
