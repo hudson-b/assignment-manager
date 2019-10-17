@@ -1,5 +1,11 @@
 <?php
 
+set_error_handler(
+    function ($severity, $message, $file, $line) {
+        Logger::error( basename($file)  . ':' . $line . '  ' . $message);
+    }
+);
+
 
 
 // ------------------------------------------
@@ -15,12 +21,48 @@ class Logger {
       return self::instance();
     }
 
+    public static function tail( $lineCount=128 ) {
+
+        $fileObject = new SplFileObject( self::FILENAME , 'r');
+        $fileObject->seek(PHP_INT_MAX);
+
+        $lineEnd = $fileObject->key();
+
+        $lineStart = ( $lineEnd - $lineCount );
+        if( $lineStart < 0 ) $lineStart=0;
+
+        $rawLines = new \LimitIterator( $fileObject, $lineStart, $lineEnd );
+
+        $lastLines = array_reverse(  array_filter(  iterator_to_array($rawLines) ) );
+        foreach( $lastLines as &$line ) {
+          $line = json_decode( $line );
+        }
+
+        return $lastLines;
+  }
+
     public static function instance() {
 
         if ( self::$instance === null ) {
+
            self::$instance = new \Monolog\Logger('manager');
-           self::$instance->pushHandler(  new \Monolog\Handler\StreamHandler( self::FILENAME, \Monolog\Logger::DEBUG) );
-           if (php_sapi_name() == "cli")  self::$instance->pushHandler(  new \Monolog\Handler\StreamHandler( "php://stdout", \Monolog\Logger::DEBUG) );
+
+           $streamHandler =  new \Monolog\Handler\StreamHandler( self::FILENAME, \Monolog\Logger::DEBUG);
+           $streamHandler->setFormatter( new \Monolog\Formatter\JsonFormatter() );
+
+           self::$instance->pushHandler( $streamHandler );
+           self::$instance->pushProcessor( function ($entry) {
+                  $entry['remote_addr'] = ( $_SERVER['REMOTE_ADDR'] ?? '' );
+                  return $entry;
+           });
+
+           if (php_sapi_name() == "cli") {
+             $_SERVER['REMOTE_ADDR'] = 'local';
+             $streamHandler =  new \Monolog\Handler\StreamHandler( 'php://stdout', \Monolog\Logger::DEBUG);
+             $format = "%datetime%\t%level_name%\t%message%\t%context%\t%extra%\n";
+             $streamHandler->setFormatter( new \Monolog\Formatter\LineFormatter( $format ) );
+             self::$instance->pushHandler( $streamHandler );
+           }
 
         }
         return self::$instance;
@@ -72,8 +114,7 @@ class File {
        // If writing an array, format it as JSON before storing
        if( is_array( $fileContents ) ) $fileContents = json_encode( $fileContents, JSON_PRETTY_PRINT );
 
-       file_put_contents( $filePath, $fileContents );
-       Logger::info( "Wrote " . $filePath );
+       if ( file_put_contents( $filePath, $fileContents ) ) Logger::info( "Wrote " . $filePath );
      
  }
 

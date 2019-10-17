@@ -4,7 +4,6 @@
 require 'vendor/autoload.php';
 require 'common.php';
 
-
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 // Debugging
@@ -13,17 +12,17 @@ if ( php_sapi_name() == "cli") {
  $method='POST';
 }
 
-Logger::info( "Answering " . $method );
+// Logger::debug("Answering " . $method );
 
-switch( $method ) {
+switch( strtoupper( $method ) ) {
 
  case 'GET':
       readfile('index.html');
       break;
 
  case 'OPTIONS':
+      echo(  json_encode(  ['data'=>Logger::tail() ], JSON_PRETTY_PRINT ) );
       break;
-
 
 
  case 'POST':
@@ -102,6 +101,8 @@ switch( $method ) {
       $submissionID = $parsed['submission']['id'];
       Data::write( 'submission', $submission );
 
+      Logger::info( "Submission from " . $studentName . ' : ' . $assignmentName );             
+
       $files = $parsed['files'];
       foreach( $files as $fileItem ) {
 
@@ -115,7 +116,6 @@ switch( $method ) {
              File::archive( $filePath );
              File::write( $filePath,  $fileContent );
 
-             Logger::debug( $studentName . ' : ' . $assignmentName . ' : ' . $fileName );             
       }
 
       Logger::info( "POST end" );
