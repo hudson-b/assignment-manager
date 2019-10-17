@@ -4,6 +4,8 @@
 require 'vendor/autoload.php';
 require 'common.php';
 
+# Version tracking
+
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 // Debugging
