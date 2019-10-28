@@ -13,7 +13,7 @@ set_error_handler(
 // ------------------------------------------
 class Logger {
 
-    const FILENAME = "manager.log";
+    const FILENAME = "data/manager.log";
 
     protected static $instance = null;
 
@@ -78,6 +78,8 @@ class Logger {
 
 
 
+
+
 // ------------------------------------------
 // Singleton for file operations
 // ------------------------------------------
@@ -114,7 +116,7 @@ class File {
        // If writing an array, format it as JSON before storing
        if( is_array( $fileContents ) ) $fileContents = json_encode( $fileContents, JSON_PRETTY_PRINT );
 
-       if ( file_put_contents( $filePath, $fileContents ) ) Logger::info( "Wrote " . $filePath );
+       if ( file_put_contents( $filePath, $fileContents ) ) Logger::debug( "Wrote " . $filePath );
      
  }
 
@@ -132,10 +134,7 @@ class File {
 
 }
 
-
-
-
-
+// Simple (really simple) database using JSON source
 class Data {
 
   const PATH = "data";
@@ -146,7 +145,7 @@ class Data {
 
 
   public static function read( $entity, $id=false ) {
-     $contents = File::read( self::entityPath( $entity ) );
+     $contents = File::read( self::entityPath( $entity ), true );
      if( $id ) $contents = ( $contents[$id] ?? false );
      return $contents;
   }
@@ -154,8 +153,14 @@ class Data {
   public static function write( $entity, $record ) {
      $contents = File::read( self::entityPath( $entity ), true );
      
-     $contents[ $record['id'] ] = $record;
-     File::write(  self::entityPath( $entity ), $contents );
+     $existingRecord = $contents[ $record['id'] ] ?? [];
+
+     // No need to write when the records are identical
+     if( ! empty( array_diff( $record, $existingRecord ) ) ) {
+         $contents[ $record['id'] ] = $record;
+         File::write(  self::entityPath( $entity ), $contents );
+     }
+
   }
 
 
@@ -163,9 +168,9 @@ class Data {
 
 
 
-// Singleton for database
+// Singleton for SQLite database
 // https://phpdelusions.net/pdo/pdo_wrapper
-class Database {
+class Database_SQLITE{
 
     const FILENAME = "manager.db";
 

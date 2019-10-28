@@ -8,11 +8,16 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 // Debugging
 if ( php_sapi_name() == "cli") {
- $sample=file_get_contents('sample.json');
- $method='POST';
+ //$sample=file_get_contents('sample.json');
+ //$method='POST';
+
+ $_GET=['classrooms'=>''];
+ $method='OPTIONS';
 }
 
-// Logger::debug("Answering " . $method );
+
+Logger::debug("Answering " . $method );
+Logger::debug( json_encode( $_GET  ) );
 
 switch( strtoupper( $method ) ) {
 
@@ -21,8 +26,36 @@ switch( strtoupper( $method ) ) {
       break;
 
  case 'OPTIONS':
-      echo(  json_encode(  ['data'=>Logger::tail() ], JSON_PRETTY_PRINT ) );
-      break;
+      // Get the first key (not the value) of the request
+      $request = $_GET ?? [];
+      $requestKeys = (  array_keys( $request ) ?? [] );
+      $entity = ( empty($requestKeys) ) ? '' : $requestKeys[0];
+
+      Logger::debug( 'Entity : ' . $entity );
+      switch( $entity ) {
+
+           case 'classroom':
+           case 'assignment':
+           case 'student':
+             $source = Data::read($entity);
+             $data=[];
+             foreach($source as $key=>$record) {
+                    $data[] = $record;
+             }
+             break;
+
+           case 'log':
+            $data = Logger::tail();
+            break;
+
+           default:
+            $data=[];
+            break;
+      }
+  
+    header('Content-type: application/json');
+    echo(  json_encode(  ['data'=>$data ], JSON_PRETTY_PRINT ) );
+     break;
 
 
  case 'POST':
@@ -32,7 +65,7 @@ switch( strtoupper( $method ) ) {
       // Immediately store whatever we received in the log directory in its original format
       $now = date('Y-m-d-H-i-s');
       $received = isset( $sample ) ? $sample : file_get_contents('php://input');
-      File::write('log/'. $now . '.received' , $received );
+      File::write('data/received/'. $now . '.received' , $received );
 
       // Try to parse it
       $parsed = json_decode( $received, true );
@@ -63,11 +96,6 @@ switch( strtoupper( $method ) ) {
         $parsed['files'][$index]['student_id'] = $parsed['student']['id'];
         $parsed['files'][$index]['assignment_id'] = $parsed['assignment']['id'];
       }
-
-
-      // Store the formatted data
-      File::write('log/'. $now . '.json' , $parsed );
-
 
     
       // Build the porfolio structure and store the data 
