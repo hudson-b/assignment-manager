@@ -4,9 +4,49 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b9835c5f1f000396b118cb69a1cfc0c9",
-    "content-hash": "a8441b639af35c9a0b3bfc51c11ae6dd",
+    "hash": "bcd7208228e92c05a744b0e39bfae056",
+    "content-hash": "a24a8f58f4d0e24995c8a55bd1da66b9",
     "packages": [
+        {
+            "name": "bcremer/line-reader",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bcremer/LineReader.git",
+                "reference": "c3987a96376d16861d3a8ad5704454fd3b673949"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bcremer/LineReader/zipball/c3987a96376d16861d3a8ad5704454fd3b673949",
+                "reference": "c3987a96376d16861d3a8ad5704454fd3b673949",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~7.1|~7.2|~7.3"
+            },
+            "require-dev": {
+                "infection/infection": "^0.9",
+                "phpunit/phpunit": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bcremer\\LineReader\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Cremer",
+                    "email": "bc@benjamin-cremer.de"
+                }
+            ],
+            "description": "Read large files line by line in a memory efficient (constant) way.",
+            "time": "2019-07-01 07:08:42"
+        },
         {
             "name": "catfan/medoo",
             "version": "v1.7.5",

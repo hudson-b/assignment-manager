@@ -7,17 +7,14 @@ require 'common.php';
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 // Debugging
-if ( php_sapi_name() == "cli") {
- //$sample=file_get_contents('sample.json');
- //$method='POST';
-
- $_GET=['classrooms'=>''];
- $method='OPTIONS';
-}
+//if ( php_sapi_name() == "cli") {
+//  $_GET=['classrooms'=>''];
+//  $method='OPTIONS';
+//}
 
 
-Logger::debug("Answering " . $method );
-Logger::debug( json_encode( $_GET  ) );
+// Logger::debug("Answering " . $method );
+// Logger::debug( json_encode( $_GET  ) );
 
 switch( strtoupper( $method ) ) {
 
@@ -25,131 +22,156 @@ switch( strtoupper( $method ) ) {
       readfile('index.html');
       break;
 
- case 'OPTIONS':
-      // Get the first key (not the value) of the request
-      $request = $_GET ?? [];
-      $requestKeys = (  array_keys( $request ) ?? [] );
-      $entity = ( empty($requestKeys) ) ? '' : $requestKeys[0];
-
-      Logger::debug( 'Entity : ' . $entity );
-      switch( $entity ) {
-
-           case 'classroom':
-           case 'assignment':
-           case 'student':
-             $source = Data::read($entity);
-             $data=[];
-             foreach($source as $key=>$record) {
-                    $data[] = $record;
-             }
-             break;
-
-           case 'log':
-            $data = Logger::tail();
-            break;
-
-           default:
-            $data=[];
-            break;
-      }
-  
-    header('Content-type: application/json');
-    echo(  json_encode(  ['data'=>$data ], JSON_PRETTY_PRINT ) );
-     break;
-
 
  case 'POST':
 
-      Logger::info( "POST start" );
+    $request = $_GET;
+    $requestKeys = (  array_keys( $request ) ?? [] );
 
-      // Immediately store whatever we received in the log directory in its original format
-      $now = date('Y-m-d-H-i-s');
-      $received = isset( $sample ) ? $sample : file_get_contents('php://input');
-      File::write('data/received/'. $now . '.received' , $received );
+    // The first key tells us the action (ie. schema=something )
+    $action = ( $requestKeys[0] ?? '' );
 
-      // Try to parse it
-      $parsed = json_decode( $received, true );
-      if( ! is_array( $parsed ) ) {
-         Logger::error("Could not parse received data!");
-         break;
-      }
+    switch( $action ) {
 
-
-      // We absolutely must have each component of the data submitted by Repl
-      $parsedKeys = array_keys( $parsed );
-      $requiredKeys = [ 'classroom','student','assignment','submission' ];
-      $diffKeys = array_diff($requiredKeys, $parsedKeys );
-      if( $diffKeys  ) {
-         Logger::error("Received data does not have the required structure! Problem keys: " . implode( ",", $diffKeys ) );
-         break;
-      }
-
-
-      // Now, let's prepare the record a bit.
-      $parsed['submission']['student_id'] = $parsed['student']['id'];
-      $parsed['submission']['assignment_id'] = $parsed['assignment']['id'];
-
-      $parsed['files'] = $parsed['submission']['files'];
-      unset( $parsed['submission']['files'] );
-
-      foreach( $parsed['files'] as $index=>$fileRecord ) {
-        $parsed['files'][$index]['student_id'] = $parsed['student']['id'];
-        $parsed['files'][$index]['assignment_id'] = $parsed['assignment']['id'];
-      }
+        case 'schema' :
+          $entity = $request[ $action ];
+          $schema = Data::schema( $entity );
+          header('Content-type: application/json');
+          echo(  json_encode(  $schema, JSON_PRETTY_PRINT ) );
+          break;
 
     
-      // Build the porfolio structure and store the data 
-      $baseFolder = './data/portfolio';
+        case 'data' :
+          $entity = $request[ $action ];
+          if( $entity == 'log' ) {
+              $data = Logger::tail( 128 );
+          } else {
+              $join = [];
+              $data=[];
+              foreach( Data::read( $entity ) as $rowID=>$record ) {
+                 $record['rowID'] = $rowID;
+                 $data[] = $record;
+              }
+          }
+          header('Content-type: application/json');
+          echo( json_encode( ['data' => $data] , JSON_PRETTY_PRINT ) );
+          break;
 
 
-      $classroom = $parsed['classroom'] ?? [];
-      Data::write( 'classroom', $classroom );
-      $classroomID = $parsed['classroom']['id'];
-      $classroomName = trim( $classroom['name'] ?? 'Unknown Classroom');
-      $classroomName = str_replace( "/", "-", $classroomName);
-      $classroomFolder = $baseFolder . '/' . $classroomName;
+
+       case '??submission':
+             $classrooms=Data::read('classroom');
+             $assignments=Data::read('assignment');
+             $students=Data::read('student');
+             $submissions=Data::read('submission');
+
+             $data = [];
+             foreach( $submissions as $submission ) {
+
+                 $studentID = $submission['student_id'] ?? '';
+                 $student = $students[ $studentID ] ?? [];
+
+                 $assignmentID = $submission['assignment_id'] ?? '';
+                 $assignment = $assignments[ $assignmentID ] ?? [];
+
+                 $fileName = 'data/files/' . $studentID . '_' . $assignmentID . '.content';
+                 $content = file_exists( $fileName ) ? file_get_contents( $fileName ) : '# NOT FOUND';
+
+                 $data[] = [
+                   'submission' => $submission,
+                   'student' => $student ,
+                   'assignment' => $assignment,
+                   'content' => $content 
+                 ];
+
+             }
+             $content = ['data'=>$data ];
+             break;
 
 
-      $student = $parsed['student'] ?? [];
-      Data::write( 'student', $student );
-      $studentID = $parsed['student']['id'];
-      $studentName = trim( $student['last_name'] ) . ', ' . trim($student['first_name']);
-      $studentFolder = $classroomFolder.'/'.$studentName;
+         case 'submission':
+              // Immediately store whatever we received in the log directory in its original format
+              $now = date('Y-m-d-H-i-s');
+              $received = isset( $sample ) ? $sample : file_get_contents('php://input');
+              File::write('data/received/'. $now . '.received' , $received );
+
+              // Try to parse it
+              $parsed = json_decode( $received, true );
+              if( ! is_array( $parsed ) ) {
+                 Logger::error("Could not parse received data!");
+                 break;
+              }
+
+              // We absolutely must have each component of the data submitted by Repl
+              $parsedKeys = array_keys( $parsed );
+              $requiredKeys = [ 'classroom','student','assignment','submission' ];
+              $diffKeys = array_diff($requiredKeys, $parsedKeys );
+              if( $diffKeys  ) {
+                 Logger::error("Received data does not have the required structure! Problem keys: " . implode( ",", $diffKeys ) );
+                 break;
+              }
+
+              // Now, let's prepare the record a bit.
+              $parsed['submission']['student_id'] = $parsed['student']['id'];
+              $parsed['submission']['assignment_id'] = $parsed['assignment']['id'];
+
+              $parsed['files'] = $parsed['submission']['files'];
+              unset( $parsed['submission']['files'] );
+
+              foreach( $parsed['files'] as $index=>$fileRecord ) {
+                $parsed['files'][$index]['student_id'] = $parsed['student']['id'];
+                $parsed['files'][$index]['assignment_id'] = $parsed['assignment']['id'];
+              }
+
+              // Build the porfolio structure and store the data 
+              $baseFolder = './data/portfolio';
+
+              $classroom = $parsed['classroom'] ?? [];
+              Data::write( 'classroom', $classroom );
+              $classroomID = $parsed['classroom']['id'];
+              $classroomName = trim( $classroom['name'] ?? 'Unknown Classroom');
+              $classroomName = str_replace( "/", "-", $classroomName);
+              $classroomFolder = $baseFolder . '/' . $classroomName;
 
 
-      $assignment = $parsed['assignment'] ?? [];
-      Data::write( 'assignment', $assignment );
-      $assignmentID = $parsed['assignment']['id'];
-      $assignmentName = trim( $assignment['name'] );
-      $assignmentFolder = $studentFolder.'/'.$assignmentName;
+              $student = $parsed['student'] ?? [];
+              Data::write( 'student', $student );
+              $studentID = $parsed['student']['id'];
+              $studentName = trim( $student['last_name'] ) . ', ' . trim($student['first_name']);
+              $studentFolder = $classroomFolder.'/'.$studentName;
 
 
-      // Save the submitted files
-      $submission = $parsed['submission'] ?? [];
-      $submissionID = $parsed['submission']['id'];
-      Data::write( 'submission', $submission );
+              $assignment = $parsed['assignment'] ?? [];
+              Data::write( 'assignment', $assignment );
+              $assignmentID = $parsed['assignment']['id'];
+              $assignmentName = trim( $assignment['name'] );
+              $assignmentFolder = $studentFolder.'/'.$assignmentName;
 
-      Logger::info( "Submission from " . $studentName . ' : ' . $assignmentName );             
 
-      $files = $parsed['files'];
-      foreach( $files as $fileItem ) {
+              // Save the submitted files
+              $submission = $parsed['submission'] ?? [];
+              $submissionID = $parsed['submission']['id'];
+              Data::write( 'submission', $submission );
 
-             $fileID = $studentID . '_' . $assignmentID;
-             $fileName=$fileItem['name'];
-             $fileContent=$fileItem['content'];
+              Logger::info( "Submission from " . $studentName . ' : ' . $assignmentName );             
 
-             File::write( $assignmentFolder . '/' . $fileName,  $fileContent );
+              $files = $parsed['files'];
+              foreach( $files as $fileItem ) {
 
-             $filePath = './data/files/' . $fileID . '.content';
-             File::archive( $filePath );
-             File::write( $filePath,  $fileContent );
+                     $fileID = $studentID . '_' . $assignmentID;
+                     $fileName=$fileItem['name'];
+                     $fileContent=$fileItem['content'];
 
-      }
+                     File::write( $assignmentFolder . '/' . $fileName,  $fileContent );
 
-      Logger::info( "POST end" );
-      break;
+                     $filePath = './data/files/' . $fileID . '.content';
+                     File::archive( $filePath );
+                     File::write( $filePath,  $fileContent );
 
+              }
+              break;
+
+   }
 
 }
-
 

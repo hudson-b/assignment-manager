@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
 
 <head>
 
     <title>Assignment Manager</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
+    <link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAY1BMVEX////7+/v+/v4XYoQYYYPw9fcobo0mbIxjlq3n7/JYjqa4z9n3+fszdZMgaImwydVFgZ3I2eLf6e7N3eRsm7GKsMGoxNGDq71gkqmfvszc6O14pLiYucZIg56Os8OxytZUiqK3CxuSAAADqUlEQVR4nO2babOrIAyGAfeNunWx2+n//5XX4Ia1KrYovVP40pmQ+IQQ8R09B6GvG4QQJbZuajC5hU3zNZ9NYYyfJrewtXMYBtnc9i38avIH+U0/VM2hgk+aX1V80vw+3y8/wO+ww7PpJ/hwIrYdqISPu1tQDX/ySPoF/pc+kzRf8zX/BzWZar7WhFoTqtRkMvjeIbftfGe9l9OHmpBk+9gwTdMox22fkSWx6GNN6B1cB+gVH4adH7yNNBlJyqWXo8dnI94n4dp8tnTjNR9sjguFWLKeBXySHGOO9YrPbPExISLXW8bvlj7Hh9EUQhI/5Jcuwq864phgGXyvODlzrDGbcyrSj/i4XLoga9QGhXiPXy6dzrEiWySnshDecr4vstYisAVr4i+uvy9y3QKR8+FyM+b3xJ/hvzicYAvmruscQggNk6sbjfs5LtuCNzShyP0XXw5nFmsFe98Z+rVN+K4m7J1AI3viPI5BdfCUGxJTzq87mD/RhO0ZPNkTkXtNQnBnG1L7vbwezxfWZFAIgfsfNoTFesGeT0CKJhx2xOuaPJIqlktAjiYL2TMpt6f4oEtKtxBiuwQkaULqX1PEtNjtNR+UWemXXn2K+ARkaUJgRZcAGs3aQSF4fq1Nw+DC+o9PQJomrFnUL9pC1PzbnYnStPBpnROXgDxNxm01FAI6YtfKclg6V5MuAYmasN/rZUecGz9Yer8n2gRkasLh/VcWwrLY0p97sklAJh8N+P2S9GxNAjL5aAG/ScCUyUcL+HUCpimTjxbwqwRMSEAeH1FxPpyEBEwy+eguzDfuEAs2mXyE/mwxvv0HsR7YvDlGf3IuX+sazfOjqwWxKXsmRN7U9ZbywbZ7TPMfAaliT5XtNM1/5z1hltMxPs2z1o+abTtO8YU04bPN2rl0yKdu87KI+VGjl4AUTcbZwr86h5pPc6YTOL9TlcBpHT7LIcjr90QOR2/9PPaIqptQkiYb2CCHPp3zSyGBbDR2/feUZ0ggmPBb+9txAgnsJ/zW/nYcQAKxVE22zMYqYGTK+ChjCdwEY+XzkVWdExdVfISi6py6ZYr4KG/OyUdhTceuw0c77t2BCj4K7e49jQo+wfeGb2dK+NiqNUGcquFjXDBFcMcTfv0AyXxMLkZ8t6b8VubP2vS3Y/3t+L//dvyZTf894eqa7Mv5Wz6TNF/zNf+/4CvTZKr5WhNqTahSk6nma02oXpON8fnibGjjJgc98Uv/96r5ivnDI2kL2z/XEkTPV8zFJgAAAABJRU5ErkJggg==" rel="icon" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.0/css/buttons.dataTables.min.css">
@@ -18,6 +19,7 @@
             body {
               padding: 0;
               margin: 0;
+              margin-bottom: 60px; /* Margin bottom by footer height */
             }
 
             /*--- navigation bar ---*/
@@ -37,6 +39,7 @@
             }
             .navbar-collapse {
               justify-content: flex-end;
+            }
 
             .header {
               background-image: url('media/wallpaper.png');
@@ -45,62 +48,70 @@
               position: relative;
             }
 
+            #page-content {
+              margin-top: 100px; /* Margin top by navbar height */
+            }
+
+            header {
+              padding: 156px 0 100px;
+            }
+
+            section {
+              padding: 150px 0;
+            }
+
+
+            footer {
+              position: absolute;
+              bottom: 0;
+              width: 100%;
+              height: 60px; /* Set the fixed height of the footer here */
+              line-height: 60px; /* Vertically center the text there */
+              background-color: #f5f5f5;
+            }
+
     </style>
 
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-md">
-      <a class="navbar-brand" href="#">Assignment Manager</a>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+   <div class="container">
+
+      <a class="navbar-brand" href="#"><span class="fas fa-graduation-cap"></span> Assignment Manager</a>
+
       <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#main-navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="main-navigation"></div>
+
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <a class="nav-link" href="#submission">Submissions</a>
+                <a class="nav-link" href="#classroom">Classrooms</a>
+                <a class="nav-link" href="#assignment">Assignments</a>
+                <a class="nav-link" href="#student">Students</a>
+                <a class="nav-link" href="#log">Log</a>
+            </ul>
+       </div>
+
+     </div>
     </nav>
 
    <br>
 
-   <div class="container">
-   <div class="row">
-     <div class="col-sm-2 h-100 card card-body bg-dark">
+   <div class="container" id="page-content">
+     
+   </div>
 
-       <div class="nav nav-pills nav-fill" id="nav-tab" role="tablist">
-           <a data-toggle="tab" class="nav-item nav-link"        role="tab" href="#tab-gradebook">Gradeboook</a>
-           <a data-toggle="tab" class="nav-item nav-link"        role="tab" href="#tab-rubrics">Rubrics</a> 
-           <a data-toggle="tab" class="nav-item nav-link active" role="tab" href="#tab-log">Log</a>
-           <a data-toggle="tab" class="nav-item nav-link"        role="tab" href="#tab-data">Setup</a>
-       </div>
 
-     </div>
-
-     <div class="col-sm-10">
-
-       <div class="tab-content">
-
-          <div role="tabpanel" class="tab-pane" id="tab-dashboard"> Dashboard     </div>
-          <div role="tabpanel" class="tab-pane" id="tab-rubrics">   Rubrics   </div>
-
-          <div role="tabpanel" class="tab-pane" id="tab-data">
-             <h2>Classrooms</h2>
-             <table id="table-classrooms" class="table" width="100%"></table>
-             <table id="table-assignments" class="table" width="100%"></table>
-             <table id="table-students" class="table" width="100%"></table>
-         </div>
-
-          <div role="tabpanel" class="tab-pane" id="tab-gradebook">  Gradebook      </div>
-
-          <div role="tabpanel" class="tab-pane active" id="tab-log">
-            <table id="table-logger" class="table small" width="100%" ></table>
-          </div>
-
-        </div>
-
+  <!--
+  <footer class="py-1 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white"></p>
     </div>
- 
-   </div>
-   </div>
-
+  </footer>
+  -->
 
    <script src="https://code.jquery.com/jquery-3.4.1.min.js"  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="  crossorigin="anonymous"></script>
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

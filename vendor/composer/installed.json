@@ -608,5 +608,47 @@
             "psr-7",
             "psr7"
         ]
+    },
+    {
+        "name": "bcremer/line-reader",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/bcremer/LineReader.git",
+            "reference": "c3987a96376d16861d3a8ad5704454fd3b673949"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/bcremer/LineReader/zipball/c3987a96376d16861d3a8ad5704454fd3b673949",
+            "reference": "c3987a96376d16861d3a8ad5704454fd3b673949",
+            "shasum": ""
+        },
+        "require": {
+            "php": "~7.1|~7.2|~7.3"
+        },
+        "require-dev": {
+            "infection/infection": "^0.9",
+            "phpunit/phpunit": "^7.2"
+        },
+        "time": "2019-07-01 07:08:42",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Bcremer\\LineReader\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Benjamin Cremer",
+                "email": "bc@benjamin-cremer.de"
+            }
+        ],
+        "description": "Read large files line by line in a memory efficient (constant) way."
     }
 ]

@@ -1,72 +1,91 @@
 
 
-  $(document).ready(function(){
+var Entity = {
 
-     $('.header').height($(window).height());
-
-     // {"message", "remote_addr", "context"  "level",  "level_name",   "channel",  "datetime": {"date", "timezone_type":3, "timezone":"America/New_York" }, "extra" }
-
-     $('#table-logger').DataTable({
-       "dom" : 'Bftip',
-       "altEditor" : true,
-       "ajax" : {
-          "type" : "OPTIONS",
-          "url" : "index.php?log",
-          "dataType" : "json"
-       },
-       "columns" : [
-            { "data" : "datetime.date" , "title" : "Timestamp" },
-            { "data" : "remote_addr" , "title" : "Address" },
-            { "data" : "level_name" , "title" : "Level" },
-            { "data" : "message" , "title" : "Message" }
-       ],
-       "order" : [ 0, 'desc' ],
-       "select" : true,
-       "buttons" : [
-          { "text" : "Refresh",
-            "action" : function() {
-                t=$("#table-logger").DataTable();
-                t.ajax.reload(null, true);
-            }
-          },
-         {  "name" : "add",    "text" : "Add "},
-         {  "name" : "edit",   "extend" : "selected", "text" : "Edit" },
-         {  "name" : "delete", "extend" : "selected", "text" : "Delete" }
-       ]
-    });
+    "fetch" : function( entity ) {
+      $.ajax({
+          "method" : "POST",
+          "url" : "index.php?schema=" + entity,
+          "dataType" : "json",
+          "success" : function( schema ) { Entity.show( schema ); },
+          "errors" : function( e ) { window.alert( e ); }
+      });
+     },
 
 
+    "show" : function ( schema ) {
+        
+        container = $("#page-content");
+        container.html('');
 
-     $('#table-classrooms').DataTable({
-       "dom" : 'Bt',
-       "altEditor" : true,
-       "ajax" : {
-          "type" : "OPTIONS",
-          "url" : "index.php?classroom",
-          "dataType" : "json"
-       },
-       "paging" : false,
-       "columns" : [
-            { "data" : "id" , "title" : "ID" },
-            { "data" : "name" , "title" : "Name" },
-            { "data" : "webhook_secret" , "title" : "Secret Key" }
-       ],
-       "order" : [ 0, 'desc' ],
-       "select" : true,
-       "buttons" : [
-         {  "name" : "add",    "text" : "Add "},
-         {  "name" : "edit",   "extend" : "selected", "text" : "Edit" },
-         {  "name" : "delete", "extend" : "selected", "text" : "Delete" },
+        entity = schema['entity'];
+        title = $('<h1></h1>', { 'text' : ( schema['title'] || '' ) } ).appendTo( container );
+        table = $('<table></table>', {'class' : 'table', 'width' : '100%' } ).appendTo( container );
 
-         {  "name" : "assignments", "extend" : "selected", "text" : "Assignments" }
-       ]
-    });
+        columns = [];
+        $.each( schema['fields'], function( id,column ) {
+           column['name'] = id;
+           column['data'] = id;
+           console.log( column );
+           columns.push( column );
+        });
 
-   });
+        console.log( columns );
+        
+        config = $.extend(
+           {
+             "dom" : 'Bt',
+             "paging" : true,
+             "ajax" : {
+                  "method" : "POST",
+                  "url" : "index.php?data=" + entity,
+                  "dataType" : "json"
+               },
+              "columns" : columns,
+              "buttons" : []
+           }, schema['display'] || {}
+         );
 
+
+         if( config['altEditor'] ) {
+          config['select'] = "os";
+          config['buttons'].push(  {  "name" : "add",                           "text" : "Add "} );
+          config['buttons'].push(  {  "name" : "edit",   "extend" : "selected", "text" : "Edit" } );
+          config['buttons'].push(  {  "name" : "delete", "extend" : "selected", "text" : "Delete" } );
+         }
+
+
+
+         console.log( config );
+
+         table.DataTable( config );
+
+    },
+
+}
+
+// Primary object for the application
+var Module = {
+
+    "onReady" : function() {
+
+      $(".nav-link").on( 'click', function() {
+           entity = (  $(this).attr('href') ).replace('#','');
+           Entity.fetch( entity );
+      });
+ 
+
+
+     }
+
+}
 
 
 // ----------------------------
+
+
+$(document).ready(  function() { Module.onReady(); });
+
 
 
 /**

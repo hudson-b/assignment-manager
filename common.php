@@ -8,6 +8,8 @@ set_error_handler(
 
 
 
+
+
 // ------------------------------------------
 // Singleton for logging
 // ------------------------------------------
@@ -21,25 +23,22 @@ class Logger {
       return self::instance();
     }
 
-    public static function tail( $lineCount=128 ) {
+    public static function tail( $lineCount=128, $level=200 ) {
 
-        $fileObject = new SplFileObject( self::FILENAME , 'r');
-        $fileObject->seek(PHP_INT_MAX);
+       $lastLines = [];
+       foreach( \Bcremer\LineReader\LineReader::readLinesBackwards( self::FILENAME ) as $line ) {
 
-        $lineEnd = $fileObject->key();
+             $line = json_decode( $line, true );
+             if( $line['level'] < $level ) continue;
 
-        $lineStart = ( $lineEnd - $lineCount );
-        if( $lineStart < 0 ) $lineStart=0;
+             $line['datetime'] = $line['datetime']['date'];
 
-        $rawLines = new \LimitIterator( $fileObject, $lineStart, $lineEnd );
-
-        $lastLines = array_reverse(  array_filter(  iterator_to_array($rawLines) ) );
-        foreach( $lastLines as &$line ) {
-          $line = json_decode( $line );
+             $lastLines[] = $line;
+             if( count( $lastLines ) >= $lineCount ) break;  
         }
-
         return $lastLines;
-  }
+
+   }
 
     public static function instance() {
 
@@ -85,80 +84,84 @@ class Logger {
 // ------------------------------------------
 class File {
 
- public static function init() {
- }
+         public static function init() {
+         }
 
 
- private static function __sanitize( $filePath ) {
-    return \Stringy\StaticStringy::toAscii( $filePath );
- }
+         private static function __sanitize( $filePath ) {
+            return \Stringy\StaticStringy::toAscii( $filePath );
+         }
+
+         public static function mkdir( $path ) {
+            if( file_exists( $path ) ) return;
+            Logger::info( "Creating " . $path );
+            mkdir( $path , 0775, true );  // Owner full, Group full, Public read+execute
+         }
+
+         public static function archive( $filePath ) {
+            if( ! file_exists( $filePath ) ) return;
+            $backupPath = $filePath . '.' . filectime( $filePath );
+            rename( $filePath, $backupPath );
+         }
 
 
- public static function mkdir( $path ) {
-    if( file_exists( $path ) ) return;
-    Logger::info( "Creating " . $path );
-    mkdir( $path , 0775, true );  // Owner full, Group full, Public read+execute
- }
+         public static function write( $filePath, $fileContents ) {
 
+               $filePath = self::__sanitize( $filePath );
+               self::mkdir( dirname( $filePath ) );
 
- public static function archive( $filePath ) {
-    if( ! file_exists( $filePath ) ) return;
-    $backupPath = $filePath . '.' . filectime( $filePath );
-    rename( $filePath, $backupPath );
- }
+               // If writing an array, format it as JSON before storing
+               if( is_array( $fileContents ) ) $fileContents = json_encode( $fileContents, JSON_PRETTY_PRINT );
 
+               if ( file_put_contents( $filePath, $fileContents ) ) Logger::debug( "Wrote " . $filePath );
+             
+         }
 
- public static function write( $filePath, $fileContents ) {
-
-       $filePath = self::__sanitize( $filePath );
-       self::mkdir( dirname( $filePath ) );
-
-       // If writing an array, format it as JSON before storing
-       if( is_array( $fileContents ) ) $fileContents = json_encode( $fileContents, JSON_PRETTY_PRINT );
-
-       if ( file_put_contents( $filePath, $fileContents ) ) Logger::debug( "Wrote " . $filePath );
-     
- }
-
- public static function read( $filePath, $parseJSON=false ) {
-       $filePath = self::__sanitize( $filePath );
-
-       $fileContents = ( file_exists( $filePath ) ) ? file_get_contents( $filePath ) : ''; 
-
-       // Parse it?
-       if( $parseJSON ) $fileContents = json_decode( $fileContents, true );
-
-       return $fileContents;
-
- }
+         public static function read( $filePath, $parseJSON=false ) {
+               $filePath = self::__sanitize( $filePath );
+               if( ! file_exists( $filePath ) ) throw new \Exception('Invalid path: ' . $filePath );
+               $fileContents = file_get_contents( $filePath ) ?? ''; 
+               // Parse it?
+               if( $parseJSON ) $fileContents = json_decode( $fileContents, true );
+               return $fileContents;
+         }
 
 }
 
+
+
+
 // Simple (really simple) database using JSON source
+// and my own schema
 class Data {
 
   const PATH = "data";
+  const SCHEMA = "schema.json";
 
-  private static function entityPath( $entity ) {
-     return './' . self::PATH . '/' . $entity . '.json';
+
+  public static function schema( $entity ) {
+     $schema = File::read( self::SCHEMA, true );
+     if( ! array_key_exists( $entity, $schema ) ) throw new \Exception('Invalid entity : ' . $entity );
+     $schema[$entity]['entity'] = $entity;
+     return $schema[$entity];
   }
 
 
-  public static function read( $entity, $id=false ) {
-     $contents = File::read( self::entityPath( $entity ), true );
+  public static function read( $entity,  $id=false ) {
+     $file = self::schema( $entity )['file'];
+     $contents = File::read( $file, true );
      if( $id ) $contents = ( $contents[$id] ?? false );
      return $contents;
   }
 
   public static function write( $entity, $record ) {
-     $contents = File::read( self::entityPath( $entity ), true );
-     
+     $file = self::schema( $entity )['file'];
+     $contents = File::read( $file, true );
      $existingRecord = $contents[ $record['id'] ] ?? [];
-
      // No need to write when the records are identical
      if( ! empty( array_diff( $record, $existingRecord ) ) ) {
          $contents[ $record['id'] ] = $record;
-         File::write(  self::entityPath( $entity ), $contents );
+         File::write(  $file , $contents );
      }
 
   }
@@ -167,67 +170,4 @@ class Data {
 }
 
 
-
-// Singleton for SQLite database
-// https://phpdelusions.net/pdo/pdo_wrapper
-class Database_SQLITE{
-
-    const FILENAME = "manager.db";
-
-    protected static $instance = null;
-    protected function __construct() {}
-    protected function __clone() {}
-
-
-    public static function init() {
-      if (! file_exists( self::FILENAME ) ) {
-          $ddl = [
-               'CREATE TABLE IF NOT EXISTS classroom (  id INTEGER NOT NULL PRIMARY KEY,  name TEXT NOT NULL,  webhook_secret TEXT NOT NULL );',
-               'CREATE TABLE IF NOT EXISTS student (  id INTEGER NOT NULL PRIMARY KEY,  first_name TEXT NOT NULL,  last_name TEXT NOT NULL,  email TEXT NOT NULL );',
-               'CREATE TABLE IF NOT EXISTS assignment (  id INTEGER NOT NULL PRIMARY KEY,  name TEXT NOT NULL,  type TEXT NOT NULL );',
-               'CREATE TABLE IF NOT EXISTS submission (  id INTEGER NOT NULL PRIMARY KEY,  student_id INTEGER NOT NULL,  assignment_id INTEGER NOT NULL,  status TEXT NOT NULL,  time_submitted TEXT NOT NULL,  time_created TEXT NOT NULL,  teacher_url TEXT,  student_url TEXT );',
-               'CREATE TABLE IF NOT EXISTS files (  id INTEGER NOT NULL PRIMARY KEY,  submission_id INTEGER NOT NULL,  status TEXT NOT NULL,  time_submitted TEXT NOT NULL,  time_created TEXT NOT NULL,  teacher_url TEXT,  student_url TEXT );'
-          ];
-          array_map( function($sql) { Database::run( $sql ); },  $ddl );
-       }
-      return self::instance();
-    }
-
-
-    public static function instance()  {
-
-        if ( self::$instance === null ) {
-
-            $opts  = [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => FALSE,
-            ];
-
-            // Opens or creates the database file
-            $dsn = 'sqlite:' . self::FILENAME;
-            self::$instance = new PDO($dsn, null, null, $opts);
-
-        }
-
-        return self::$instance;
-
-    }
-
-    public static function __callStatic($method, $args)    {
-        return call_user_func_array(array(self::instance(), $method), $args);
-    }
-
-
-    public static function run($sql, $args = [])   {
-        if (!$args)  {
-             return self::instance()->query($sql);
-        }
-        $stmt = self::instance()->prepare($sql);
-        $stmt->execute($args);
-        return $stmt;
-    }
-
-
-}
 
