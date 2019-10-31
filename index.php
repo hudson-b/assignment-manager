@@ -23,8 +23,30 @@ switch( strtoupper( $method ) ) {
       break;
 
 
- case 'POST':
+ case 'OPTIONS' :
+    // Send back everything we know about the supplied classroom id
+    $request = $_GET;
+    $requestKeys = (  array_keys( $request ) ?? [] );
+    $classroomID = $requestKeys[0] ?? '';
 
+    // Walk everything we've received
+    $files = glob( 'data/received/*.received' );
+
+    $data=[];
+    foreach( $files  as $file ) {
+       $content = file_get_contents($file);
+       $parsed = json_decode( $content,  true );
+       if(  ( $parsed['classroom']['id'] ?? '' ) == $classroomID )  $data[] = $parsed;
+    }
+     
+    header('Content-type: application/json');
+    echo( json_encode( ['data' => $data ] , JSON_PRETTY_PRINT ) );
+    break;
+
+
+
+
+ case 'POST':
     $request = $_GET;
     $requestKeys = (  array_keys( $request ) ?? [] );
 
@@ -40,7 +62,7 @@ switch( strtoupper( $method ) ) {
           echo(  json_encode(  $schema, JSON_PRETTY_PRINT ) );
           break;
 
-    
+
         case 'data' :
           $entity = $request[ $action ];
           if( $entity == 'log' ) {
@@ -58,35 +80,26 @@ switch( strtoupper( $method ) ) {
           break;
 
 
+       case 'received':
+            $classroomID = $_POST['classroomID'] ?? 0;
 
-       case '??submission':
-             $classrooms=Data::read('classroom');
-             $assignments=Data::read('assignment');
-             $students=Data::read('student');
-             $submissions=Data::read('submission');
+            // Walk everything we've received
+            $files = glob( 'data/received/*.received' );
+            $data=[];
+            foreach( $files  as $file ) {
 
-             $data = [];
-             foreach( $submissions as $submission ) {
+               $content = file_get_contents($file);
 
-                 $studentID = $submission['student_id'] ?? '';
-                 $student = $students[ $studentID ] ?? [];
+               $parsed = json_decode( $content,  true );
+               if( ! $parsed )  continue;
 
-                 $assignmentID = $submission['assignment_id'] ?? '';
-                 $assignment = $assignments[ $assignmentID ] ?? [];
+               if(  ( $parsed['classroom']['id'] ?? '' ) == $classroomID )  $data[] = $parsed;
 
-                 $fileName = 'data/files/' . $studentID . '_' . $assignmentID . '.content';
-                 $content = file_exists( $fileName ) ? file_get_contents( $fileName ) : '# NOT FOUND';
-
-                 $data[] = [
-                   'submission' => $submission,
-                   'student' => $student ,
-                   'assignment' => $assignment,
-                   'content' => $content 
-                 ];
-
-             }
-             $content = ['data'=>$data ];
-             break;
+            }
+             
+            header('Content-type: application/json');
+            echo( json_encode( ['data' => $data ] , JSON_PRETTY_PRINT ) );
+            break;
 
 
          case 'submission':
@@ -142,10 +155,12 @@ switch( strtoupper( $method ) ) {
 
 
               $assignment = $parsed['assignment'] ?? [];
+              $assignment['classroom_id'] = $classroomID;
               Data::write( 'assignment', $assignment );
               $assignmentID = $parsed['assignment']['id'];
               $assignmentName = trim( $assignment['name'] );
               $assignmentFolder = $studentFolder.'/'.$assignmentName;
+
 
 
               // Save the submitted files

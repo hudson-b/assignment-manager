@@ -94,7 +94,7 @@ class File {
 
          public static function mkdir( $path ) {
             if( file_exists( $path ) ) return;
-            Logger::info( "Creating " . $path );
+            Logger::debug( "Creating " . $path );
             mkdir( $path , 0775, true );  // Owner full, Group full, Public read+execute
          }
 
@@ -139,12 +139,16 @@ class Data {
   const SCHEMA = "schema.json";
 
 
-  public static function schema( $entity ) {
+  public static function schema( $entity=false ) {
+
      $schema = File::read( self::SCHEMA, true );
-     if( ! array_key_exists( $entity, $schema ) ) throw new \Exception('Invalid entity : ' . $entity );
-     $schema[$entity]['entity'] = $entity;
-     return $schema[$entity];
-  }
+     if( $entity ) {
+        if( ! array_key_exists( $entity, $schema ) ) throw new \Exception('Invalid entity : ' . $entity );
+        $schema = $schema[ $entity ];
+     }
+     return $schema;
+  
+}
 
 
   public static function read( $entity,  $id=false ) {
