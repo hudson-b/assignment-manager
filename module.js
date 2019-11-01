@@ -3,105 +3,167 @@ var Module = {
 
     "onReady" : function() {
 
+
              // Display the project version number
              $("#version").load("VERSION");
 
-             Module.showClassrooms();
-
-             $("#classroom-options").click( function(e) { 
-                target=e.target;
-                record=$(target).data('record'); 
-                Module.showClassroom(record);
-              });
-
+             // Handle the main navbar links
              $("#link-log").click( function() { Module.showLog(); }  );
-   
+             $("#link-rubrics").click( function() { Module.showLog(); }  );
+
+
+             // Load a classroom
+             $("#link-classrooms-dropdown").on('click', function(e) {
+                  link = e.target;
+                  classroomID = $(link).data('classroomID');
+                  Module.showClassroom ( classroomID );
+             });
                    
-    },
-
-
-   "showClassrooms" : function( classroomRecords) {
-         if( ! classroomRecords ) {
-               url = Module.Schema['classroom']['file'];
-               $.getJSON( 'data/classroom.json', Module.showClassrooms );
-               return;
-         }
-
-         container = $("#classroom-options");
-         container.empty();
-         classrooms = Module.Schema['classrooms'];
-
-         $.each( classroomRecords, function( classroomID, record ) {
-               $("<a></a>", { "class" : "dropdown-item link-classroom", "href": "#" } )
-                 .data('record', record )
-                 .text( record['name'] )
-                 .appendTo( container );
-          });
+             // Fetch the data and populate the selector
+             Module.fetchData().then( Module.showClassrooms );
  
-     },                                 
+   },
 
 
-    "showClassroom" : function( classroomRecord ) {
-
-        container = $("#page-content");
-        container.empty();
-        $('<h2></h2>').html( classroomRecord['name'] ).appendTo(container);
-
-        nav = $('<nav></nav>', { "class" : "nav nav-pills" } ).appendTo( container );
-        $('<a></a>', { "class" : "nav-item nav-link active" }).html('<i class="fas fa-paperclip"></i> Submissions' ).appendTo(nav);
-        $('<a></a>', { "class" : "nav-item nav-link" }).html('<i class="fas fa-scroll"></i> Assignments' ).appendTo(nav);
-        $('<a></a>', { "class" : "nav-item nav-link" }).html('<i class="fas fa-user-friends"></i> Students' ).appendTo(nav);
-        $('<a></a>', { "class" : "nav-item nav-link" }).html('<i class="fas fa-table"></i> Gradebook' ).appendTo(nav);
-
-        classroomID = classroomRecord['id'];
-        table = Module.createTable( 'received', { 'classroomID' : classroomID } );
-        table.appendTo( container );
-
-    },
+  "icon" : function( icon ) {
+    return $('<i></i>', { "class" : icon } );
+   }, 
 
 
-    "icon" : function( icon ) {
-      return $('<i></i>', { "class" : icon } );
-     }, 
+  "fetchData" : function() {
+         return $.ajax({
+           "url" : "index.php",
+           "method" : "OPTIONS",
+           "dataType" : "json",
+           "success" : function(d) { Module['Data'] = d; }
+         });
+   },
 
 
-    "showLog" : function() {
+
+  "showLog" : function() {
         container = $("#page-content");
         container.empty();
         $('<h2></h2>').html('System Log').appendTo(container);
         table =  Module.entityTable('log').addClass('small').appendTo( container );
+   },
+
+
+  "showClassrooms" : function() {
+
+         data= Module['Data'];
+
+         container = $("#link-classrooms-dropdown");
+         container.empty();
+
+         $.each( data['classrooms'], function( classroomID, classroomRecord ) {
+
+            a=$('<a></a>', { "class" : "dropdown-item", "href" : "#" } )
+              .data( 'classroomID', classroomRecord['id'] )
+              .text( classroomRecord['name']  )
+              .appendTo( container );
+
+         });
+   },
+         
+
+  "showClassroom" : function( classroomID ) {
+
+        container = $("#page-content");
+        container.empty();
+
+        classroomRecord = Module['Data']['classrooms'][classroomID];
+ 
+        $('<h3></h3>').html( classroomRecord['name'] ).appendTo(container);
+
+        nav = $('<ul></ul>', { "id" : "classroom-nav", "class" : "nav nav-tabs" } ).appendTo( container );
+        content = $('<div></div>', { "class" : "tab-content" } ).appendTo( container );
+
+        // Build a data collection for this classroom
+
+        // Show the tabs
+        items = { 
+           'submissions' : { 'caption':'Submissions', 'icon' : 'fas fa-paperclip', 'schema' : 'bySubmission' },
+           'students' :  { 'caption':'Students', 'icon' : 'fas fa-user-friends', 'schema' : 'byStudent'  },
+           'assignments' :  { 'caption':'Assignments', 'icon' : 'fas fa-scroll', 'schema' : 'byAssignment' },
+           'gradebool' : { 'caption' : 'Gradebook', 'icon' : 'fas fa-book-open' }
+        }
+
+        $.each( items, function( itemKey, itemConfig ) {
+
+            // Build the tab
+            li=$('<li></li>', { "class" : "nav-item" } ).appendTo( nav ); 
+            a=$('<a></a>', { "class" : "nav-link classroom-item", "href" : "#classroom-" + itemKey }).appendTo( li );
+            caption=$('<span></span>').html( '&nbsp;' + itemConfig['caption'] + '&nbsp;&nbsp;' ).appendTo( a );
+            icon=$('<i></i>', { "class" : itemConfig['icon'] } ).prependTo( caption );
+      
+            // Build the pane
+            pane = $('<div></div>', { "id" : "classroom-" + itemKey, "class" : "tab-pane show" } ).appendTo( content );
+
+            // Build the content
+            if( itemConfig['schema'] ) {
+                table=$('<table></table>', { "class" : "table small", "width":"100%" }).appendTo( pane );
+                Module.schemaTable( table, itemConfig['schema'], data[itemKey] );
+                // info=$('<span></span>', { "class" : "badge badge-xs badge-secondary float-right"} ).html( items.length ).appendTo( a );
+            }
+
+
+         });
+
+        // Set up handlers
+        $('a.classroom-item').on('click', function(e) {
+                e.preventDefault();
+                $(this).tab('show');
+        });
+
+        // Click the first one
+        $('a.classroom-item').first().click();
+
+             
+        //$('<a></a>', { "class" : "nav-item nav-link" }).html('<i class="fas fa-table"></i> Gradebook' ).appendTo(nav);
+
+        //table = Module.createTable( 'submissions', classroomID );
+        //table.appendTo( container );
+
     },
 
 
-    "createTable" : function( schemaEntity, tableOptions ) {
+   "schemaTable" : function( table, schemaKey, dataCollection ) {
 
-        schema = Module.Schema[ schemaEntity ] || false;
+        schema = Module.Schema[ schemaKey ] || false;
         if( ! schema ) return;
 
-        table = $('<table></table>', {'class' : 'table', 'width' : '100%' } );
+        data = [];
+        $.each( dataCollection, function( dataKey, dataRecord ) {
+                data.push( dataRecord );
+        });
+      
+        //container = $('<div></div>');
+        // table = $('<table></table>', {'class' : 'table small', 'width' : '100%' } ).appendTo(container);
 
         config={
              "dom" : 'Bftip',
              "paging" : true,
              "pageLength" : 10,
-             "ajax" : {
-                  "method" : "POST",
-                  "url" : "index.php?" + schemaEntity,
-                  "data" : tableOptions || {},
-                  "dataType" : "json"
-               },
-              "columns" : [],
-              "buttons" : []
+             "select" : "os",
+             "data" : data,
+             "columns" : [],
+             "buttons" : ['csv']
         }
 
         config = $.extend( config, schema['table'] || {} );
+        config['select'] = true;
 
-        if( config['altEditor'] === true ) {
+
+        if( config['XXaltEditor'] === true ) {
           config['select'] = "os";
+          config['dom'] = 'B'+config['dom'];
           config['buttons'].push(  {  "name" : "add",                           "text" : "Add "} );
           config['buttons'].push(  {  "name" : "edit",   "extend" : "selected", "text" : "Edit" } );
           config['buttons'].push(  {  "name" : "delete", "extend" : "selected", "text" : "Delete" } );
         }
+
+        console.log( config );
 
         table.DataTable( config );
         return table;

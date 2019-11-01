@@ -1,5 +1,55 @@
-
 Module['Schema'] =  {
+
+
+      "bySubmission" : {
+          "table" : {
+             "select" : "single",
+             "order" : [ [1, "desc"] ],
+             "buttons" : [
+                { "extend" : "selected", "text" : "View"  }
+             ],
+             "columns" : [
+               { "data" : "submission.id",  "title" : "ID" },
+               { "data" : "submission.time_submitted",  "title" : "Submitted", "render" : function(d) { return moment(d).format('YYYY-MM-DD hh:mm'); }  },
+               { "data" : "assignment.name",  "title" : "Assignment"},
+               { "data" : "student", "title" : "Student", "render" : function(d) { return d.last_name + ', ' + d.first_name; } },
+               { "data" : "submission.status",  "title" : "Status" }
+              ]
+           }
+       },
+
+      "byStudent" : {
+          "table" : {
+             "select" : "single",
+             "order" : [ [0, "asc"] ],
+             "buttons" : [
+                { "extend" : "selected", "text" : "Assign Rubric"  }
+             ],
+             "columns" : [
+               { "data" : "id",  "title" : "ID" },
+               { "data" : "name",  "title" : "Name" },
+               { "data" : "type",  "title" : "Type"}
+              ]
+           }
+       },
+
+
+      "byAssignment" : {
+          "table" : {
+             "select" : "single",
+             "order" : [ [0, "asc"] ],
+             "buttons" : [
+                { "extend" : "selected", "text" : "Assign Rubric"  }
+             ],
+             "columns" : [
+               { "data" : "id",  "title" : "ID" },
+               { "data" : "name",  "title" : "Name" },
+               { "data" : "type",  "title" : "Type"}
+              ]
+           }
+       },
+
+
 
       "classroom" : {
          "entity" : "classroom",
@@ -68,19 +118,7 @@ Module['Schema'] =  {
             }
       },
 
-      "received" : {
-          "entity" : "received",
-          "title" : "Received Submissions",
-          "table" : {
-             "order" : [ [0, "desc"] ],
-             "columns" : [
-               { "data" : "assignment.name",  "title" : "Assignment"},
-               { "data" : "student.last_name", "title" : "Student"},
-               { "data" : "submission.status",  "title" : "Status" },
-               { "data" : "submission.time_submitted",  "title" : "Submitted", "render" : function(d) { return moment(d).format('YYYY-MM-DD hh:mm'); }  }
-              ]
-           }
-       },
+
 
       "log" : {
           "entity" : "log",

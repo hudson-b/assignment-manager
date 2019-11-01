@@ -136,20 +136,49 @@ class File {
 class Data {
 
   const PATH = "data";
-  const SCHEMA = "schema.json";
 
+  public static function received() {
 
-  public static function schema( $entity=false ) {
+        $data = [
+           'classrooms' => [],
+           'assignments' => [],
+           'submissions' => []
+        ];
 
-     $schema = File::read( self::SCHEMA, true );
-     if( $entity ) {
-        if( ! array_key_exists( $entity, $schema ) ) throw new \Exception('Invalid entity : ' . $entity );
-        $schema = $schema[ $entity ];
-     }
-     return $schema;
-  
-}
+        $files = glob( self::PATH . "/received/*.received" );
+        foreach( $files  as $file ) {
 
+           $content = file_get_contents($file);
+
+           $parsed = json_decode( $content,  true );
+           if( ! $parsed )  continue;
+
+           $classroom = $parsed['classroom'] ?? [];
+           $classroomID = $classroom['id'] ?? 0;
+           $data['classrooms'][ $classroomID ] = $classroom;
+
+           $assignment = $parsed['assignment'] ?? [];
+           $assignmentID = $assignment['id'] ?? 0;
+           $assignment['classroom'] = $classroom;
+           $data['assignments'][ $assignmentID ] = $assignment;
+          
+
+           // Strip out the actual submitted content
+           foreach( $parsed['submission']['files'] as &$fileRecord ) {
+              unset ( $fileRecord['content'] );
+           }
+
+           $data['submissions'][] = $parsed;
+
+      }
+ 
+      // Convert assoc to indexed
+      // $data['classrooms'] = array_values( $data['classrooms'] );      
+      // $data['assignments'] = array_values( $data['assignments'] );      
+
+      return $data;
+
+  }
 
   public static function read( $entity,  $id=false ) {
      $file = self::schema( $entity )['file'];

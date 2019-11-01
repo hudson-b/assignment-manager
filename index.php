@@ -4,6 +4,11 @@
 require 'vendor/autoload.php';
 require 'common.php';
 
+ini_set('display_errors', 1); 
+ini_set('display_startup_errors', 1); 
+error_reporting(E_ALL);
+
+
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 // Debugging
@@ -16,6 +21,9 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 // Logger::debug("Answering " . $method );
 // Logger::debug( json_encode( $_GET  ) );
 
+
+
+
 switch( strtoupper( $method ) ) {
 
  case 'GET':
@@ -24,84 +32,43 @@ switch( strtoupper( $method ) ) {
 
 
  case 'OPTIONS' :
-    // Send back everything we know about the supplied classroom id
-    $request = $_GET;
-    $requestKeys = (  array_keys( $request ) ?? [] );
-    $classroomID = $requestKeys[0] ?? '';
 
-    // Walk everything we've received
-    $files = glob( 'data/received/*.received' );
+    $requestKeys = array_keys( $_GET ) ?? [];
+    $item = $requestKeys[0] ?? '';
 
     $data=[];
-    foreach( $files  as $file ) {
-       $content = file_get_contents($file);
-       $parsed = json_decode( $content,  true );
-       if(  ( $parsed['classroom']['id'] ?? '' ) == $classroomID )  $data[] = $parsed;
+    switch( $item ) {
+
+       case 'log' :
+           $data = Logger::tail( 512 );
+           break;
+
+       default:
+           $data = Data::received();
+           break;
+
     }
-     
+    
     header('Content-type: application/json');
-    echo( json_encode( ['data' => $data ] , JSON_PRETTY_PRINT ) );
+    echo( json_encode( $data , JSON_PRETTY_PRINT ) );
     break;
 
 
 
-
  case 'POST':
+    // Take in some data
     $request = $_GET;
     $requestKeys = (  array_keys( $request ) ?? [] );
 
-    // The first key tells us the action (ie. schema=something )
-    $action = ( $requestKeys[0] ?? '' );
+    // The first key tells us the action, the value is optional (ie. schema=something, or classroms )
+    $action = ( $requestKeys[0] ?? 'submission' );
 
     switch( $action ) {
 
-        case 'schema' :
-          $entity = $request[ $action ];
-          $schema = Data::schema( $entity );
-          header('Content-type: application/json');
-          echo(  json_encode(  $schema, JSON_PRETTY_PRINT ) );
-          break;
+         case "gradebook" :
+             break;
 
-
-        case 'data' :
-          $entity = $request[ $action ];
-          if( $entity == 'log' ) {
-              $data = Logger::tail( 128 );
-          } else {
-              $join = [];
-              $data=[];
-              foreach( Data::read( $entity ) as $rowID=>$record ) {
-                 $record['rowID'] = $rowID;
-                 $data[] = $record;
-              }
-          }
-          header('Content-type: application/json');
-          echo( json_encode( ['data' => $data] , JSON_PRETTY_PRINT ) );
-          break;
-
-
-       case 'received':
-            $classroomID = $_POST['classroomID'] ?? 0;
-
-            // Walk everything we've received
-            $files = glob( 'data/received/*.received' );
-            $data=[];
-            foreach( $files  as $file ) {
-
-               $content = file_get_contents($file);
-
-               $parsed = json_decode( $content,  true );
-               if( ! $parsed )  continue;
-
-               if(  ( $parsed['classroom']['id'] ?? '' ) == $classroomID )  $data[] = $parsed;
-
-            }
-             
-            header('Content-type: application/json');
-            echo( json_encode( ['data' => $data ] , JSON_PRETTY_PRINT ) );
-            break;
-
-
+         // Main handler:  Receives posts from REPL
          case 'submission':
               // Immediately store whatever we received in the log directory in its original format
               $now = date('Y-m-d-H-i-s');
