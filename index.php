@@ -12,16 +12,19 @@ error_reporting(E_ALL);
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 // Debugging
-//if ( php_sapi_name() == "cli") {
-//  $_GET=['classrooms'=>''];
-//  $method='OPTIONS';
-//}
+if ( php_sapi_name() == "cli") {
+  $sampleData = file_get_contents("sample.json");
+  $_GET=['submission'=>''];
+  $method='POST';
+}
 
 
 // Logger::debug("Answering " . $method );
 // Logger::debug( json_encode( $_GET  ) );
 
 
+// The data directory must be writable
+is_writable('data') or die( 'The data directory must be writable!' );
 
 
 switch( strtoupper( $method ) ) {
@@ -32,7 +35,6 @@ switch( strtoupper( $method ) ) {
 
 
  case 'OPTIONS' :
-
     $requestKeys = array_keys( $_GET ) ?? [];
     $item = $requestKeys[0] ?? '';
 
@@ -62,8 +64,6 @@ switch( strtoupper( $method ) ) {
 
 
 
-
-
  case 'POST':
     // Take in some data
     $request = $_GET;
@@ -85,7 +85,7 @@ switch( strtoupper( $method ) ) {
               // We might need to refer to this later, so keep it *exactly* as it was provided.
               $now = date('Y-m-d-H-i-s');
               $rawFile = 'data/raw/' . $now . '.raw';
-              $received = file_get_contents('php://input');
+              $received = $sampleData ?? file_get_contents('php://input');
               File::write( $rawFile, $received );
 
 
