@@ -11,16 +11,12 @@ var Module = {
              $("#link-log").click( function() { Module.showLog(); }  );
              $("#link-rubrics").click( function() { Module.showLog(); }  );
 
-
-             // Load a classroom
-             $("#link-classrooms-dropdown").on('click', function(e) {
-                  link = e.target;
-                  classroomID = $(link).data('classroomID');
-                  Module.showClassroom ( classroomID );
-             });
-                   
              // Fetch the data and populate the selector
-             Module.fetchData().then( Module.showClassrooms );
+             Module.fetchData( { "classrooms" : "" } )
+                .then( function(d) {
+                   Module.showClassrooms(d);
+                });
+
  
    },
 
@@ -30,13 +26,15 @@ var Module = {
    }, 
 
 
-  "fetchData" : function() {
-         return $.ajax({
-           "url" : "index.php",
-           "method" : "OPTIONS",
-           "dataType" : "json",
-           "success" : function(d) { Module['Data'] = d; }
-         });
+  "fetchData" : function( filterObject ) {
+
+          filterParms = $.param( filterObject );
+
+          return $.ajax({
+                    "url" : "index.php?" + filterParms,
+                    "method" : "OPTIONS",
+                    "dataType" : "json"
+          });
    },
 
 
@@ -45,48 +43,55 @@ var Module = {
         container = $("#page-content");
         container.empty();
         $('<h2></h2>').html('System Log').appendTo(container);
-        table =  Module.entityTable('log').addClass('small').appendTo( container );
+        table =  $('<table></table>').addClass('small').appendTo( container );
+        table = Module.schemaTable('log', table )
+
    },
+ 
 
+  "showClassrooms" : function( records ) {
 
-  "showClassrooms" : function() {
+       container = $("#link-classrooms-dropdown");
+       container.empty();
 
-         data= Module['Data'];
+       $.each( records, function( i, record ) {
 
-         container = $("#link-classrooms-dropdown");
-         container.empty();
+           classroomID = record['id'];
+           classroomName = record['name'];
 
-         $.each( data['classrooms'], function( classroomID, classroomRecord ) {
-
-            a=$('<a></a>', { "class" : "dropdown-item", "href" : "#" } )
-              .data( 'classroomID', classroomRecord['id'] )
-              .text( classroomRecord['name']  )
+           a=$('<a></a>', { "class" : "dropdown-item classroom-selector", "href" : "#" } )
+              .data( 'classroom' , record )
+              .html( '<i class="fas fa-book"></i>&nbsp;' + classroomName )
               .appendTo( container );
 
-         });
+       });
+
+       $("a.classroom-selector").click( function(e) {
+           e.preventDefault();
+           classroom=$(this).data('classroom');
+           Module.showClassroom( classroom );
+       });
+
+     
    },
          
 
-  "showClassroom" : function( classroomID ) {
+  "showClassroom" : function( classroom ) {
 
         container = $("#page-content");
         container.empty();
 
-        classroomRecord = Module['Data']['classrooms'][classroomID];
+        // Title.
+        title = $('<h5></h5>', { "class" : "text-center" } ).appendTo(container);
+        title.append( classroom['name'] );;
  
-        $('<h3></h3>').html( classroomRecord['name'] ).appendTo(container);
-
         nav = $('<ul></ul>', { "id" : "classroom-nav", "class" : "nav nav-tabs" } ).appendTo( container );
-        content = $('<div></div>', { "class" : "tab-content" } ).appendTo( container );
+        content = $('<div></div>', { "class" : "tab-content pad-top" } ).appendTo( container );
 
-        // Build a data collection for this classroom
-
-        // Show the tabs
+       // Show the tabs
         items = { 
-           'submissions' : { 'caption':'Submissions', 'icon' : 'fas fa-paperclip', 'schema' : 'bySubmission' },
-           'students' :  { 'caption':'Students', 'icon' : 'fas fa-user-friends', 'schema' : 'byStudent'  },
-           'assignments' :  { 'caption':'Assignments', 'icon' : 'fas fa-scroll', 'schema' : 'byAssignment' },
-           'gradebool' : { 'caption' : 'Gradebook', 'icon' : 'fas fa-book-open' }
+           'submissions' : { 'caption' : 'Submissions', 'icon' : 'fas fa-paperclip'},
+           'gradebook' :   { 'caption' : 'Gradebook',   'icon' : 'fas fa-book-open' }
         }
 
         $.each( items, function( itemKey, itemConfig ) {
@@ -100,13 +105,13 @@ var Module = {
             // Build the pane
             pane = $('<div></div>', { "id" : "classroom-" + itemKey, "class" : "tab-pane show" } ).appendTo( content );
 
-            // Build the content
-            if( itemConfig['schema'] ) {
-                table=$('<table></table>', { "class" : "table small", "width":"100%" }).appendTo( pane );
-                Module.schemaTable( table, itemConfig['schema'], data[itemKey] );
-                // info=$('<span></span>', { "class" : "badge badge-xs badge-secondary float-right"} ).html( items.length ).appendTo( a );
+            // Build the submission table
+            config = Module.Schema[ itemKey ];
+            if( config ) {
+               table=$('<table></table>', { "class" : "table small", "width":"100%" }).appendTo( pane );
+               Module.schemaTable( itemKey, table, { "classroom" : classroom['id'] });
             }
-
+            // info=$('<span></span>', { "class" : "badge badge-xs badge-secondary float-right"} ).html( items.length ).appendTo( a );
 
          });
 
@@ -121,39 +126,66 @@ var Module = {
 
              
         //$('<a></a>', { "class" : "nav-item nav-link" }).html('<i class="fas fa-table"></i> Gradebook' ).appendTo(nav);
-
         //table = Module.createTable( 'submissions', classroomID );
         //table.appendTo( container );
 
     },
 
 
-   "schemaTable" : function( table, schemaKey, dataCollection ) {
+
+   "showSubmission" : function( submissionID ) {
+
+        Module.fetchData( { "submission" : submissionID, 'content' : true } )
+        .then( function(d) {
+
+               record = d[0];
+
+               content = record['submission']['files'][0]['content'];
+
+               title = '<h2>' + record['student']['last_name'] + ', ' +  record['student']['first_name'] + '</h2>' +
+                       '<h5>' + record['assignment']['name'] + '</h5>';
+
+               bootbox.dialog({
+                   "title" : title,
+                   "size" : "extra-large",
+                   "message" : '<pre class="max-height-300">' + content + '</pre>',
+                   "buttons" : {
+                        "grade" : { "label" : "Grade",   "className" : "btn btn-success" }
+                    }
+
+               });
+        });
+
+   },
+ 
+
+
+   "schemaTable" : function( schemaKey, tableObject, fetchFilter ) {
 
         schema = Module.Schema[ schemaKey ] || false;
         if( ! schema ) return;
-
-        data = [];
-        $.each( dataCollection, function( dataKey, dataRecord ) {
-                data.push( dataRecord );
-        });
-      
-        //container = $('<div></div>');
-        // table = $('<table></table>', {'class' : 'table small', 'width' : '100%' } ).appendTo(container);
+     
+        if( ! tableObject ) {
+              container = $('<div></div>');
+              tableObject = $('<table></table>', {'class' : 'table small', 'width' : '100%' } ).appendTo(container);
+        }
 
         config={
              "dom" : 'Bftip',
              "paging" : true,
              "pageLength" : 10,
              "select" : "os",
-             "data" : data,
              "columns" : [],
              "buttons" : ['csv']
         }
+        config = $.extend( config, schema || {} );
 
-        config = $.extend( config, schema['table'] || {} );
-        config['select'] = true;
-
+        if( fetchFilter ) {
+               config['ajax'] = function( data, callback, settings ) {
+                 Module.fetchData( fetchFilter )
+                       .then( function(d) {   callback( {'data' : d }); } );
+               }
+        }
 
         if( config['XXaltEditor'] === true ) {
           config['select'] = "os";
@@ -163,10 +195,9 @@ var Module = {
           config['buttons'].push(  {  "name" : "delete", "extend" : "selected", "text" : "Delete" } );
         }
 
-        console.log( config );
 
-        table.DataTable( config );
-        return table;
+        tableObject.DataTable( config );
+        return container || tableObject;
 
     }
 

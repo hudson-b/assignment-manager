@@ -1,54 +1,54 @@
 Module['Schema'] =  {
 
+      "submissions" : {
 
-      "bySubmission" : {
-          "table" : {
              "select" : "single",
+
              "order" : [ [1, "desc"] ],
+
              "buttons" : [
-                { "extend" : "selected", "text" : "View"  }
+
+                { "extend" : "selected", "text" : "View" , 
+                  "action" : function( button, datatable, buttonNode, buttonConfig) {
+                       data=datatable.rows({ "selected" : true } ).data()[0];
+                       submissionID = data['submission']['id'];
+                       Module.showSubmission( submissionID );
+                   }
+                }
+
              ],
              "columns" : [
+
                { "data" : "submission.id",  "title" : "ID" },
                { "data" : "submission.time_submitted",  "title" : "Submitted", "render" : function(d) { return moment(d).format('YYYY-MM-DD hh:mm'); }  },
                { "data" : "assignment.name",  "title" : "Assignment"},
                { "data" : "student", "title" : "Student", "render" : function(d) { return d.last_name + ', ' + d.first_name; } },
-               { "data" : "submission.status",  "title" : "Status" }
+               { "data" : "submission.status",  "title" : "Submission<br>Status" },
+               { "data" : "grader.status",  "title" : "Grade<br>Status" },
+               { "data" : "grader.grade.letter",  "title" : "Grade" }
               ]
-           }
        },
 
-      "byStudent" : {
-          "table" : {
-             "select" : "single",
-             "order" : [ [0, "asc"] ],
-             "buttons" : [
-                { "extend" : "selected", "text" : "Assign Rubric"  }
-             ],
+
+      "log" : {
+             "ajax" : {
+                 "url" : "index.php?log",
+                 "method" : "OPTIONS",
+                 "dataType" : "json"
+              },
+             "order" : [ [0, "desc"] ],
+             "paging" : true,
              "columns" : [
-               { "data" : "id",  "title" : "ID" },
-               { "data" : "name",  "title" : "Name" },
-               { "data" : "type",  "title" : "Type"}
+                  { "data" : "datetime", "title" : "Date" },
+                  { "data" : "remote_addr", "title" : "IP" },
+                  { "data" : "channel", "title" : "Channel", "visible" : false },
+                  { "data" : "level", "title" : "Level" , "visible" : false},
+                  { "data" : "level_name", "title" : "Level Name" },
+                  { "data" : "message", "title" : "Message" },
+                  { "data" : "context", "title" : "Context", "visible" : false },
+                  { "data" : "extra", "title" : "Extra", "visible" : false }
               ]
-           }
-       },
-
-
-      "byAssignment" : {
-          "table" : {
-             "select" : "single",
-             "order" : [ [0, "asc"] ],
-             "buttons" : [
-                { "extend" : "selected", "text" : "Assign Rubric"  }
-             ],
-             "columns" : [
-               { "data" : "id",  "title" : "ID" },
-               { "data" : "name",  "title" : "Name" },
-               { "data" : "type",  "title" : "Type"}
-              ]
-           }
-       },
-
+       } ,
 
 
       "classroom" : {
@@ -120,25 +120,6 @@ Module['Schema'] =  {
 
 
 
-      "log" : {
-          "entity" : "log",
-          "title" : "Log",
-          "file"  : "data/master.log",
-          "table" : {
-             "order" : [ [0, "desc"] ],
-             "paging" : true,
-             "columns" : [
-                  { "data" : "datetime", "title" : "Date" },
-                  { "data" : "remote_addr", "title" : "IP" },
-                  { "data" : "channel", "title" : "Channel", "visible" : false },
-                  { "data" : "level", "title" : "Level" , "visible" : false},
-                  { "data" : "level_name", "title" : "Level Name" },
-                  { "data" : "message", "title" : "Message" },
-                  { "data" : "context", "title" : "Context", "visible" : false },
-                  { "data" : "extra", "title" : "Extra", "visible" : false }
-              ]
-            }
-       }   
 
 }
 

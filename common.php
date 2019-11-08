@@ -23,7 +23,7 @@ class Logger {
       return self::instance();
     }
 
-    public static function tail( $lineCount=128, $level=200 ) {
+    public static function tail( $lineCount=128, $level=100 ) {
 
        $lastLines = [];
        foreach( \Bcremer\LineReader\LineReader::readLinesBackwards( self::FILENAME ) as $line ) {
@@ -79,6 +79,7 @@ class Logger {
 
 
 
+
 // ------------------------------------------
 // Singleton for file operations
 // ------------------------------------------
@@ -86,7 +87,6 @@ class File {
 
          public static function init() {
          }
-
 
          private static function __sanitize( $filePath ) {
             return \Stringy\StaticStringy::toAscii( $filePath );
@@ -98,10 +98,16 @@ class File {
             mkdir( $path , 0775, true );  // Owner full, Group full, Public read+execute
          }
 
+
+         // Make a backup of an existing file, then return the count of archived files
          public static function archive( $filePath ) {
-            if( ! file_exists( $filePath ) ) return;
+            if( ! file_exists( $filePath ) ) return 0;
+
             $backupPath = $filePath . '.' . filectime( $filePath );
             rename( $filePath, $backupPath );
+
+            $existing = glob( $filePath . '.*'  );
+            return count( $existing );
          }
 
 
@@ -113,7 +119,11 @@ class File {
                // If writing an array, format it as JSON before storing
                if( is_array( $fileContents ) ) $fileContents = json_encode( $fileContents, JSON_PRETTY_PRINT );
 
-               if ( file_put_contents( $filePath, $fileContents ) ) Logger::debug( "Wrote " . $filePath );
+               if ( file_put_contents( $filePath, $fileContents ) ) {
+                    Logger::debug( "Wrote " . $filePath );
+               } else {
+                    Logger::debug( "Unable to save " . $filePath );
+               }
              
          }
 
@@ -131,76 +141,207 @@ class File {
 
 
 
-// Simple (really simple) database using JSON source
-// and my own schema
 class Data {
+
 
   const PATH = "data";
 
-  public static function received() {
 
-        $data = [
-           'classrooms' => [],
-           'assignments' => [],
-           'submissions' => []
-        ];
+  public static function fileID( $parsed ) {
 
-        $files = glob( self::PATH . "/received/*.received" );
-        foreach( $files  as $file ) {
+           $components = ['classroom','assignment','student'];
+           $fileID = [];
+           foreach( $components as $component ) {
+                $fileID[] = $parsed[ $component ]['id'] ?? '0';
+           } 
+           return implode( '_', $fileID );
+  }
 
+
+  private static function all() {
+        return glob( self::PATH . "/*.json" );
+  }
+
+  public static function classrooms() {
+
+        $data=[];
+        foreach( self::all()  as $file ) {
            $content = file_get_contents($file);
+           $parsed = json_decode( $content,  true );
+           if( ! $parsed )  continue;
+           $classroom = $parsed['classroom'];
+           $data[ $classroom['id'] ] = $classroom;
+        }
+        return array_values( $data );
+  }
 
+
+
+  public static function submissions( $filter=[] ) {
+
+        $data = [];
+
+        foreach( self::all()  as $fileReceived ) {
+
+           $content = file_get_contents($fileReceived);
+          
            $parsed = json_decode( $content,  true );
            if( ! $parsed )  continue;
 
-           $classroom = $parsed['classroom'] ?? [];
-           $classroomID = $classroom['id'] ?? 0;
-           $data['classrooms'][ $classroomID ] = $classroom;
+           $newFile = 'data/' . self::fileID( $parsed ) . '.json';
+           if( ! file_exists( $newFile ) ) File::write( $newFile, $parsed );
 
-           $assignment = $parsed['assignment'] ?? [];
-           $assignmentID = $assignment['id'] ?? 0;
-           $assignment['classroom'] = $classroom;
-           $data['assignments'][ $assignmentID ] = $assignment;
-          
 
-           // Strip out the actual submitted content
-           foreach( $parsed['submission']['files'] as &$fileRecord ) {
-              unset ( $fileRecord['content'] );
+           // Throw in the filename
+           $parsed['file_name'] = $fileReceived;
+
+           // Check the filter 
+           foreach( $filter as $filterKey=>$filterValue ) {
+                  $parsedID = ( $parsed[$filterKey]['id'] ?? false );
+                  if( ! $parsedID ) continue;
+                  if( ! ($parsedID == $filterValue) ) continue 2; // Move along in the *parent* loop 
            }
 
-           $data['submissions'][] = $parsed;
+          // Do we need to include the content?
+          if( !  ( $filter['content'] ?? false ) ) {
+           foreach( ( $parsed['submission']['files']) ?? [] as $fileIndex=>$fileRecord ) {
+               unset ( $parsed['submission']['files'][$fileIndex]['content'] ); 
+            }
+          }
+      
+          // Add the grader record to the submission object
+          $parsed['grader']=[
+            'status' => 'ungraded',
+            'date' => '',
+            'grade' =>[ 'letter' => '', 'score' => '' ],
+          ];
+
+          $data[] = $parsed;
 
       }
- 
-      // Convert assoc to indexed
-      // $data['classrooms'] = array_values( $data['classrooms'] );      
-      // $data['assignments'] = array_values( $data['assignments'] );      
 
-      return $data;
+      return array_values( $data );
 
   }
 
+
+ 
+
+
   public static function read( $entity,  $id=false ) {
-     $file = self::schema( $entity )['file'];
-     $contents = File::read( $file, true );
+     $contents = File::read( $entity, true );
      if( $id ) $contents = ( $contents[$id] ?? false );
      return $contents;
   }
 
+
   public static function write( $entity, $record ) {
-     $file = self::schema( $entity )['file'];
+     $file = self::entityFile( $entity );
      $contents = File::read( $file, true );
      $existingRecord = $contents[ $record['id'] ] ?? [];
+
      // No need to write when the records are identical
      if( ! empty( array_diff( $record, $existingRecord ) ) ) {
          $contents[ $record['id'] ] = $record;
          File::write(  $file , $contents );
      }
-
   }
 
 
 }
+
+
+class Grader {
+
+
+  public static function examine( $code='' ) {
+
+     $code = explode( "\n", $code );
+     
+     // Extract the comments
+     $comments = preg_grep( '/^.*#.*$/', $code );
+
+     // Remove the comments
+     array_filter( $code, function( $key ) {
+         return ! array_key_exists( $key, $comments );       
+     }, ARRAY_FILTER_USE_KEY );
+  
+     // Extract the variables
+     $variablesFound = preg_grep( '/(\b[A-Za-z]*.\b)( ?=)(?![=<>])/', $code);
+     $variables=[];
+     foreach( $variablesFound as $index=>$variable ) {
+          $variableName = array_filter( explode( "=", $variable) )[0];
+          $variableName = trim( $variableName );
+          if( array_key_exists( $variableName, $variables ) ) continue;
+
+          $variableInfo = self::itemInfo($variableName);
+          $variableInfo['line'] = $index;
+          $variables[ $variableName ] = $variableInfo;
+     }
+
+     $functions = preg_grep( '/.*function.*:.*$/', $code);
+
+     $keywords = ['function','if','elif','else','while','for','print','input'];
+     foreach( $keywords as $index=>$keyword ) {
+        $items = preg_grep( '/[^#]\b' . $keyword . '\b/' , $code);
+        unset( $keywords[ $index ] );
+        $keywords[ $keyword ] = $items;
+     }
+
+     $result =  [
+           'comments' => $comments,
+           'variables' => $variables,
+           'keywords' => $keywords
+     ];
+
+    return $result;
+
+  }
+
+
+
+  public static function itemInfo( $value ) {
+
+      $type = gettype( $value );
+
+      $info = ['type' => $type, 'value' => $value ];
+             
+      switch( $type ) {
+         case "string":
+          $info['isMixedCase'] = self::isMixedCase( $value );
+          $info['hasAlpha'] = self::hasAlpha( $value );
+          $info['hasDigits'] = self::hasDigits( $value );
+          $info['isUpper'] = ctype_upper( $value );
+          $info['isLower'] = ctype_lower( $value );
+          break;
+
+        case "boolean":
+        case "integer":
+        case "double":
+        case "array":
+        case "object":
+        default:
+         break;
+      }
+      return $info;
+
+  }
+
+
+  public static function isMixedCase( $value ) {
+     return preg_match( '/^(?=.*?[A-Z])(?=.*?[a-z])/', $value ) == 1;
+  }
+  public static function hasDigits( $value ) {
+     return preg_match( '[0-9]', $value ) == 1;
+  }
+  public static function hasAlpha( $value ) {
+     return preg_match( '/^[A-Za-z]/', $value ) == 1;
+  }
+
+}
+
+
+
 
 
 
