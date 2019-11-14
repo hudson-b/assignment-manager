@@ -8,8 +8,6 @@ set_error_handler(
 
 
 
-
-
 // ------------------------------------------
 // Singleton for logging
 // ------------------------------------------
@@ -79,7 +77,6 @@ class Logger {
 
 
 
-
 // ------------------------------------------
 // Singleton for file operations
 // ------------------------------------------
@@ -116,27 +113,33 @@ class File {
                $filePath = self::__sanitize( $filePath );
                self::mkdir( dirname( $filePath ) );
 
-               // If writing an array, format it as JSON before storing
+               // If writing an array, format it as JSON before storing.  We're polite that way.
                if( is_array( $fileContents ) ) $fileContents = json_encode( $fileContents, JSON_PRETTY_PRINT );
 
                if ( file_put_contents( $filePath, $fileContents ) ) {
                     Logger::debug( "Wrote " . $filePath );
                } else {
-                    Logger::debug( "Unable to save " . $filePath );
+                    Logger::error( "Unable to save " . $filePath );
                }
              
          }
 
          public static function read( $filePath, $parseJSON=false ) {
                $filePath = self::__sanitize( $filePath );
-               if( ! file_exists( $filePath ) ) throw new \Exception('Invalid path: ' . $filePath );
+               if( ! file_exists( $filePath ) ) {
+                  Logger::error( "Unable to find " . $filePath ); 
+                  return false;
+               }
+
                $fileContents = file_get_contents( $filePath ) ?? ''; 
                // Parse it?
                if( $parseJSON ) $fileContents = json_decode( $fileContents, true );
                return $fileContents;
+
          }
 
 }
+
 
 
 
@@ -147,25 +150,42 @@ class Data {
   const PATH = "data";
 
 
-  public static function fileID( $parsed ) {
+  // Create a unique identifier for any submissino
+  public static function uniqueID( array $submissionRecord ) {
 
+           $uniqueID = [];
            $components = ['classroom','assignment','student'];
-           $fileID = [];
            foreach( $components as $component ) {
-                $fileID[] = $parsed[ $component ]['id'] ?? '0';
+                $uniqueID[] = $submissionRecord[ $component ]['id'] ?? '0';
            } 
-           return implode( '_', $fileID );
+           return implode( '_', $uniqueID );
   }
 
 
-  private static function all() {
-        return glob( self::PATH . "/*.json" );
+  private static function all( $path='parsed' ) {
+        $records = glob( self::PATH . "/" . $path . "/*.json" );
+        return $records;
   }
+
+
+  public static function rubrics() {
+        $data=[];
+        foreach( self::all('rubrics') as $file ) {
+           $parsed = File::read( $file, true );
+           if( ! $parsed )  continue;
+           $parsed['file'] = basename( $file );
+           $parsed['modified'] = date("Y-m-d H:i:s", filemtime( $file ) );
+           $data[] = $parsed;
+        }
+        return array_values( $data );
+  }
+
+
 
   public static function classrooms() {
 
         $data=[];
-        foreach( self::all()  as $file ) {
+        foreach( self::all('parsed')  as $file ) {
            $content = file_get_contents($file);
            $parsed = json_decode( $content,  true );
            if( ! $parsed )  continue;
@@ -176,46 +196,37 @@ class Data {
   }
 
 
-
   public static function submissions( $filter=[] ) {
 
         $data = [];
-
-        foreach( self::all()  as $fileReceived ) {
+        foreach( self::all('parsed')  as $fileReceived ) {
 
            $content = file_get_contents($fileReceived);
           
            $parsed = json_decode( $content,  true );
            if( ! $parsed )  continue;
 
-           $newFile = 'data/' . self::fileID( $parsed ) . '.json';
-           if( ! file_exists( $newFile ) ) File::write( $newFile, $parsed );
-
-
-           // Throw in the filename
-           $parsed['file_name'] = $fileReceived;
-
-           // Check the filter 
-           foreach( $filter as $filterKey=>$filterValue ) {
+          // Check the filter.  Could be anything.
+          foreach( $filter as $filterKey=>$filterValue ) {
                   $parsedID = ( $parsed[$filterKey]['id'] ?? false );
-                  if( ! $parsedID ) continue;
-                  if( ! ($parsedID == $filterValue) ) continue 2; // Move along in the *parent* loop 
+                  if( $parsedID === false ) continue;
+                  if( ! ($parsedID == $filterValue) ) continue 2; // Move along in the *parent* loop,
+                                                                  // since this one doesn't match the filter
            }
 
-          // Do we need to include the content?
-          if( !  ( $filter['content'] ?? false ) ) {
-           foreach( ( $parsed['submission']['files']) ?? [] as $fileIndex=>$fileRecord ) {
-               unset ( $parsed['submission']['files'][$fileIndex]['content'] ); 
-            }
-          }
-      
-          // Add the grader record to the submission object
-          $parsed['grader']=[
-            'status' => 'ungraded',
-            'date' => '',
-            'grade' =>[ 'letter' => '', 'score' => '' ],
+           // Throw in the filename.  Do this at read time, so we are
+           // free to change filenames without borking up the whole system
+           $parsed['file_name'] = $fileReceived;
+
+           // Add the grader structure
+           $parsed['grader']=[
+             'status' => 'ungraded',
+             'date' => '',
+             'grade' => '',
+             'detail' => []
           ];
 
+          // Toss in the bucket
           $data[] = $parsed;
 
       }
@@ -228,104 +239,147 @@ class Data {
  
 
 
-  public static function read( $entity,  $id=false ) {
-     $contents = File::read( $entity, true );
-     if( $id ) $contents = ( $contents[$id] ?? false );
-     return $contents;
-  }
-
-
-  public static function write( $entity, $record ) {
-     $file = self::entityFile( $entity );
-     $contents = File::read( $file, true );
-     $existingRecord = $contents[ $record['id'] ] ?? [];
-
-     // No need to write when the records are identical
-     if( ! empty( array_diff( $record, $existingRecord ) ) ) {
-         $contents[ $record['id'] ] = $record;
-         File::write(  $file , $contents );
-     }
-  }
-
-
 }
+
+
+
+
+
 
 
 class Grader {
 
+  private static function grep( $codeLines, $examineObject ) {
 
-  public static function examine( $code='' ) {
+       // Make sure we have a valid examine object here.
+       if( ! is_array( $examineObject ) )  $examineObject = [ 'filters' => [ $examineObject ] ];
 
-     $code = explode( "\n", $code );
+       // Walk all the filters for this object and append
+       $found=[];
+       foreach( $examineObject['filters'] ?? [] as $filterExpression ) {
+
+           //$matchedLines =  preg_grep( $filterExpression, $codeLines );
+           foreach( $codeLines as $lineNumber=>$lineObject ) {
+
+              $lineClass = ( $lineObject['class'] ?? '' );
+              $lineContent = ( $lineObject['content'] ?? $lineObject );
+
+              if( ! empty( $lineClass ) ) continue;
+
+              preg_match( $filterExpression, $lineContent, $matched );
+              foreach( $matched as $item ) {
+                  $found[ $lineNumber ] = $item;
+              }
+           }
+       }
+       if( ( $examineObject['unique'] ?? false ) === true ) $found = array_unique( $found );
+
+       return $found;
+
+  }
+
+  private static function compareTo( $itemA, $itemB ) {
+
      
-     // Extract the comments
-     $comments = preg_grep( '/^.*#.*$/', $code );
+      
+  }
 
-     // Remove the comments
-     array_filter( $code, function( $key ) {
-         return ! array_key_exists( $key, $comments );       
-     }, ARRAY_FILTER_USE_KEY );
+  public static function score( $codeText, $rubricKey ) {
+
+     $rubricFile = 'data/rubrics/' . $rubricKey . '.json';
+
+     $rubric = File::read( $rubricFile );
+     if( empty( $rubric ) ) return ['error' => json_last_error_msg(), 'file'  => $rubricFile ];
+     
+     $parser = new \Seld\JsonLint\JsonParser();
+     try {
+       $parser->parse( $rubric );
+     } catch ( \Exception  $e ) {
+        return ['error' => $e->getMessage() ];
+     }
+     $rubric = json_decode( $rubric, true );
+
+     $classifier = $rubric['classifier'] ?? [];
+
+
+     // Get an array of all code lines, and classify each one
+     $codeLines = [];
+     foreach( explode( "\n", $codeText )  as $lineNumber=>$lineContent) {
+
+         $class='';
+         foreach( $classifier as $classification=>$filterExpression) {
+              if( preg_match( $filterExpression, $lineContent ) ) {
+                $class = $classification;
+                break;
+              }
+          }
+
+        $codeLines[ $lineNumber ] = [ 'content' => $lineContent, 'class' => $class ?? '' ];
+     }
   
-     // Extract the variables
-     $variablesFound = preg_grep( '/(\b[A-Za-z]*.\b)( ?=)(?![=<>])/', $code);
-     $variables=[];
-     foreach( $variablesFound as $index=>$variable ) {
-          $variableName = array_filter( explode( "=", $variable) )[0];
-          $variableName = trim( $variableName );
-          if( array_key_exists( $variableName, $variables ) ) continue;
 
-          $variableInfo = self::itemInfo($variableName);
-          $variableInfo['line'] = $index;
-          $variables[ $variableName ] = $variableInfo;
+     // Examine this code
+     $examine=[ '_code_' => $codeLines];
+
+
+     // Build the custom examine dataset for this rubric
+     foreach( $rubric['examine'] ?? [] as $examineKey => $examineObject ) {
+       $examine[ $examineKey ] = Grader::grep( $codeLines, $examineObject );
      }
 
-     $functions = preg_grep( '/.*function.*:.*$/', $code);
+     return ( $examine );
 
-     $keywords = ['function','if','elif','else','while','for','print','input'];
-     foreach( $keywords as $index=>$keyword ) {
-        $items = preg_grep( '/[^#]\b' . $keyword . '\b/' , $code);
-        unset( $keywords[ $index ] );
-        $keywords[ $keyword ] = $items;
+     // Walk every item of the rubric 
+     $scored = [];
+     foreach( $rubric['scoring'] ?? [] as $rubricCategory => $rubricItems) {
+ 
+         $scored[ $rubricCategory ] = [];
+
+         // Walk every item of the category
+         foreach( $rubricItems as $rubricItem ) {
+
+               // What data to consider?
+               $consider = $rubricItem['consider'] ?? '';
+               
+               // Allow for lookup in the examine set, or on-the-fly regex
+               if( array_key_exists( $considerSource, $examine ) ) {
+                     $consider = $examined[ $considerSource ];
+               } else {
+                     $consider = preg_grep( $considerSource, $codeLines );
+               }
+
+               // What's the condition for passing this test?
+               $condition = $rubricItem['condition'] ?? '{$count} > 0';
+
+
+              // If there is an 'each' condition, test it out
+               $each = $rubricItem['each'] ?? false;
+               if(  $each  ) {
+                foreach( $consider as $considerItem ) {
+                }
+               }
+
+               // Standard template replacement stuff
+               $considerState = [
+                    "{consider}" => $consider,
+                    "{count}" => count( $consider ),
+                    "{condition}" => $condition
+               ];
+
+               $conditionExpanded = str_replace( array_keys( $considerState ), $considerState, $condition );
+            
+               $scored [ $rubricCategory ][] = $considerState;
+                  
+         }
+
+
      }
-
-     $result =  [
-           'comments' => $comments,
-           'variables' => $variables,
-           'keywords' => $keywords
-     ];
-
-    return $result;
+     return $scored;
 
   }
 
 
 
-  public static function itemInfo( $value ) {
-
-      $type = gettype( $value );
-
-      $info = ['type' => $type, 'value' => $value ];
-             
-      switch( $type ) {
-         case "string":
-          $info['isMixedCase'] = self::isMixedCase( $value );
-          $info['hasAlpha'] = self::hasAlpha( $value );
-          $info['hasDigits'] = self::hasDigits( $value );
-          $info['isUpper'] = ctype_upper( $value );
-          $info['isLower'] = ctype_lower( $value );
-          break;
-
-        case "boolean":
-        case "integer":
-        case "double":
-        case "array":
-        case "object":
-        default:
-         break;
-      }
-      return $info;
-
-  }
 
 
   public static function isMixedCase( $value ) {

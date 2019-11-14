@@ -5,6 +5,7 @@
         "catfan/medoo": "^1.7",
         "danielstjules/stringy": "^3.1",
         "slim/psr7": "^0.6.0",
-        "bcremer/line-reader": "^1.0"
+        "bcremer/line-reader": "^1.0",
+        "seld/jsonlint": "^1.7"
     }
 }

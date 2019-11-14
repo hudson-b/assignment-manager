@@ -1,11 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "bcd7208228e92c05a744b0e39bfae056",
-    "content-hash": "a24a8f58f4d0e24995c8a55bd1da66b9",
+    "content-hash": "6d79abb14cd668d7e4c16721bdc52af3",
     "packages": [
         {
             "name": "bcremer/line-reader",
@@ -45,7 +44,7 @@
                 }
             ],
             "description": "Read large files line by line in a memory efficient (constant) way.",
-            "time": "2019-07-01 07:08:42"
+            "time": "2019-07-01T07:08:42+00:00"
         },
         {
             "name": "catfan/medoo",
@@ -105,7 +104,7 @@
                 "sql",
                 "sqlite"
             ],
-            "time": "2019-10-12 13:13:11"
+            "time": "2019-10-12T13:13:11+00:00"
         },
         {
             "name": "danielstjules/stringy",
@@ -161,7 +160,7 @@
                 "utility",
                 "utils"
             ],
-            "time": "2017-06-12 01:10:27"
+            "time": "2017-06-12T01:10:27+00:00"
         },
         {
             "name": "datatables/datatables",
@@ -184,7 +183,7 @@
             ],
             "description": "DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, which will add advanced interaction controls to any HTML table.",
             "homepage": "http://www.datatables.net/",
-            "time": "2018-06-22 15:34:14"
+            "time": "2018-06-22T15:34:14+00:00"
         },
         {
             "name": "fig/http-message-util",
@@ -234,7 +233,7 @@
                 "request",
                 "response"
             ],
-            "time": "2018-11-19 16:19:58"
+            "time": "2018-11-19T16:19:58+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -312,7 +311,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2019-09-06 13:49:17"
+            "time": "2019-09-06T13:49:17+00:00"
         },
         {
             "name": "psr/http-factory",
@@ -364,7 +363,7 @@
                 "request",
                 "response"
             ],
-            "time": "2019-04-30 12:38:16"
+            "time": "2019-04-30T12:38:16+00:00"
         },
         {
             "name": "psr/http-message",
@@ -414,7 +413,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06 14:39:51"
+            "time": "2016-08-06T14:39:51+00:00"
         },
         {
             "name": "psr/log",
@@ -461,7 +460,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2018-11-20 15:27:04"
+            "time": "2018-11-20T15:27:04+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -501,7 +500,56 @@
                 }
             ],
             "description": "A polyfill for getallheaders.",
-            "time": "2019-03-08 08:55:37"
+            "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
+            "name": "seld/jsonlint",
+            "version": "1.7.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Seldaek/jsonlint.git",
+                "reference": "e2e5d290e4d2a4f0eb449f510071392e00e10d19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/e2e5d290e4d2a4f0eb449f510071392e00e10d19",
+                "reference": "e2e5d290e4d2a4f0eb449f510071392e00e10d19",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
+            },
+            "bin": [
+                "bin/jsonlint"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Seld\\JsonLint\\": "src/Seld/JsonLint/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "JSON Linter",
+            "keywords": [
+                "json",
+                "linter",
+                "parser",
+                "validator"
+            ],
+            "time": "2019-10-24T14:27:39+00:00"
         },
         {
             "name": "slim/psr7",
@@ -574,7 +622,7 @@
                 "psr-7",
                 "psr7"
             ],
-            "time": "2019-10-05 20:27:07"
+            "time": "2019-10-05T20:27:07+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -633,7 +681,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2019-08-06 08:03:45"
+            "time": "2019-08-06T08:03:45+00:00"
         }
     ],
     "packages-dev": [],

@@ -2,21 +2,32 @@ Module['Schema'] =  {
 
       "submissions" : {
 
+             "dom" :  "Bftip",
+
              "select" : "single",
 
              "order" : [ [1, "desc"] ],
 
-             "buttons" : [
+             "buttons" : {
+                "dom" : {
+                   "button" : {
+                       "className" : ""
+                    } 
+                 },
+                "buttons" : [
+                   
+                    { "extend" : "selected", 
+                      "text" : "View" , 
+                      "className" : "btn btn-sm btn-outline-info",
+                       "action" : function( button, datatable, buttonNode, buttonConfig) {
+                           record = datatable.rows({ "selected" : true } ).data()[0];
+                           Module.showSubmission( record );
+                       }
+                    }
+                  
 
-                { "extend" : "selected", "text" : "View" , 
-                  "action" : function( button, datatable, buttonNode, buttonConfig) {
-                       data=datatable.rows({ "selected" : true } ).data()[0];
-                       submissionID = data['submission']['id'];
-                       Module.showSubmission( submissionID );
-                   }
-                }
-
-             ],
+                 ]
+             },
              "columns" : [
 
                { "data" : "submission.id",  "title" : "ID" },
@@ -28,6 +39,19 @@ Module['Schema'] =  {
                { "data" : "grader.grade.letter",  "title" : "Grade" }
               ]
        },
+
+      "rubrics" : {
+             "ajax" : {
+                 "url" : "index.php?rubrics",
+                 "method" : "OPTIONS",
+                 "dataType" : "json"
+              },
+             "order" : [ [0, "desc"] ],
+             "paging" : true,
+             "columns" : [
+                  { "data" : "name", "title" : "Date" },
+              ]
+      },
 
 
       "log" : {

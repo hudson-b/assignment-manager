@@ -8,8 +8,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1); 
 error_reporting(E_ALL);
 
-
+session_start();
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+
 
 // Debugging
 if ( php_sapi_name() == "cli") {
@@ -24,7 +25,7 @@ if ( php_sapi_name() == "cli") {
 
 
 // The data directory must be writable
-is_writable('data') or die( 'The data directory must be writable!' );
+is_writable('data') or die( '<h1>The <i>data</i> directory must be writable!</h1>' );
 
 
 switch( strtoupper( $method ) ) {
@@ -41,11 +42,12 @@ switch( strtoupper( $method ) ) {
     $data=[];
     switch( $item ) {
 
-       case '':
-           break;
-
        case 'log' :
            $data = ['data' => Logger::tail( 1024 ) ];
+           break;
+
+       case 'rubrics' :
+           $data = ['data' => Data::rubrics() ];
            break;
 
        case 'classrooms' :
@@ -54,6 +56,8 @@ switch( strtoupper( $method ) ) {
 
        default:
            $data = Data::submissions( $_GET );
+           break;
+ 
            break;
 
     }
@@ -65,37 +69,41 @@ switch( strtoupper( $method ) ) {
 
 
  case 'POST':
+
     // Take in some data
     $request = $_GET;
     $requestKeys = (  array_keys( $request ) ?? [] );
 
-    // The first key tells us the action, the value is optional (ie. schema=something, or classroms )
+    // The first key tells us the action, the value is optional, but can be used to filter stuff
     $action = ( $requestKeys[0] ?? 'submission' );
 
     switch( $action ) {
 
          case "grade" :
-             break;
+            $codeText = $_POST['code'] ?? '';
+            $rubricKey = $_POST['rubric'] ?? ''; 
+            $data = Grader::score(  $codeText, $rubricKey );
+            break;
 
 
          // Main handler:  Receives posts from REPL
          case 'submission':
 
-              // Immediately store whatever we received in the log directory in its original format.
-              // We might need to refer to this later, so keep it *exactly* as it was provided.
               $now = date('Y-m-d-H-i-s');
+
+              // *Immediately* store whatever we received in the original format.
+              // We might need to refer to this later, so keep it *exactly* as it was provided.
+              // I'm serious about this.  Don't futz with it.  Really.
               $rawFile = 'data/raw/' . $now . '.raw';
               $received = $sampleData ?? file_get_contents('php://input');
               File::write( $rawFile, $received );
 
-
-              // Try to parse it
+              // Try to parse it.  We expect certain things, and must complain not found.
               $parsed = json_decode( $received, true );
               if( ! is_array( $parsed ) ) {
                  Logger::error("Could not parse received data!");
                  break;
               }
-
 
               // We absolutely must have each component of the data submitted by Repl.it
               $parsedKeys = array_keys( $parsed );
@@ -109,6 +117,7 @@ switch( strtoupper( $method ) ) {
               }
 
 
+              // Log entry
               $studentName =  $parsed['student']['last_name'] . ', ' . $parsed['student']['first_name'];
               $assignmentName = $parsed['assignment']['name'];
               $fileCount = count( $parsed['submission']['files'] ?? [] );
@@ -116,16 +125,19 @@ switch( strtoupper( $method ) ) {
               $summary = 'Submission from ' . $studentName . ' : ' . $assignmentName . ' : ' . $fileCount . ' file'.( $fileCount==1 ? '' : 's' );
               Logger::info( $summary );             
 
-              // Keeps only one file per student + assignment
-              $fileName = 'data/' . Data::fileID( $parsed ) . '.json';
-              File::archive( $fileName  );
-              File::write( $fileName,  $parsed);
 
+              // Store it in the data directory.
+              $fileName = 'data/parsed/' . $now . '.json';
+              File::write( $fileName,  $parsed );
 
               break;
 
 
    }
+
+    header('Content-type: application/json');
+    echo( json_encode( $data ?? [] , JSON_PRETTY_PRINT ) );
+    break;
 
 
 }
