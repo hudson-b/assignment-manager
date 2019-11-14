@@ -23,11 +23,11 @@ if ( php_sapi_name() == "cli") {
 // Logger::debug("Answering " . $method );
 // Logger::debug( json_encode( $_GET  ) );
 
-
 // The data directory must be writable
 is_writable('data') or die( '<h1>The <i>data</i> directory must be writable!</h1>' );
 
 
+Logger::init();
 switch( strtoupper( $method ) ) {
 
  case 'GET':

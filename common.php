@@ -8,6 +8,7 @@ set_error_handler(
 
 
 
+
 // ------------------------------------------
 // Singleton for logging
 // ------------------------------------------
@@ -20,6 +21,7 @@ class Logger {
     public static function init() {
       return self::instance();
     }
+
 
     public static function tail( $lineCount=128, $level=100 ) {
 
@@ -61,7 +63,10 @@ class Logger {
              self::$instance->pushHandler( $streamHandler );
            }
 
+           if( ! file_exists( self::FILENAME ) ) self::$instance->info('Created log file');
+
         }
+
         return self::$instance;
     }
 
