@@ -40,6 +40,7 @@ class Logger {
 
    }
 
+
     public static function instance() {
 
         if ( self::$instance === null ) {
@@ -91,7 +92,8 @@ class File {
          }
 
          private static function __sanitize( $filePath ) {
-            return \Stringy\StaticStringy::toAscii( $filePath );
+            $cleanPath = \Stringy\StaticStringy::toAscii( $filePath );
+            return $cleanPath;
          }
 
          public static function mkdir( $path ) {
@@ -99,6 +101,7 @@ class File {
             Logger::debug( "Creating " . $path );
             mkdir( $path , 0775, true );  // Owner full, Group full, Public read+execute
          }
+
 
 
          // Make a backup of an existing file, then return the count of archived files
@@ -155,31 +158,49 @@ class Data {
   const PATH = "data";
 
 
-  // Create a unique identifier for any submissino
-  public static function uniqueID( array $submissionRecord ) {
+  public static function parseJSON( $content ) {
 
-           $uniqueID = [];
-           $components = ['classroom','assignment','student'];
-           foreach( $components as $component ) {
-                $uniqueID[] = $submissionRecord[ $component ]['id'] ?? '0';
-           } 
-           return implode( '_', $uniqueID );
+     $parser = new \Seld\JsonLint\JsonParser();
+     try {
+       $parser->parse( $content );
+       $response = ['valid'=>true, 'content' => json_decode( $content, true ) ];
+ 
+     } catch ( \Exception  $e ) {
+       $response = ['valid'=>false, 'error' => $e->getMessage(), 'content'=> $content ];
+     }
+
+     return $response;
+
+
   }
 
 
-  private static function all( $path='parsed' ) {
-        $records = glob( self::PATH . "/" . $path . "/*.json" );
+
+  private static function all( $path='received' ) {
+        $records = glob( self::PATH . "/" . $path . "/*.*" );
         return $records;
   }
 
 
+
   public static function rubrics() {
         $data=[];
+
         foreach( self::all('rubrics') as $file ) {
-           $parsed = File::read( $file, true );
-           if( ! $parsed )  continue;
+
+           $content = File::read( $file  );
+           $parsed = Data::parseJSON( $content );
+
+           if( $parsed['valid'] ) {
+              $parsed = $parsed['content'];
+           } else {
+              $parsed=['title' => $parsed['error']];
+           }
+
            $parsed['file'] = basename( $file );
            $parsed['modified'] = date("Y-m-d H:i:s", filemtime( $file ) );
+           $parsed['created'] = date("Y-m-d H:i:s", filectime( $file ) );
+           $parsed['content'] = $content;
            $data[] = $parsed;
         }
         return array_values( $data );
@@ -190,7 +211,7 @@ class Data {
   public static function classrooms() {
 
         $data=[];
-        foreach( self::all('parsed')  as $file ) {
+        foreach( self::all('received')  as $file ) {
            $content = file_get_contents($file);
            $parsed = json_decode( $content,  true );
            if( ! $parsed )  continue;
@@ -204,15 +225,16 @@ class Data {
   public static function submissions( $filter=[] ) {
 
         $data = [];
-        foreach( self::all('parsed')  as $fileReceived ) {
+        foreach( self::all('received')  as $fileReceived ) {
 
            $content = file_get_contents($fileReceived);
           
            $parsed = json_decode( $content,  true );
            if( ! $parsed )  continue;
 
+
           // Check the filter.  Could be anything.
-          foreach( $filter as $filterKey=>$filterValue ) {
+           foreach( $filter as $filterKey=>$filterValue ) {
                   $parsedID = ( $parsed[$filterKey]['id'] ?? false );
                   if( $parsedID === false ) continue;
                   if( ! ($parsedID == $filterValue) ) continue 2; // Move along in the *parent* loop,
@@ -222,8 +244,10 @@ class Data {
            // Throw in the filename.  Do this at read time, so we are
            // free to change filenames without borking up the whole system
            $parsed['file_name'] = $fileReceived;
+           $parsed['file_created'] = date("Y-m-d H:i:s", filectime( $fileReceived ) );
 
-           // Add the grader structure
+
+         // Add the grader structure
            $parsed['grader']=[
              'status' => 'ungraded',
              'date' => '',
@@ -296,13 +320,10 @@ class Grader {
      $rubric = File::read( $rubricFile );
      if( empty( $rubric ) ) return ['error' => json_last_error_msg(), 'file'  => $rubricFile ];
      
-     $parser = new \Seld\JsonLint\JsonParser();
-     try {
-       $parser->parse( $rubric );
-     } catch ( \Exception  $e ) {
-        return ['error' => $e->getMessage() ];
-     }
-     $rubric = json_decode( $rubric, true );
+     $parsed = Data::parseJSON( $rubric );
+     if( ! $parsed['valid'] )  { return $parsed['error']; }
+
+     $rubric = $parsed['rubric'];
 
      $classifier = $rubric['classifier'] ?? [];
 

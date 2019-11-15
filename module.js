@@ -3,6 +3,21 @@ var Module = {
 
     "onReady" : function() {
 
+
+            $.fn.dataTable.ext.buttons.reload = {
+
+                "text": '<i class="fas fa-redo-alt"></i>&nbsp;Reload',
+                "className" : "btn btn-sm btn-outline-primary",
+
+                "action": function ( e, dt, node, config ) {
+                     dt.ajax.reload( function() {
+                       $(node).pulsate({ repeat : false, reach: 40 });
+                    });
+
+                }
+            };
+
+
              // Display the project version number
              $("#version").load("VERSION");
 
@@ -20,10 +35,6 @@ var Module = {
    },
 
 
-  "icon" : function( icon ) {
-    return $('<i></i>', { "class" : icon } );
-   }, 
-
   "clear" : function() {
         container = $("#page-content");
         container.empty();
@@ -39,6 +50,18 @@ var Module = {
                     "dataType" : "json"
           });
    },
+
+  "postData" : function( destination, data ) {
+
+          return $.ajax({
+                    "url" : "index.php?" + destination,
+                    "method" : "POST",
+                    "dataType" : "json",
+                    "data" : { 'data' : data }
+          });
+   },
+
+
 
 
  
@@ -145,23 +168,28 @@ var Module = {
 
    "showSubmission" : function( record ) {
 
+                   fileCreated = record['file_created'];
+
                    title = '<h2>' +
                                 record['student']['last_name'] + ', ' +  record['student']['first_name'] + '&nbsp;&nbsp;' + 
                                '<small><small>' + record['assignment']['name'] + '</small></small>' +
                            '<h2>' + 
-                           '<h5>Submitted :  ' + record['submission']['time_submitted'] + '</h5>';
+                           '<h5>Received :  ' + fileCreated + '</h5>';
 
 
                    container = $("<div></div>", { "class" : "container" } );
                    row = $("<div></div>", { "class" : "row" } ).appendTo( container );
-                   colA = $("<div></div>", { "class" : "col-sm-7 fixed-height-400 student-code-container" } ).appendTo( row );
-                   colB = $("<pre></pre>", { "class" : "col      fixed-height-400 student-code-summary" } ).appendTo( row );
 
+                   colA = $("<div></div>", { "class" : "col-sm-7 fixed-height-400 student-code-container" } ).appendTo( row );
                    content = record['submission']['files'][0]['content'];
                    content = $("<textarea></textarea>", { "id" : "student-code", "class" : "student-code" } ).val(content).appendTo( colA );
                    
+                   colB = $("<pre></pre>", { "class" : "col      fixed-height-400 student-code-analysis" } ).appendTo( row );
 
-                     // Show the grader window
+                   // Rubric Picker
+                   
+
+                   // Show the grader window
                    bootbox.dialog({
                        "title" : title,
                        "size" : "extra-large",
@@ -171,6 +199,40 @@ var Module = {
                                "label" : "Other Submissions", 
                                "className" : "btn btn-info",
                                "callback" : function() { return 1; }
+                             },
+
+                            "analyze" : { 
+                               "label" : "Analyze", 
+                               "className" : "btn btn-primary",
+                               "callback" : function() {
+                                   // get all classes :)  Already tokenized,
+                                   analysis={};
+                                   //tags=$('[class^="cm-m"]');
+                                   tags=$('.cm-m-python');
+                                   tags.each( function() {
+                                      tag=$(this);
+
+                                      lineNumber = tag.parent().parent().parent().find(".CodeMirror-linenumber").html();
+                                      console.log( lineNumber );
+
+                                      tagClass = ( tag.attr("class").split(" ")[1] || '' ).replace("cm-", "" );
+                                      if( tagClass == '' ) return;
+
+                                      tagValue = tag.html();
+
+                                      if( ! ( tagClass in analysis ) ) analysis[ tagClass ] = {};
+
+                                      tagObject =(  analysis[ tagClass ][ tagValue ] || { 'lines' : [] } );
+                                      tagObject['lines'].push(lineNumber);
+                         
+                                      analysis[ tagClass ][ tagValue ] = tagObject;
+ 
+
+                                   });
+                                   $(".student-code-analysis").html( JSON.stringify( analysis, null, 4 ) );
+                                   return false;
+                                   
+                                }
                              },
 
                             "grade" : { 
@@ -188,10 +250,13 @@ var Module = {
                         }
 
                    }).on('shown.bs.modal', function(e) {
+
                       Module['_code_editor_'] = CodeMirror.fromTextArea( $("textarea.student-code")[0],
                         { "lineNumbers" : true,
-                          "mode" : "python" 
+                          "mode" : "python" ,
+                          "addModeClass" : true
                         });
+
                    });
 
    },
@@ -213,6 +278,57 @@ var Module = {
 
 
 
+  "editRubric" : function( record ) {
+
+     if( ! record ) record = { "title" : "New Rubric", "content" : "" }
+
+     editor=$("<textarea></textarea>")
+       .addClass("rubric-editor hidden")
+       .data( record  )
+       .text( record['content'] || "" );
+      
+      bootbox.dialog({
+           "title" : record['title'],
+           "size" : "extra-large",
+           "message" :  editor,
+           "buttons" : {
+                "close" : { 
+                   "label" : "Close", 
+                   "className" : "btn btn-info"
+                 },
+                "save" : { 
+                   "label" : "Save", 
+                   "className" : "btn btn-success",
+                   "callback" : function() { 
+                       content = Module['_rubric_editor_'].getValue();
+                       Module.postData( 'rubric', content )
+                       .then( function(d) {
+                                window.alert( d['error'] || d['message'] || 'Done' );
+                       });
+                       return false;
+                    }
+                 }
+            }
+        }).on('shown.bs.modal', function(e) {
+
+             Module['_rubric_editor_'] = CodeMirror.fromTextArea( $("textarea.rubric-editor")[0],
+              { "lineNumbers" : true,
+                    "mode" : "application/ld+json" ,
+                    "json" : true,
+                   "addModeClass" : true,
+                   "value" : record['content']
+              });
+       });
+
+  },
+
+  "saveRubric" : function ( code ) {
+  },
+
+
+
+
+
 
   "showSchema" : function( schemaKey, configCustom ) {
 
@@ -224,9 +340,13 @@ var Module = {
         container = $("#page-content");
         container.empty();
 
-        $('<h4></h4>').html( config['title'] || '' ).appendTo(container);
-        table =  $('<table></table>', { "class" : "table small", "width" : "100%" } ).appendTo( container );
+        title = config['title'] || '';
+        if( 'icon' in config ) title = '<i class="' + config['icon'] + '"></i>&nbsp;' + title;
+
+        $('<h4></h4>').html( title ).appendTo(container);
+        table =  $('<table></table>', { "class" : "table small responsive", "width" : "100%" } ).wrap('<div></div>').appendTo( container );
         table.DataTable( config );
+        console.log( config );
   },
 
 
@@ -236,7 +356,7 @@ var Module = {
         if( ! schema ) return;
          
         config={
-                 "dom" : 'ftip',
+                 "dom" : 'Bftip',
                  "paging" : true,
                  "pageLength" : 10,
                  "select" : "os",
@@ -244,50 +364,67 @@ var Module = {
          }
         config = $.extend( config, schema || {} );
 
-        if( 'ajax' in config ) {
-             config['buttons'] = ( config['buttons'] || [] ).push (    
-                 {    "className" : "btn btn-sm btn-outline-primary",
-                       "text": 'Refresh',
-                       "action": function ( e, dt, node, config ) {
-                            dt.ajax.reload();
-                        }
-                 }
-             );
-        }
 
         if( 'buttons' in config ) {
               config['buttons'] = {  
-                "dom" : {  "button" : {  "className" : "btn btn-sm" }  },
-                "buttons" : config['buttons']
+                 "dom" : {  "button" : {  "className" : "btn btn-sm" }  },
+                 "buttons" : config['buttons']
               }
-              config['dom'] = 'B' + config['dom'];  
-
-        }
-
-        if( config['XXaltEditor'] === true ) {
-          config['select'] = "os";
-          config['dom'] = 'B'+config['dom'];
-          config['buttons'].push(  {  "name" : "add",                           "text" : "Add "} );
-          config['buttons'].push(  {  "name" : "edit",   "extend" : "selected", "text" : "Edit" } );
-          config['buttons'].push(  {  "name" : "delete", "extend" : "selected", "text" : "Delete" } );
         }
 
         return config;
 
    },
 
- 
+
+
+   "buttons" : {
+
+      "refresh" : {
+                       "className" : "btn btn-sm btn-outline-primary",
+                       "text": 'Refresh',
+                       "action": function ( e, dt, node, config ) {
+                            dt.ajax.reload();
+                        }
+      }
+   },
+
 
    "schemas" : {
 
-      "submissions" : {
+     "_filter_" : function(column,options) {
+
+           var select = $('<select></select>')
+               .appendTo( $(column.header()).empty() )
+               .on( 'change', function () {
+                   var val = $.fn.dataTable.util.escapeRegex(   $(this).val()   );
+                   val = ( val ) ? '^'+val+'$' : ''
+                   column.search( val , true, false ).draw();
+               });
+
+           if( ! options ) { options = column.data().unique().sort(); }
+
+           select.append( '<option value="" SELECTED">--All--</option>' );
+           options.each( function ( d, j ) {
+                 select.append( '<option value="'+d+'">'+d+'</option>' )
+           });
+
+     },
+
+
+
+     "submissions" : {
+             "icon" : "fab fa-leanpub",
              "title" : "Student Submissions",
+             "dom" : 'Bftip',
              "select" : "single",
+             "responsive" : true,
              "order" : [ [1, "desc"] ],
              "buttons" : [
+                        'reload',
                         {
                           "extend" : "selected", 
-                          "text" : "View Submission" , 
+                          "text" : '<i class="fa fa-user"></i>&nbsp;View Submission', 
                           "className" : "btn btn-sm btn-outline-info",
                            "action" : function( button, datatable, buttonNode, buttonConfig) {
                                record = datatable.rows({ "selected" : true } ).data()[0];
@@ -297,10 +434,19 @@ var Module = {
               ],
              "columns" : [
 
-               { "data" : "submission.id",  "title" : "ID" },
-               { "data" : "submission.time_submitted",  "title" : "Submitted", "render" : function(d) { return moment(d).format('YYYY-MM-DD hh:mm'); }  },
-               { "data" : "assignment.name",  "title" : "Assignment"},
-               { "data" : "student", "title" : "Student", "render" : function(d) { return d.last_name + ', ' + d.first_name; } },
+               { "data" : "submission.id",  "title" : "ID" , "visible" : false },
+               { "data" : "submission", 
+                 "title" : "Received", 
+                 "render" : function(o) { 
+                     dd = o['time_received'] || o['time_submitted'];
+                     return moment(dd).format('YYYY-MM-DD hh:mma'); } 
+               },
+               { "data" : "assignment.name",  "title" : "Assignment" },
+               { "data" : "submission.number",  "title" : "Submission<br>Number"},
+               { "data" : "student", 
+                 "title" : "Student", 
+                  "render" : function(d) { return d.last_name + ', ' + d.first_name; } 
+               },
                { "data" : "submission.status",  "title" : "Submission<br>Status" },
                { "data" : "grader.status",  "title" : "Grade<br>Status" },
                { "data" : "grader.grade",  "title" : "Grade" }
@@ -309,7 +455,10 @@ var Module = {
 
 
       "rubrics" : {
+
+             "icon" : "fas fa-scroll",
              "title" : "Rubrics",
+             "dom" : 'Bftip',
              "ajax" : {
                  "url" : "index.php?rubrics",
                  "method" : "OPTIONS",
@@ -322,31 +471,39 @@ var Module = {
                   { "data" : "modified", "title" : "Last Modified" }
               ],
              "buttons" : [
-                        { 
-                          "text" : "Create" , 
-                          "className" : "btn btn-sm btn-outline-success",
-                           "action" : function( button, datatable, buttonNode, buttonConfig) {
-                           }
-                        },
-                        { "extend" : "selected", 
-                          "text" : "Delete" , 
-                          "className" : "btn btn-sm btn-outline-danger",
-                           "action" : function( button, datatable, buttonNode, buttonConfig) {
-                           }
-                        },
-                        { "extend" : "selected", 
-                          "text" : "Edit" , 
-                          "className" : "btn btn-sm btn-outline-info",
-                           "action" : function( button, datatable, buttonNode, buttonConfig) {
-                           }
-                        }
+                         'reload',
+                          {
+                             "text" : "Add" , 
+                             "className" : "btn btn-sm btn-outline-success",
+                             "action" : function( button, datatable, buttonNode, buttonConfig) {
+                               Module.editRubric();
+                              }
+                          },
+                          {
+                             "extend" : "selected", 
+                             "text" : "Edit" , 
+                             "className" : "btn btn-sm btn-outline-primary",
+                             "action" : function( button, datatable, buttonNode, buttonConfig) {
+                               record = datatable.rows({ "selected" : true } ).data()[0];
+                               Module.editRubric( record );
+                              }
+                          },
+                          {
+                             "extend" : "selected", 
+                             "text" : "Delete" , 
+                             "className" : "btn btn-sm btn-outline-danger",
+                             "action" : function( button, datatable, buttonNode, buttonConfig) {
+                                   
+                              }
+                          },
+ 
              ]
 
-      },
-
+     },
 
 
       "log" : {
+             "icon" : "fas fa-list",
              "title" : "System Log",
              "dom" :  "Bftip",
              "ajax" : {
@@ -355,12 +512,7 @@ var Module = {
                  "dataType" : "json"
               },
              "buttons" : [
-                     {
-                            "text": 'Refresh',
-                            "action": function ( e, dt, node, config ) {
-                                dt.ajax.reload();
-                            }
-                     }
+               'reload'
               ],
              "order" : [ [0, "desc"] ],
              "paging" : true,
@@ -369,12 +521,18 @@ var Module = {
                   { "data" : "remote_addr", "title" : "IP" },
                   { "data" : "channel", "title" : "Channel", "visible" : false },
                   { "data" : "level", "title" : "Level" , "visible" : false},
-                  { "data" : "level_name", "title" : "Level Name" },
+                  { "data" : "level_name", "class" : "filter", "orderable" : false, "title" : "Level Name" },
                   { "data" : "message", "title" : "Message" },
                   { "data" : "context", "title" : "Context", "visible" : false },
                   { "data" : "extra", "title" : "Extra", "visible" : false }
-              ]
-       } ,
+             ],
+            "initComplete" : function () {
+               this.api().columns(".filter" ).every( function () {
+                    Module['schemas']['_filter_']( this );
+               });
+            }
+              
+         } ,
 
 
 
@@ -448,8 +606,6 @@ var Module = {
   }
 
 }
-
-// ----------------------------
 
 
 // After all is loaded...
