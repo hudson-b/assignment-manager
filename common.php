@@ -1,5 +1,9 @@
 <?php
 
+// The data directory must be writable.  Globally refuse to continue until this is done.
+is_writable('data') or die( 'The data directory must be writable!' );
+
+// Global error handler.
 set_error_handler(
     function ($severity, $message, $file, $line) {
         Logger::error( basename($file)  . ':' . $line . '  ' . $message);

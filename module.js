@@ -233,20 +233,8 @@ var Module = {
                                    return false;
                                    
                                 }
-                             },
-
-                            "grade" : { 
-                               "label" : "Grade This Code", 
-                               "className" : "btn btn-success",
-                               "callback" : function() {
-                                  code = Module['_code_editor_'].getValue();
-                                  // code = $("textarea.student-code").val();
-
-                                  rubricKey = "planet-express-calculator";
-                                  Module.examineSubmission( { 'code' : code, 'rubric' : rubricKey } );
-                                  return false;
-                                }
                              }
+
                         }
 
                    }).on('shown.bs.modal', function(e) {
