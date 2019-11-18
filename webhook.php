@@ -1,6 +1,4 @@
 <?php
-
-
 // For autoloading of vendor packages.
 require 'vendor/autoload.php';
 require 'common.php';
