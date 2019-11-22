@@ -49,13 +49,20 @@
          max-height: 300px;
          overflow-y : scroll;
     }
-    .fixed-height-400 {
-         height: 400px;
-         overflow-y : scroll;
-    }
 
    .hidden {
       display: none;
    }
+
+   .CodeMirror {
+      border: 1px solid #eee;
+      width: auto;
+      height: auto;
+   }
+
+   .heading {
+     margin: 0px;
+   }
+
 
 

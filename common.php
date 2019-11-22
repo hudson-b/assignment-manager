@@ -1,8 +1,5 @@
 <?php
 
-// The data directory must be writable.  Globally refuse to continue until this is done.
-is_writable('data') or die( 'The data directory must be writable!' );
-
 // Global error handler.
 set_error_handler(
     function ($severity, $message, $file, $line) {
@@ -11,6 +8,11 @@ set_error_handler(
 );
 
 
+// Global.  We can *only* work with things in our data directory
+define("DATAPATH", "data" );
+
+File::init();
+
 
 
 // ------------------------------------------
@@ -18,12 +20,12 @@ set_error_handler(
 // ------------------------------------------
 class Logger {
 
-    const FILENAME = "data/manager.log";
+    const FILENAME = DATAPATH.'/manager.log';
 
     protected static $instance = null;
 
-    public static function init() {
-      return self::instance();
+    public static function init( $channel ) {
+      return self::instance( $channel );
     }
 
 
@@ -45,11 +47,11 @@ class Logger {
    }
 
 
-    public static function instance() {
+    public static function instance( $channel = null) {
 
         if ( self::$instance === null ) {
 
-           self::$instance = new \Monolog\Logger('manager');
+           self::$instance = new \Monolog\Logger( $channel ?? 'manager' );
 
            $streamHandler =  new \Monolog\Handler\StreamHandler( self::FILENAME, \Monolog\Logger::DEBUG);
            $streamHandler->setFormatter( new \Monolog\Formatter\JsonFormatter() );
@@ -86,43 +88,50 @@ class Logger {
 
 
 
-
 // ------------------------------------------
 // Singleton for file operations
 // ------------------------------------------
 class File {
 
          public static function init() {
+            $filePath = self::__sanitize( 'manager.log' );
          }
 
          private static function __sanitize( $filePath ) {
-            $cleanPath = \Stringy\StaticStringy::toAscii( $filePath );
+            // Convert to pure ASCII, and preprend the data path
+            $cleanPath = DATAPATH . '/' . \Stringy\StaticStringy::toAscii( $filePath );
+
+            // is_writeable( $realPath ) or die('The path <b>' . $realPath . '</b> is not writeable! ');
             return $cleanPath;
          }
 
          public static function mkdir( $path ) {
+            $path = self::__sanitize( $path );
+
             if( file_exists( $path ) ) return;
             Logger::debug( "Creating " . $path );
             mkdir( $path , 0775, true );  // Owner full, Group full, Public read+execute
          }
 
 
-
          // Make a backup of an existing file, then return the count of archived files
          public static function archive( $filePath ) {
-            if( ! file_exists( $filePath ) ) return 0;
+            $filePath = self::__sanitize( $filePath );
+
+            if( ! file_exists( $filePath ) ) return 'Could not find ' . $filePath;
 
             $backupPath = $filePath . '.' . filectime( $filePath );
             rename( $filePath, $backupPath );
 
-            $existing = glob( $filePath . '.*'  );
-            return count( $existing );
+            // $existing = glob( $filePath . '.*'  );
+            // return count( $existing );
+            return 'Archived ' . $filePath;
          }
 
 
          public static function write( $filePath, $fileContents ) {
-
                $filePath = self::__sanitize( $filePath );
+
                self::mkdir( dirname( $filePath ) );
 
                // If writing an array, format it as JSON before storing.  We're polite that way.
@@ -138,6 +147,7 @@ class File {
 
          public static function read( $filePath, $parseJSON=false ) {
                $filePath = self::__sanitize( $filePath );
+
                if( ! file_exists( $filePath ) ) {
                   Logger::error( "Unable to find " . $filePath ); 
                   return false;
@@ -153,13 +163,11 @@ class File {
 }
 
 
-
-
+// ------------------------------------------
+// Singleton for data objects (JSON files)
+// ------------------------------------------
 
 class Data {
-
-
-  const PATH = "data";
 
 
   public static function parseJSON( $content ) {
@@ -178,37 +186,101 @@ class Data {
 
   }
 
+  private static function all( $path ) {
+        // Find all JSON files in a given folder
+        $files = glob( DATAPATH . "/" . $path . "/*.json" );
 
-
-  private static function all( $path='received' ) {
-        $records = glob( self::PATH . "/" . $path . "/*.*" );
+        // Remove the DATAPATH portion of the name
+        $records=[];
+        foreach( $files as $filePath ) {
+            $records[] = substr( $filePath, strlen( DATAPATH ) + 1 ); 
+        }
+        // var_dump( $records );
         return $records;
   }
 
 
 
-  public static function rubrics() {
-        $data=[];
+  public function select( $entityType, $filter=[] ) {
+     return forward_static_call( 'self::' . $entityType, $filter  );
+  }
 
+  private static function matches( $record, $filter ) {
+
+           if( empty($filter) )  return true;
+
+           foreach( $filter as $filterKey=>$filterValue ) {
+
+                  // Get the record's value for this key
+                  $recordValue = $record[ $filterKey ] ?? false;
+
+                  // Subrecord, filter has a subfilter to match
+                  if( is_array( $recordValue ) && is_array( $filterValue ) ) {
+                      if ( ! self::matches( $recordValue, $filterValue ) ) return false;
+
+                  // Subrecord, filter has an ID number to match
+                  } else if ( is_array( $recordValue ) ) {
+                      $recordValue = $recordValue['id'];
+                  }
+                
+                  // Make the comparison
+                  $matched =  ( $recordValue == $filterValue);
+                  //echo $recordValue . '==' . $filterValue . ' : ' . $matched . "\n";
+                  if( ! $matched ) return false; // not a match.
+
+          }
+          return true;
+
+  }
+
+
+
+  public static function rubrics( $filter=[] ) {
+
+
+        $data=[];
         foreach( self::all('rubrics') as $file ) {
 
-           $content = File::read( $file  );
+           $content = File::read( $file );
            $parsed = Data::parseJSON( $content );
 
            if( $parsed['valid'] ) {
               $parsed = $parsed['content'];
+
            } else {
               $parsed=['title' => $parsed['error']];
            }
 
+           if( self::matches( $parsed, $filter ) == false ) continue;
+
+           // Add in some file-related data
            $parsed['file'] = basename( $file );
            $parsed['modified'] = date("Y-m-d H:i:s", filemtime( $file ) );
            $parsed['created'] = date("Y-m-d H:i:s", filectime( $file ) );
+
+           
+
+           // Explode any includes
+           foreach( ($parsed['sections'] ?? [] ) as $sectionKey => $sectionConfig ) {
+             $includeID = $sectionConfig['include'] ?? false;
+             if( $includeID ) {
+                $includeConfig = self::rubrics( ['id' => $includeID ] );
+                $parsed['sections'][$sectionKey]['included'] = $includeConfig;
+             }
+           }
+
+           // Unformatted content
            $parsed['content'] = $content;
+
+           // Must be OK. 
            $data[] = $parsed;
+
         }
+
+
         return array_values( $data );
   }
+
 
 
 
@@ -216,8 +288,7 @@ class Data {
 
         $data=[];
         foreach( self::all('received')  as $file ) {
-           $content = file_get_contents($file);
-           $parsed = json_decode( $content,  true );
+           $parsed = File::read( $file, true );
            if( ! $parsed )  continue;
            $classroom = $parsed['classroom'];
            $data[ $classroom['id'] ] = $classroom;
@@ -231,23 +302,18 @@ class Data {
         $data = [];
         foreach( self::all('received')  as $fileReceived ) {
 
-           $content = file_get_contents($fileReceived);
+           $content = File::read( $fileReceived );
           
            $parsed = json_decode( $content,  true );
            if( ! $parsed )  continue;
 
 
           // Check the filter.  Could be anything.
-           foreach( $filter as $filterKey=>$filterValue ) {
-                  $parsedID = ( $parsed[$filterKey]['id'] ?? false );
-                  if( $parsedID === false ) continue;
-                  if( ! ($parsedID == $filterValue) ) continue 2; // Move along in the *parent* loop,
-                                                                  // since this one doesn't match the filter
-           }
+           if( ! self::matches( $parsed, $filter ) ) continue;
 
            // Throw in the filename.  Do this at read time, so we are
            // free to change filenames without borking up the whole system
-           $parsed['file_name'] = $fileReceived;
+           $parsed['file'] = $fileReceived;
            $parsed['file_created'] = date("Y-m-d H:i:s", filectime( $fileReceived ) );
 
 
@@ -269,12 +335,9 @@ class Data {
   }
 
 
- 
 
 
 }
-
-
 
 
 
@@ -319,7 +382,7 @@ class Grader {
 
   public static function score( $codeText, $rubricKey ) {
 
-     $rubricFile = 'data/rubrics/' . $rubricKey . '.json';
+     $rubricFile = DATAPATH . '/rubrics/' . $rubricKey . '.json';
 
      $rubric = File::read( $rubricFile );
      if( empty( $rubric ) ) return ['error' => json_last_error_msg(), 'file'  => $rubricFile ];

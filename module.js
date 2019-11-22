@@ -4,10 +4,11 @@ var Module = {
     "onReady" : function() {
 
 
-            $.fn.dataTable.ext.buttons.reload = {
+            // Custom buttons
+            $.fn.dataTable.ext.buttons.refresh = {
 
-                "text": '<i class="fas fa-redo-alt"></i>&nbsp;Reload',
-                "className" : "btn btn-sm btn-outline-primary",
+                "text": '<i class="fas fa-redo-alt"></i>&nbsp;Refresh',
+                "className" : "btn btn-sm btn-refresh btn-outline-primary",
 
                 "action": function ( e, dt, node, config ) {
                      dt.ajax.reload( function() {
@@ -39,6 +40,25 @@ var Module = {
         container = $("#page-content");
         container.empty();
   },
+  "dialog" : function( config ) {
+     Module['_dialog_'] = bootbox.dialog( config )
+     return Module['_dialog_'];
+  },
+  "alert" : function( config ) {
+     Module['_dialog_'] = bootbox.alert( config )
+     return Module['_dialog_'];
+  },
+  "confirm" : function( config ) {
+
+     if( typeof config == "string" ) config = { "message" : config, "buttons" : "ok" , "callback" : function() {} }
+
+     if( (config['buttons'] || '' ) in Module.schemas.buttons ) config['buttons'] = Module.schemas.buttons[ config['buttons'] ];
+
+     Module['_dialog_'] = bootbox.confirm( config )
+     return Module['_dialog_'];
+
+  },
+
 
 
   "fetchData" : function( filterObject ) {
@@ -60,7 +80,6 @@ var Module = {
                     "data" : { 'data' : data }
           });
    },
-
 
 
 
@@ -98,171 +117,200 @@ var Module = {
    },
          
 
+   "showAssignments" : function( classroomRecord ) {
+     // Go get the assignments
+   },
 
-  "showClassroom" : function( classroom ) {
-
-        /*
-        // Build unique collections from all records.
-        data = { 'all' : records };
-
-        $.each( records,  function( recordIndex, record ) {
-
-             $.each( record, function( subKey, subObject ) {
-                if( ! $.isPlainObject( subObject ) ) return;
-                if( ! ('id' in subObject ) ) return;
-                if( ! ( subKey in data ) ) data[subKey] = {};
-                subID = subObject['id'];
-                data[ subKey ] [ subID ] = subObject;
-             });
-
-        });
-
-        // Flatten them (turn from associative to indexed)
-        $.each( data, function( subKey, collection ) {
-            data[subKey] = Object.values( collection );
-        });
-        classroom = data['classroom'][0] || {};
-
-        Module.clear();
-
-        // Title.
-        title = $('<h5></h5>', { "class" : "text-center" } ).appendTo(container);
-        title.append( classroom['name'] || '' );
- 
-        nav = $('<ul></ul>', { "id" : "classroom-nav", "class" : "nav nav-tabs" } ).appendTo( container );
-        content = $('<div></div>', { "class" : "tab-content pad-top" } ).appendTo( container );
-
-        // Show the tabs
-         items = { 
-            'submissions' : { 'caption' : 'Submissions', 'icon' : 'fas fa-paperclip', 'table' : 'submissions', 'filter' : classroom['id'] },
-            'gradebook' :   { 'caption' : 'Gradebook',   'icon' : 'fas fa-book-open' }
-         }
-
-        $.each( items, function( itemKey, itemConfig ) {
-
-            // Build the tab
-            li=$('<li></li>', { "class" : "nav-item" } ).appendTo( nav ); 
-            a=$('<a></a>', { "class" : "nav-link classroom-item", "href" : "#classroom-" + itemKey }).appendTo( li );
-            caption=$('<span></span>').html( '&nbsp;' + itemConfig['caption'] + '&nbsp;&nbsp;' ).appendTo( a );
-            icon=$('<i></i>', { "class" : itemConfig['icon'] } ).prependTo( caption );
-
-            // Build the pane
-            pane = $('<div></div>', { "id" : "classroom-" + itemKey, "class" : "tab-pane show" } ).appendTo( content );
-
-         });
-
-        // Set up handlers
-        $('a.classroom-item').on('click', function(e) {
-                e.preventDefault();
-                $(this).tab('show');
-        });
-
-        // Click the first one
-        $('a.classroom-item').first().click();
-
-        */
-
-
-    },
 
 
    "showSubmission" : function( record ) {
 
-                   fileCreated = record['file_created'];
-
-                   title = '<h2>' +
-                                record['student']['last_name'] + ', ' +  record['student']['first_name'] + '&nbsp;&nbsp;' + 
-                               '<small><small>' + record['assignment']['name'] + '</small></small>' +
-                           '<h2>' + 
-                           '<h5>Received :  ' + fileCreated + '</h5>';
+                  
+                   title = $("<div></div>", { "class" : "submission-title" } );
+                   $('<h2></h2>' ).html( record['student']['last_name'] + ', ' +  record['student']['first_name'] ).appendTo( title );
+                   $('<h5></h5>' ).html( record['assignment']['name'] ).appendTo( title );
 
 
-                   container = $("<div></div>", { "class" : "container" } );
-                   row = $("<div></div>", { "class" : "row" } ).appendTo( container );
+                   container = $("<div></div>", { "class" : "submission-container fixed-height-300" } );
 
-                   colA = $("<div></div>", { "class" : "col-sm-7 fixed-height-400 student-code-container" } ).appendTo( row );
-                   content = record['submission']['files'][0]['content'];
-                   content = $("<textarea></textarea>", { "id" : "student-code", "class" : "student-code" } ).val(content).appendTo( colA );
-                   
-                   colB = $("<pre></pre>", { "class" : "col      fixed-height-400 student-code-analysis" } ).appendTo( row );
+                   code = record['submission']['files'][0]['content'];
+                   containerCode = $("<div></div>", { "class" : "submission submission-code" } ).appendTo( container );
 
-                   // Rubric Picker
-                   
+                   //textarea = $("<textarea></textarea>", { "class" : "submission-code-raw" }).text( code ).appendTo( ".submission-code" );
+                   //textarea.appendTo( containerCode );
+                   containerAnalysis = $("<div></div>", { "class" : "submission submission-analysis" } ).appendTo( container );
+                 
 
-                   // Show the grader window
-                   bootbox.dialog({
+                   // Show the window
+                   Module.dialog({
+                       "backdrop" : true,
                        "title" : title,
-                       "size" : "extra-large",
+                       "size" : "large",
                        "message" :  container,
+                       "record" : record,
                        "buttons" : {
-                            "history" : { 
-                               "label" : "Other Submissions", 
-                               "className" : "btn btn-info",
-                               "callback" : function() { return 1; }
+
+                            "code" : {
+                               "label" : "Code",
+                               "className" : "btn btn-outline-primary",
+                               "callback" : function() { 
+                                     $(".submission").hide();
+                                     $(".submission-code").show();
+                                     return false;
+                               }
                              },
 
-                            "analyze" : { 
-                               "label" : "Analyze", 
-                               "className" : "btn btn-primary",
-                               "callback" : function() {
-                                   // get all classes :)  Already tokenized,
-                                   analysis={};
-                                   //tags=$('[class^="cm-m"]');
-                                   tags=$('.cm-m-python');
-                                   tags.each( function() {
-                                      tag=$(this);
+                            "analysis" : {
+                               "label" : "Analysis",
+                               "className" : "btn btn-outline-info",
+                               "callback" : function() { 
+                                     $(".submission").hide();
 
-                                      lineNumber = tag.parent().parent().parent().find(".CodeMirror-linenumber").html();
-                                      console.log( lineNumber );
+                                     container = $(".submission-analysis");
+                                     container.html('');
+                                     analysis = Parser();
+                                     detail = $('<pre></pre>').text( JSON.stringify( analysis, null, 4 ) ).appendTo( container );
+                                     container.show();
 
-                                      tagClass = ( tag.attr("class").split(" ")[1] || '' ).replace("cm-", "" );
-                                      if( tagClass == '' ) return;
-
-                                      tagValue = tag.html();
-
-                                      if( ! ( tagClass in analysis ) ) analysis[ tagClass ] = {};
-
-                                      tagObject =(  analysis[ tagClass ][ tagValue ] || { 'lines' : [] } );
-                                      tagObject['lines'].push(lineNumber);
-                         
-                                      analysis[ tagClass ][ tagValue ] = tagObject;
- 
-
-                                   });
-                                   $(".student-code-analysis").html( JSON.stringify( analysis, null, 4 ) );
-                                   return false;
-                                   
+                                     return false;
+                               }
+                             },
+                            "grade" : {
+                               "label" : "Grade",
+                               "className" : "btn btn-outline-success",
+                               "callback" : function() { 
+                                     $(".submission").hide();
+                                     container = $(".submission-analysis");
+                                     container.html('');
+                                     Module.gradeSubmission( record );
+                                     return false;
                                 }
-                             }
-
+                             },
                         }
 
                    }).on('shown.bs.modal', function(e) {
 
-                      Module['_code_editor_'] = CodeMirror.fromTextArea( $("textarea.student-code")[0],
-                        { "lineNumbers" : true,
-                          "mode" : "python" ,
-                          "addModeClass" : true
-                        });
+                           console.log( record );
 
+                           code = record['submission']['files'][0]['content'];
+
+                           Module['_code_editor_'] = CodeMirror(
+                                 $(".submission-code")[0],
+                                 { "value" : code,
+                                    "lineNumbers" : true,
+                                   "mode" : "python",
+                                   "addModeClass" : true,
+                                   "viewportMargin" : Infinity
+                           });
+                           Module['_code_editor_'].refresh();
+
+            
                    });
 
    },
- 
-   "examineSubmission" : function( record ) {
-      $.ajax({
-           "url" : "?grade",
-           "method" : "POST",
-           "format" : "json",
-           "data" : record
 
-      }).then( function( d ) {
-          console.log( d );
-          info = JSON.stringify( d, null, 2 );
-          $(".student-code-summary").html( info );
-      });
+ 
+
+    
+  "gradeSubmission" : function( submission, rubric ) {
+
+          if( ! rubric ) {
+
+            Module.fetchData( { "rubrics" : true, "includes" : true } )
+                    .then(  function(rubrics) {
+
+                        container = $(".submission-analysis");
+                        container.html('');
+
+                        $.each( rubrics['data'], function(index, rubric) {
+
+                               if( ! ('title' in rubric) ) return;
+
+                                 button=$('<button></button>', { "class" : "btn btn-outline-primary btn-block" })
+                                  .data('submission', submission )
+                                  .data('rubric', rubric )
+                                  .html( rubric['title'] )
+                                   .on('click', function() { 
+                                         submission = $(this).data('submission');
+                                         rubric = $(this).data('rubric');
+                                         Module.gradeSubmission( submission, rubric );
+                                 });
+
+                                button.appendTo( container );
+
+                         });
+                         container.show();
+                        
+                  });
+             return;
+
+          }
+
+
+          // If there's a mode option in the rubric, use that to reset the editor
+          if( 'mode' in rubric ) {
+              codeEditor = Module['_code_editor_'];
+              mode = ( rubric['mode']  || { 'name' : 'python' } );
+              codeEditor.setOption("mode",  mode );
+              codeEditor.refresh();
+          }
+
+          // Go get the analysis of the current code window
+          rubric['analysis'] = Parser( codeEditor, 'api' );
+
+          // Grade that sucker
+          graded = Grader( submission , rubric );
+
+          console.log('grade object', graded );
+
+
+         var formatResults = function( gradeObject, depth ) {
+
+               if( ! depth ) depth = 0;
+
+               var div = $('<div></div>', { "class" : "container" } );
+
+               
+               switch( depth ) {
+                  case 0:
+                     var title= $('<h2></h2>' );
+                     break;
+                  case 1:
+                     var title= $('<h4></h4>' );
+                     break;
+                  default:
+                     var title= $('<span></span>' );
+                     break;
+               }
+
+               var badgeScore = gradeObject['score'] || false;
+               if ( badgeScore ) {
+                     $('<i></i>', { "class" : "float-right badge badge-" + ( badgeScore<0?"danger":"success" ) } ).html(  badgeScore ).appendTo( title );
+               }
+
+               title.append( gradeObject['title'] || gradeObject['message'] );
+               title.appendTo( div );
+ 
+              
+               $.each( gradeObject['results'] || [], function( i,item ) {
+                   div.append(  formatResults( item, depth+1 ) );
+               });
+
+               return div; 
+             
+          }
+
+          container = $(".submission-analysis");
+          container.html('');
+
+          formatted = formatResults( graded, 0 );
+
+          console.log( formatted );        
+          container.append( formatted );
+
 
    },
+
 
 
 
@@ -275,7 +323,7 @@ var Module = {
        .data( record  )
        .text( record['content'] || "" );
       
-      bootbox.dialog({
+      Module.dialog({
            "title" : record['title'],
            "size" : "extra-large",
            "message" :  editor,
@@ -291,7 +339,7 @@ var Module = {
                        content = Module['_rubric_editor_'].getValue();
                        Module.postData( 'rubric', content )
                        .then( function(d) {
-                                window.alert( d['error'] || d['message'] || 'Done' );
+                           Module.confirm( d['error'] || d['message'] );
                        });
                        return false;
                     }
@@ -315,27 +363,6 @@ var Module = {
 
 
 
-
-
-
-  "showSchema" : function( schemaKey, configCustom ) {
-
-        config = Module['getSchema']( schemaKey );
-        if( ! config ) return;
-
-        config = $.extend( config, configCustom || {} );
-
-        container = $("#page-content");
-        container.empty();
-
-        title = config['title'] || '';
-        if( 'icon' in config ) title = '<i class="' + config['icon'] + '"></i>&nbsp;' + title;
-
-        $('<h4></h4>').html( title ).appendTo(container);
-        table =  $('<table></table>', { "class" : "table small responsive", "width" : "100%" } ).wrap('<div></div>').appendTo( container );
-        table.DataTable( config );
-        console.log( config );
-  },
 
 
   "getSchema" : function( schemaKey ) {
@@ -365,20 +392,53 @@ var Module = {
    },
 
 
+  "showSchema" : function( schemaKey, configCustom ) {
 
-   "buttons" : {
+        config = Module['getSchema']( schemaKey );
+        if( ! config ) return;
 
-      "refresh" : {
-                       "className" : "btn btn-sm btn-outline-primary",
-                       "text": 'Refresh',
-                       "action": function ( e, dt, node, config ) {
-                            dt.ajax.reload();
-                        }
-      }
-   },
+        config = $.extend( config, configCustom || {} );
+
+        container = $("#page-content");
+        container.empty();
+
+        title = config['title'] || '';
+        if( 'icon' in config ) title = '<i class="' + config['icon'] + '"></i>&nbsp;' + title;
+
+        $('<h4></h4>').html( title ).appendTo(container);
+        table =  $('<table></table>', { "class" : "table small responsive", "width" : "100%" } ).wrap('<div></div>').appendTo( container );
+        table.DataTable( config );
+        //console.log( config );
+  },
+
+
+
 
 
    "schemas" : {
+     "buttons" : {
+
+        "ok" : {
+            confirm: {
+                label: 'OK',
+                className: 'btn-success'
+            },
+        },
+
+        "yesno" : {
+            confirm: {
+                label: 'Yes',
+                className: 'btn-success'
+            },
+            cancel: {
+                label: 'No',
+                className: 'btn-danger'
+            }    
+        }
+
+
+     },
+
 
      "_filter_" : function(column,options) {
 
@@ -399,8 +459,14 @@ var Module = {
 
      },
 
+     "icons" : {
+          "pass" : $('<i></i>', { "class" : "fas fa-check-circle",   "style" : "color:green" }),
+          "fail" : $('<i></i>', { "class" : "fas fa-times-circle",   "style" : "color:red" }),
+          "warn" : $('<i></i>', { "class" : "fas fa-flag-checkered", "style" : "color:orange" }),
+          "info" : $('<i></i>', { "class" : "fas fa-info-circle",    "style" : "color:tan" })
+      },
 
-
+ 
      "submissions" : {
              "icon" : "fab fa-leanpub",
              "title" : "Student Submissions",
@@ -409,7 +475,7 @@ var Module = {
              "responsive" : true,
              "order" : [ [1, "desc"] ],
              "buttons" : [
-                        'reload',
+                        'refresh',
                         {
                           "extend" : "selected", 
                           "text" : '<i class="fa fa-user"></i>&nbsp;View Submission', 
@@ -418,7 +484,11 @@ var Module = {
                                record = datatable.rows({ "selected" : true } ).data()[0];
                                Module.showSubmission( record );
                              }
-                         }
+                        },
+                        {
+                          "text" : '<i class="fa fa-book"></i>&nbsp;Gradebook', 
+                          "className" : "btn btn-sm btn-outline-info",
+                        },
               ],
              "columns" : [
 
@@ -448,18 +518,19 @@ var Module = {
              "title" : "Rubrics",
              "dom" : 'Bftip',
              "ajax" : {
-                 "url" : "index.php?rubrics",
+                 "url" : "index.php?rubrics=true",
                  "method" : "OPTIONS",
                  "dataType" : "json"
               },
              "order" : [ [0, "desc"] ],
              "paging" : true,
              "columns" : [
-                  { "data" : "title", "title" : "Title" },
+                  { "data" : "id", "title" : "Rubric ID", "render" : function(d,t,r) { return d || r['file'];}  },
+                  { "data" : "title", "title" : "Title", "render" : function(d,t,r) { return d || '--none--' }  },
                   { "data" : "modified", "title" : "Last Modified" }
               ],
              "buttons" : [
-                         'reload',
+                         'refresh',
                           {
                              "text" : "Add" , 
                              "className" : "btn btn-sm btn-outline-success",
@@ -481,7 +552,24 @@ var Module = {
                              "text" : "Delete" , 
                              "className" : "btn btn-sm btn-outline-danger",
                              "action" : function( button, datatable, buttonNode, buttonConfig) {
-                                   
+                                   record = datatable.rows({ "selected" : true } ).data()[0];
+
+                                   rubricID = record['id'];
+                                   rubricName = record['title'] || rubricID;
+
+                                   Module.confirm({
+                                         "title" : "Remove Rubric",
+                                         "message" : "Are you sure you wish to remove the rubric " + rubricName + '?',
+                                         "buttons" : "yesno",
+                                         "callback" : function(result) {
+                                              if( ! result ) return;
+                                              Module.postData( "delete", { "entity" : "rubrics", "id" : rubricID })
+                                              .then( function(m) {  Module.confirm( m['message'] );  });
+                                              $(".btn-refresh").click();
+                                             
+                                          }
+
+                                   });
                               }
                           },
  
@@ -500,14 +588,14 @@ var Module = {
                  "dataType" : "json"
               },
              "buttons" : [
-               'reload'
+               'refresh'
               ],
              "order" : [ [0, "desc"] ],
              "paging" : true,
              "columns" : [
                   { "data" : "datetime", "title" : "Date" },
                   { "data" : "remote_addr", "title" : "IP" },
-                  { "data" : "channel", "title" : "Channel", "visible" : false },
+                  { "data" : "channel", "title" : "Channel", "class" : "filter" },
                   { "data" : "level", "title" : "Level" , "visible" : false},
                   { "data" : "level_name", "class" : "filter", "orderable" : false, "title" : "Level Name" },
                   { "data" : "message", "title" : "Message" },
@@ -594,6 +682,11 @@ var Module = {
   }
 
 }
+
+
+
+
+
 
 
 // After all is loaded...

@@ -8,7 +8,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 
-Logger::init();
+Logger::init( "webhook" );
 
 // Debugging
 if ( php_sapi_name() == "cli") {
@@ -17,9 +17,10 @@ if ( php_sapi_name() == "cli") {
   switch ($argv[1] ?? '' ) {
 
     case 'replay' : 
-      $rawFiles = scandir('data/replay', SCANDIR_SORT_ASCENDING);
+      $rawFiles = glob( 'data/replay/*.json' );
       foreach( $rawFiles as $rawFile ) {
-            POST( file_get_contents('data/replay/' . $rawFile) ?? '' );
+            $contents = file_get_contents( $rawFile );
+            POST(  $contents );
       }
       break;
   }
@@ -40,7 +41,6 @@ echo( json_encode( $result ?? [] , JSON_PRETTY_PRINT ) );
 
 FUNCTION POST( $received = '' ) {
 
-
               // *Immediately* log whatever we received in the original format.
               // We might need to refer to this later, so keep it *exactly* as it was provided.
               // I'm serious about this.  Don't futz with it.  Really.
@@ -53,7 +53,7 @@ FUNCTION POST( $received = '' ) {
               $micro = sprintf("%06d",($time - floor($time)) * 1000000);
               $now = new DateTime( date('Y-m-d H:i:s.'.$micro, $time) );
 
-              $rawFile = 'data/raw/' . $now->format("Y-m-d-h-i-s-u")  . '.raw';
+              $rawFile = 'raw/' . $now->format("Y-m-d-h-i-s-u")  . '.raw';
               File::write( $rawFile, $received );
               Logger::debug("Received : " . $received );
 
@@ -88,12 +88,13 @@ FUNCTION POST( $received = '' ) {
 
               
               // Replay logic
-              //$receivedDate = $parsed['submission']['time_submitted'];
-              //$receivedDate = new DateTime(  $receivedDate );
-              $parsed['submission']['time_received'] = $now->format('Y-m-d H:i:s');
+              $receivedDate = $parsed['submission']['time_submitted'];
+              $receivedDate = new DateTime(  $receivedDate );
+              $parsed['submission']['time_received'] = $receivedDate->format('Y-m-d H:i:s');
+              // $parsed['submission']['time_received'] = $now->format('Y-m-d H:i:s');
 
               // Store it in the received directory.
-              $parsedFile = 'data/received/' . $now->format("Y-m-d-h-i-s-u") . '.json';
+              $parsedFile = 'received/' . $now->format("Y-m-d-h-i-s-u") . '.json';
               File::write( $parsedFile,  $parsed );
 
               // touch( $parsedFile, $receivedTimestamp );

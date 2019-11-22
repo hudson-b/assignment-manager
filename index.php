@@ -9,7 +9,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 
-Logger::init();
+Logger::init( "webhook" );
 session_start();
 
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
@@ -32,7 +32,6 @@ switch( strtoupper( $method ) ) {
 
 
 
-
 FUNCTION OPTIONS() {
 
     $requestKeys = array_keys( $_GET ) ?? [];
@@ -50,11 +49,11 @@ FUNCTION OPTIONS() {
            break;
 
        case 'classrooms' :
-           $data = Data::classrooms();
+           $data = Data::classrooms( $_GET ?? [] );
            break;
 
        default:
-           $data = Data::submissions( $_GET );
+           $data = Data::submissions( $_GET ?? [] );
            break;
  
            break;
@@ -73,9 +72,32 @@ FUNCTION POST( $sampleData=false ) {
     $requestKeys = (  array_keys( $request ) ?? [] );
 
     // The first key tells us the action, the value is optional, but can be used to filter stuff
-    $action = ( $requestKeys[0] ?? 'submission' );
+    $action = ( $requestKeys[0] ?? false );
 
     switch( $action ) {
+
+
+         case "delete" : 
+             // Universal delete handler.  OK.. so really, this is just
+             // a file renamer.  Nothing is ever deleted.
+             $entityType = $_POST['data']['entity'];  // pluralized.  This is just the data folder: rubrics, etc.
+
+             $entityID = $_POST['data']['id'] ?? false;
+             $entityFilter = ['id' => $entityID ];
+
+             // Do we have an entity finder function for this one?
+             $matched = Data::select( $entityType,  $entityFilter );
+             if( count($matched) == 1 ) {
+                   $entityRecord=$matched[0];
+                   File::archive( $entityType . '/' . $entityRecord['file'] );
+                   $entityName = 'record <b>' . ( $entityRecord['id'] ?? '') . '</b> (' . $entityRecord['file'] . ')';
+                   $data = [ 'message' => 'Removed ' . $entityName . ' from ' . $entityType ];
+
+             } else {
+                   $data = [ 'message' => 'Could not remove record' ];
+             }
+             break;
+
 
          case "grade" :
             $codeText = $_POST['code'] ?? '';
@@ -86,7 +108,6 @@ FUNCTION POST( $sampleData=false ) {
 
          case "rubric" :
             $rubricContent = $_POST['data'] ?? '';
-
             $validate = Data::parseJSON( $rubricContent );
             if( ! ( $validate['valid'] ) ) {
                 $data = $validate;
@@ -94,17 +115,13 @@ FUNCTION POST( $sampleData=false ) {
             }
 
             $rubric = json_decode( $rubricContent, true );
-
-            if( ! ($rubric['title'] ?? '' ) ) {
-               $data = [ 'valid' => false, 'error' => 'Must have a title' ];
+            if ( ! array_key_exists( 'id',  $rubric ) ) {
+               $data = [ 'valid' => false, 'error' => 'Each rubric must have an `id` property.' ];
   
-            } else if ( ! ($rubric['id'] ?? '' ) ) {
-               $data = [ 'valid' => false, 'error' => 'Must have an ID' ];
-  
-             } else {
-               $fileName = 'data/rubrics/' . $rubric['id'] . '.json';
-               File::write( $fileName, $rubric );
-               $data = [ 'valid' => true, 'message' => 'Saved Rubric' ];
+            } else {
+               $fileName = 'rubrics/' . $rubric['id'] . '.json';
+               File::write( $fileName, $rubricContent ); // Write the raw data to preserve formatting
+               $data = [ 'valid' => true, 'message' => 'Saved Rubric : ' . $rubric['id'] .' to ' . $fileName ];
             }          
             break;
                
