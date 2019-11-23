@@ -3,11 +3,6 @@
 require 'vendor/autoload.php';
 require 'common.php';
 
-ini_set('display_errors', 1); 
-ini_set('display_startup_errors', 1); 
-error_reporting(E_ALL);
-
-
 Logger::init( "webhook" );
 
 // Debugging
@@ -32,9 +27,10 @@ if ( php_sapi_name() == "cli") {
 // Call the POST handler
 // Set a global, just to be polite
 $result = POST( file_get_contents('php://input') ?? '' );
+
+// Send back the response
 header('Content-type: application/json');
 echo( json_encode( $result ?? [] , JSON_PRETTY_PRINT ) );
-
 
 
 
