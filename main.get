@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<head>
+
+    <title>Assignment Manager</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+    <link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAY1BMVEX////7+/v+/v4XYoQYYYPw9fcobo0mbIxjlq3n7/JYjqa4z9n3+fszdZMgaImwydVFgZ3I2eLf6e7N3eRsm7GKsMGoxNGDq71gkqmfvszc6O14pLiYucZIg56Os8OxytZUiqK3CxuSAAADqUlEQVR4nO2babOrIAyGAfeNunWx2+n//5XX4Ia1KrYovVP40pmQ+IQQ8R09B6GvG4QQJbZuajC5hU3zNZ9NYYyfJrewtXMYBtnc9i38avIH+U0/VM2hgk+aX1V80vw+3y8/wO+ww7PpJ/hwIrYdqISPu1tQDX/ySPoF/pc+kzRf8zX/BzWZar7WhFoTqtRkMvjeIbftfGe9l9OHmpBk+9gwTdMox22fkSWx6GNN6B1cB+gVH4adH7yNNBlJyqWXo8dnI94n4dp8tnTjNR9sjguFWLKeBXySHGOO9YrPbPExISLXW8bvlj7Hh9EUQhI/5Jcuwq864phgGXyvODlzrDGbcyrSj/i4XLoga9QGhXiPXy6dzrEiWySnshDecr4vstYisAVr4i+uvy9y3QKR8+FyM+b3xJ/hvzicYAvmruscQggNk6sbjfs5LtuCNzShyP0XXw5nFmsFe98Z+rVN+K4m7J1AI3viPI5BdfCUGxJTzq87mD/RhO0ZPNkTkXtNQnBnG1L7vbwezxfWZFAIgfsfNoTFesGeT0CKJhx2xOuaPJIqlktAjiYL2TMpt6f4oEtKtxBiuwQkaULqX1PEtNjtNR+UWemXXn2K+ARkaUJgRZcAGs3aQSF4fq1Nw+DC+o9PQJomrFnUL9pC1PzbnYnStPBpnROXgDxNxm01FAI6YtfKclg6V5MuAYmasN/rZUecGz9Yer8n2gRkasLh/VcWwrLY0p97sklAJh8N+P2S9GxNAjL5aAG/ScCUyUcL+HUCpimTjxbwqwRMSEAeH1FxPpyEBEwy+eguzDfuEAs2mXyE/mwxvv0HsR7YvDlGf3IuX+sazfOjqwWxKXsmRN7U9ZbywbZ7TPMfAaliT5XtNM1/5z1hltMxPs2z1o+abTtO8YU04bPN2rl0yKdu87KI+VGjl4AUTcbZwr86h5pPc6YTOL9TlcBpHT7LIcjr90QOR2/9PPaIqptQkiYb2CCHPp3zSyGBbDR2/feUZ0ggmPBb+9txAgnsJ/zW/nYcQAKxVE22zMYqYGTK+ChjCdwEY+XzkVWdExdVfISi6py6ZYr4KG/OyUdhTceuw0c77t2BCj4K7e49jQo+wfeGb2dK+NiqNUGcquFjXDBFcMcTfv0AyXxMLkZ8t6b8VubP2vS3Y/3t+L//dvyZTf894eqa7Mv5Wz6TNF/zNf+/4CvTZKr5WhNqTahSk6nma02oXpON8fnibGjjJgc98Uv/96r5ivnDI2kL2z/XEkTPV8zFJgAAAABJRU5ErkJggg==" rel="icon" type="image/x-icon" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.0/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css">
+
+    <link rel="stylesheet" href="main.css">
+
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+   <div class="container">
+
+      <a class="navbar-brand" href="#"><span class="fas fa-graduation-cap"></span> Assignment Manager</a>
+
+      <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+
+         <ul class="navbar-nav">
+
+           <li class="nav-item dropdown">
+              <a id="link-classrooms" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Choose A Classroom</a>
+              <div id="link-classrooms-dropdown" class="dropdown-menu">--no classrooms available--</div>
+           </li>
+
+           <li class="nav-item">
+              <a id="link-rubrics" class="nav-link" href="#" >Rubrics</a>
+           </li>
+
+           <li class="nav-item">
+              <a id="link-log" class="nav-link" href="#"  >System Log</a>
+           </li>
+
+           <li class="nav-item">
+              <a id="link-logout" class="nav-link" href="?logout=true"  >Log Out</a>
+           </li>
+
+         </ul>
+
+      </div>
+
+
+     </div>
+   </nav>
+
+
+   <div class="container" id="page-content">
+   </div>
+
+
+  
+  </div>
+
+  </div>
+
+  <!--
+  <footer class="py-1 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white"></p>
+    </div>
+  </footer>
+  -->
+
+
+
+   <script src="https://code.jquery.com/jquery-3.4.1.min.js"  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="  crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.js"></script>
+
+   <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+   <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+   <script src="https://cdn.datatables.net/buttons/1.6.0/js/dataTables.buttons.min.js"></script>
+   <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+   <script src="https://cdn.datatables.net/plug-ins/1.10.20/dataRender/datetime.js"></script>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.3.2/bootbox.min.js"></script>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/python/python.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/python/python.js"></script> 
+
+
+   <script src="client.js" crossorigin="anonymous"></script>
+   <script src="module.js" crossorigin="anonymous"></script>
+   <script src="grader.js" crossorigin="anonymous"></script>
+
+</body>
+
+
+</html>
+
+
+
+
+
+
