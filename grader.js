@@ -241,7 +241,7 @@ var Grader = function ( submission, rubric ) {
                                  "title" : testConfig['title'] || 'Test #' + testNumber,
                                  "description" : testConfig['description'] || '',
                                  "score" : 0,
-                                 "scored" : [] 
+                                 "results" : [] 
                              }
 
                              // Normalize a bit.  Replace optional iteration methods
@@ -329,14 +329,14 @@ var Grader = function ( submission, rubric ) {
 
                                                  // Expand the message text
                                                  testResult = (  JSON.parse( JSON.stringify( testResult) ) ); // Make a copy
-                                                 testResult['message'] = tester.format( testResult['message'] || '' ); 
+                                                 testResult['title'] = tester.format( testResult['message'] || '' ); 
                                               
                                                  // Add the result to the scored collection
                                                  scored.push( testResult );
 
                                                  if( 'score' in testResult ) {
-                                                        test['score'] = test['score'] + testResult['score'];
-                                                        grader['score'] = grader['score'] + testResult['score'];
+                                                        section['score'] = ( section['score'] || 0 ) + ( testResult['score'] || 0 );
+                                                        grader['score'] = ( grader['score'] || 0 ) + ( testResult['score'] || 0 );
                                                  }
 
                                                  // Continue scoring?

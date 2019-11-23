@@ -284,7 +284,7 @@ var Module = {
                }
 
                var badgeScore = gradeObject['score'] || false;
-               if ( badgeScore ) {
+               if ( ! ( badgeScore === false ) ) {
                      $('<i></i>', { "class" : "float-right badge badge-" + ( badgeScore<0?"danger":"success" ) } ).html(  badgeScore ).appendTo( title );
                }
 

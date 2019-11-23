@@ -2,23 +2,59 @@
 
 // For autoloading of vendor packages.
 require 'vendor/autoload.php';
+
+// FOr our own stuff
 require 'common.php';
 
+
+// For debugging
 ini_set('display_errors', 1); 
 ini_set('display_startup_errors', 1); 
 error_reporting(E_ALL);
 
-
-Logger::init( "webhook" );
 session_start();
+Logger::init( "admin" );
+
 
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+
+// Authentication handler
+if( ( $method == 'GET' ) && ( isset($_GET['logout'] ) ) ) {
+   session_destroy();
+   $method = 'LOGIN';
+
+} else if ( ( $method == 'POST') && ( isset( $_POST['login'] ) ) ) {
+   $userToken =  ( $_POST['user'] ?? '' );
+   $passwordToken =  ( $_POST['password'] ?? '' );
+   $loginToken = $userToken . ':' . $passwordToken;
+   $validTokens = ( file("main.users", FILE_IGNORE_NEW_LINES) ?? [] );
+
+   if( empty( $validTokens ) ) {
+     $loginMessage =  "<h1>No users file!  Create one.</h1>";
+   } else if ( empty( $userToken ) ) {
+     $loginMessage =  "Username is required.";
+   } else if( empty( $passwordToken ) ) {
+      $loginMessage =  "Password is required.";
+   } else if ( in_array( $loginToken, $validTokens ) ) {
+        $_SESSION['user'] = $_POST['user'];
+        $method='GET';
+   } else {
+        session_destroy();
+        $loginMessage = "Not a valid user, or incorrect password.";
+        $method='LOGIN';
+   }
+}
+
+if( ! ( $_SESSION['user'] ?? false )  ) {
+  $method = 'LOGIN';
+}
 
 
 
 switch( strtoupper( $method ) ) {
+
  case 'GET':
-    readfile('index.html');
+    readfile('main.get');
     break;
 
  case 'OPTIONS':
@@ -27,6 +63,13 @@ switch( strtoupper( $method ) ) {
     header('Content-type: application/json');
     echo( json_encode( $data ?? [] , JSON_PRETTY_PRINT ) );
     break;
+
+ default:
+    $page = file_get_contents('login.get');
+    $page = str_replace( [ '<!--message-->','<!--user-->' ], [  $loginMessage ?? '', $_POST['user'] ?? '' ], $page );
+    echo $page;
+    break;
+
 }
 
 
