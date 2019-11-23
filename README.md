@@ -27,10 +27,10 @@ Use <i>composer</i> to install the dependencies:
 composer install
 </pre>
 
-Create the <i>main.users</i> file.  This is a simple text file that lists user:password, one per line:
+Create the <i>main.users</i> file.  This is a simple text file with one MD5 hash per line of username:password. Use <a href="https://www.md5hashgenerator.com/">this</a> to create tokens.
+
 <pre>
-user:password
-anotheruser:anotherpassword
+d3c3b5cb55d3c6d0c6122eedccc3dcf3
 </pre>
 
 

@@ -24,17 +24,22 @@ if( ( $method == 'GET' ) && ( isset($_GET['logout'] ) ) ) {
    $method = 'LOGIN';
 
 } else if ( ( $method == 'POST') && ( isset( $_POST['login'] ) ) ) {
+
    $userToken =  ( $_POST['user'] ?? '' );
    $passwordToken =  ( $_POST['password'] ?? '' );
-   $loginToken = $userToken . ':' . $passwordToken;
+
+   $loginToken = md5( $userToken . ':' . $passwordToken );
    $validTokens = ( file("main.users", FILE_IGNORE_NEW_LINES) ?? [] );
 
    if( empty( $validTokens ) ) {
      $loginMessage =  "Missing users file!  Create one.";
+
    } else if ( empty( $userToken ) ) {
      $loginMessage =  "Username is required.";
+
    } else if( empty( $passwordToken ) ) {
       $loginMessage =  "Password is required.";
+
    } else if ( in_array( $loginToken, $validTokens ) ) {
         $_SESSION['user'] = $_POST['user'];
         $method='GET';
