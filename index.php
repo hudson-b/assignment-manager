@@ -30,7 +30,7 @@ if( ( $method == 'GET' ) && ( isset($_GET['logout'] ) ) ) {
    $validTokens = ( file("main.users", FILE_IGNORE_NEW_LINES) ?? [] );
 
    if( empty( $validTokens ) ) {
-     $loginMessage =  "<h1>No users file!  Create one.</h1>";
+     $loginMessage =  "Missing users file!  Create one.";
    } else if ( empty( $userToken ) ) {
      $loginMessage =  "Username is required.";
    } else if( empty( $passwordToken ) ) {
