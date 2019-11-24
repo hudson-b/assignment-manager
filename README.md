@@ -34,3 +34,5 @@ d3c3b5cb55d3c6d0c6122eedccc3dcf3
 </pre>
 
 
+Configure <a href="https://docs.repl.it/classrooms/webhooks">Repl</a> to use the <i>webhook.php</i> as the webhook submission endpoint.
+
