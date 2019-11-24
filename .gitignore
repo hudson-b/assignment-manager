@@ -1,4 +1,5 @@
 data
 vendor
+composer.lock
 main.users
 
