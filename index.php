@@ -1,7 +1,7 @@
 <?php
 
 // For autoloading of vendor packages.
-require 'vendor/autoload.php';
+require 'vendor/autoload.php' or die 'Missing required dependencies (run composer install)';
 
 // FOr our own stuff
 require 'common.php';
