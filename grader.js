@@ -44,6 +44,9 @@ var Parser = function( editor ) {
 
 
 
+
+
+
 var Tester = function( sourceValue ) {
 
        tester = {
@@ -145,6 +148,12 @@ var Tester = function( sourceValue ) {
                      },
                      "hasDigits" : function() {
                         return /\d/.test( this.value );
+                     },
+                     "isShorterThan" : function( compareTo ) {
+                       return ( (this.value).length  < compareTo );
+                     },
+                     "isLongerThan" : function( compareTo ) {
+                       return ( (this.value).length  > compareTo );
                      }
 
                  }
@@ -184,6 +193,8 @@ var Tester = function( sourceValue ) {
     return tester;
 
 }
+
+
 
 
 
@@ -332,6 +343,7 @@ var Grader = function ( submission, rubric ) {
                                                  testResult['title'] = tester.format( testResult['message'] || '' ); 
                                               
                                                  // Add the result to the scored collection
+                                                 testResult['type'] = 'score';
                                                  scored.push( testResult );
 
                                                  if( 'score' in testResult ) {
@@ -367,7 +379,6 @@ var Grader = function ( submission, rubric ) {
     container.html('');
     detail = $('<pre></pre>').text( JSON.stringify( grader, null, 4 ) ).appendTo( container );
     container.show();
-
 
     return grader;
 

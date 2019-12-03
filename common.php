@@ -98,8 +98,9 @@ class File {
          }
 
          private static function __sanitize( $filePath ) {
+
             // Convert to pure ASCII, and preprend the data path
-            $cleanPath = DATAPATH . '/' . \Stringy\StaticStringy::toAscii( $filePath );
+            $cleanPath =  DATAPATH . '/' . \Stringy\StaticStringy::toAscii( $filePath );
 
             // is_writeable( $realPath ) or die('The path <b>' . $realPath . '</b> is not writeable! ');
             return $cleanPath;
@@ -127,6 +128,33 @@ class File {
             // return count( $existing );
             return 'Archived ' . $filePath;
          }
+
+
+         public static function all( $path ) {
+
+         // Find all JSON files in a given folder
+          $path = self::__sanitize( $path );
+          
+          $files = glob( $path . "/*.json" );
+         // Remove the DATAPATH portion of the name
+          $records=[];
+          foreach( $files as $filePath ) {
+             $records[] = substr( $filePath, strlen( DATAPATH ) + 1 ); 
+           }
+          // var_dump( $records );
+          return $records;
+        }
+
+
+	
+          public static function info( $filePath ) {
+             $filePath = self::__sanitize( $filePath );
+             return [
+              "sanitized" => self::__sanitize( $filePath ),
+              "created" => filectime(  $filePath ),
+              "modified" => filemtime( $filePath )
+            ];
+        }
 
 
          public static function write( $filePath, $fileContents ) {
@@ -186,19 +214,6 @@ class Data {
 
   }
 
-  private static function all( $path ) {
-        // Find all JSON files in a given folder
-        $files = glob( DATAPATH . "/" . $path . "/*.json" );
-
-        // Remove the DATAPATH portion of the name
-        $records=[];
-        foreach( $files as $filePath ) {
-            $records[] = substr( $filePath, strlen( DATAPATH ) + 1 ); 
-        }
-        // var_dump( $records );
-        return $records;
-  }
-
 
 
   public function select( $entityType, $filter=[] ) {
@@ -237,9 +252,8 @@ class Data {
 
   public static function rubrics( $filter=[] ) {
 
-
         $data=[];
-        foreach( self::all('rubrics') as $file ) {
+        foreach( File::all('rubrics') as $file ) {
 
            $content = File::read( $file );
            $parsed = Data::parseJSON( $content );
@@ -254,11 +268,9 @@ class Data {
            if( self::matches( $parsed, $filter ) == false ) continue;
 
            // Add in some file-related data
-           $parsed['file'] = basename( $file );
-           $parsed['modified'] = date("Y-m-d H:i:s", filemtime( $file ) );
-           $parsed['created'] = date("Y-m-d H:i:s", filectime( $file ) );
-
-           
+           $parsed['file'] =  basename( $file );
+           $parsed['created'] = date( 'Y-m-d H:i:s', filectime( DATAPATH . '/' . $file ) );
+           $parsed['modified'] = date( 'Y-m-d H:i:s', filemtime( DATAPATH . '/' . $file ) );
 
            // Explode any includes
            foreach( ($parsed['sections'] ?? [] ) as $sectionKey => $sectionConfig ) {
@@ -287,7 +299,7 @@ class Data {
   public static function classrooms() {
 
         $data=[];
-        foreach( self::all('received')  as $file ) {
+        foreach( File::all('received')  as $file ) {
            $parsed = File::read( $file, true );
            if( ! $parsed )  continue;
            $classroom = $parsed['classroom'];
@@ -300,7 +312,7 @@ class Data {
   public static function submissions( $filter=[] ) {
 
         $data = [];
-        foreach( self::all('received')  as $fileReceived ) {
+        foreach( File::all('received')  as $fileReceived ) {
 
            $content = File::read( $fileReceived );
           

@@ -60,9 +60,24 @@
       height: auto;
    }
 
+   div .modal-body {
+      min-height: 420px;
+      max-height: 420px;
+      overflow-y: auto;
+   }
+
+
    .heading {
      margin: 0px;
    }
+
+   .grader-container {  padding-left: 1em; }
+   .grader-depth-0 {  font-size:  xx-large; border-bottom: thin black solid; }
+   .grader-depth-1 {  font-size:  large; }
+   .grader-depth-2 {  font-size:  medium; }
+   .grader-depth-3 {  font-size:  small; }
+   .grader-depth-4 {  font-size:  xx-small; }
+
 
 
 

@@ -40,6 +40,14 @@ var Module = {
         container = $("#page-content");
         container.empty();
   },
+  "signOf" : function ( number ) {
+    if (isNaN( number ) )  return '';
+    switch ( Math.sign( number ) ) {
+     case -1 : return '-';
+     case 1 : return '+';
+     default : return '';
+    }
+  },
   "dialog" : function( config ) {
      Module['_dialog_'] = bootbox.dialog( config )
      return Module['_dialog_'];
@@ -131,7 +139,7 @@ var Module = {
                    $('<h5></h5>' ).html( record['assignment']['name'] ).appendTo( title );
 
 
-                   container = $("<div></div>", { "class" : "submission-container fixed-height-300" } );
+                   container = $("<div></div>", { "class" : "submission-container" } );
 
                    code = record['submission']['files'][0]['content'];
                    containerCode = $("<div></div>", { "class" : "submission submission-code" } ).appendTo( container );
@@ -268,30 +276,27 @@ var Module = {
 
                if( ! depth ) depth = 0;
 
-               var div = $('<div></div>', { "class" : "container" } );
+               var div = $('<div></div>', { "class" : "grader-container" } );
 
-               
-               switch( depth ) {
-                  case 0:
-                     var title= $('<h2></h2>' );
-                     break;
-                  case 1:
-                     var title= $('<h4></h4>' );
-                     break;
-                  default:
-                     var title= $('<span></span>' );
-                     break;
-               }
+               var title = $('<span></span>', {"class" : "grader-item grader-depth-" + depth } );
 
                var badgeScore = gradeObject['score'] || false;
                if ( ! ( badgeScore === false ) ) {
-                     $('<i></i>', { "class" : "float-right badge badge-" + ( badgeScore<0?"danger":"success" ) } ).html(  badgeScore ).appendTo( title );
+
+                     var badge = $('<i></i>');
+                     var badgeClass = ( badgeScore < 0 ? "danger": "success" ) ;
+                     if( ( gradeObject['type'] || '' ) == 'score' ) {
+                        if( badgeScore > 0 ) badgeScore = '+' + badgeScore;
+                     }
+
+                     badge.html( badgeScore );
+                     badge.addClass("float-right badge badge-" + badgeClass);
+                     badge.appendTo( title );
                }
 
                title.append( gradeObject['title'] || gradeObject['message'] );
                title.appendTo( div );
  
-              
                $.each( gradeObject['results'] || [], function( i,item ) {
                    div.append(  formatResults( item, depth+1 ) );
                });
@@ -526,7 +531,7 @@ var Module = {
              "paging" : true,
              "columns" : [
                   { "data" : "id", "title" : "Rubric ID", "render" : function(d,t,r) { return d || r['file'];}  },
-                  { "data" : "title", "title" : "Title", "render" : function(d,t,r) { return d || '--none--' }  },
+                  { "data" : "title", "title" : "Title", "render" : function(d,t,r) { return d || '(include only)' }  },
                   { "data" : "modified", "title" : "Last Modified" }
               ],
              "buttons" : [
