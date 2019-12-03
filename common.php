@@ -129,7 +129,7 @@ class File {
 
             if( ! file_exists( $filePath ) ) return 'Could not find ' . $filePath;
 
-            $backupPath = $filePath . '.' . filectime( $filePath );
+            $backupPath = $filePath . '.' . time;
             rename( $filePath, $backupPath );
 
             // $existing = glob( $filePath . '.*'  );
@@ -156,12 +156,17 @@ class File {
 
 	
           public static function info( $filePath ) {
+
              $filePath = self::__sanitize( $filePath );
+
+             $info = new SplFileInfo( $filePath );
+
              return [
               "sanitized" => self::__sanitize( $filePath ),
-              "created" => filectime(  $filePath ),
-              "modified" => filemtime( $filePath )
+              "created" => date('Y-m-d h:i:s', $info->getCTime() ),
+              "modified" => date('Y-m-d h:i:s', $info->getMTime() )
             ];
+
         }
 
 
@@ -277,8 +282,7 @@ class Data {
 
            // Add in some file-related data
            $parsed['file'] =  basename( $file );
-           $parsed['created'] = date( 'Y-m-d H:i:s', filectime( DATAPATH . '/' . $file ) );
-           $parsed['modified'] = date( 'Y-m-d H:i:s', filemtime( DATAPATH . '/' . $file ) );
+           $parsed['file_info'] = File::info( $file );
 
            // Explode any includes
            foreach( ($parsed['sections'] ?? [] ) as $sectionKey => $sectionConfig ) {
@@ -334,7 +338,7 @@ class Data {
            // Throw in the filename.  Do this at read time, so we are
            // free to change filenames without borking up the whole system
            $parsed['file'] = $fileReceived;
-           $parsed['file_created'] = date("Y-m-d H:i:s", filectime( $fileReceived ) );
+           $parsed['file_info'] = File::info( $fileReceived );
 
 
          // Add the grader structure

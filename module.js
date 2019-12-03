@@ -532,7 +532,7 @@ var Module = {
              "columns" : [
                   { "data" : "id", "title" : "Rubric ID", "render" : function(d,t,r) { return d || r['file'];}  },
                   { "data" : "title", "title" : "Title", "render" : function(d,t,r) { return d || '(include only)' }  },
-                  { "data" : "modified", "title" : "Last Modified" }
+                  { "data" : "file_info.modified", "title" : "Last Modified" }
               ],
              "buttons" : [
                          'refresh',
