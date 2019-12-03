@@ -1,11 +1,14 @@
 <?php
 
 // For autoloading of vendor packages.
-require 'vendor/autoload.php' or die 'Missing required dependencies (run composer install)';
+try {
+  require 'vendor/autoload.php';
+} catch( \Exception $e ) {
+  die('Missing required dependencies (run composer install)');
+}
 
-// FOr our own stuff
+// For our own stuff
 require 'common.php';
-
 
 // For debugging
 ini_set('display_errors', 1); 
