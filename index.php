@@ -1,11 +1,5 @@
 <?php
 
-// For autoloading of vendor packages.
-$autoLoader = 'vendor/autoload.php';
-file_exists( $autoLoader ) or die('Missing required dependencies (run composer install)');
-require $autoLoader;
-
-
 // For our own stuff
 require 'common.php';
 

@@ -1,5 +1,17 @@
 <?php
 
+
+// Sanity checker
+$autoLoader = 'vendor/autoload.php';
+file_exists( $autoLoader ) or die('Missing the required dependencies (run composer install)');
+require $autoLoader;
+
+
+// Global.  We can *only* work with things in our data directory
+define("DATAPATH", "data" );
+file_exists( DATAPATH ) or die('Missing the data directory!');
+
+
 // Global error handler.
 set_error_handler(
     function ($severity, $message, $file, $line) {
@@ -7,12 +19,8 @@ set_error_handler(
     }
 );
 
-
-// Global.  We can *only* work with things in our data directory
-define("DATAPATH", "data" );
-
+// Get moving
 File::init();
-
 
 
 // ------------------------------------------
