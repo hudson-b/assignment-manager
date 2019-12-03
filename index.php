@@ -1,11 +1,10 @@
 <?php
 
 // For autoloading of vendor packages.
-try {
-  require 'vendor/autoload.php';
-} catch( \Exception $e ) {
-  die('Missing required dependencies (run composer install)');
-}
+$autoLoader = 'vendor/autoload.php';
+file_exists( $autoLoader ) or die('Missing required dependencies (run composer install)');
+require $autoLoader;
+
 
 // For our own stuff
 require 'common.php';
