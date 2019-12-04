@@ -1,18 +1,20 @@
 # assignment-manager
 Integration / Manager for Repl.it -> Style grading -> Gradebook Export to Moodle
 
-<pre>
-Milestone One Presentation:
-https://prezi.com/view/u9u9PJc6mZ8OPWKJFFIo/
+<h3>Videos</h3>
+<dl>
+ <dt>Milestone One Presentation</dt>
+ <dd>https://prezi.com/view/u9u9PJc6mZ8OPWKJFFIo/</dd>
+ <dt>Milestone Two Videos</dt>
+ <dd>
+Part 1 : Repl.it / Teacher Role : https://youtu.be/E4kbeCdJKYg<br>
+Part 2 : Repl.it / Student Role : https://youtu.be/_9f2dhUxQoI<br>
+Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
+ </dd>
+</dl>
 
-Milestone Two Videos:
-Part 1 : Repl.it / Teacher Role : https://youtu.be/E4kbeCdJKYg
-Part 2 : Repl.it / Student Role : https://youtu.be/_9f2dhUxQoI
-Part 3 : Project demo : https://youtu.be/rAQVYo93CG0
-</pre>
 
-
-<h5>Demo Site</h5>
+<h3>Demo Site</h3>
 <dl>
  <dt>URL</dt><dd>https://faculty.lynchburg.edu/hudson_b/assignment-manager-demo</dd>
  <dt>User</dt><dd>guest></dd>
@@ -20,7 +22,7 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0
 </dl>
 
 
-<h5>Installation</h5>
+<h3>Installation</h3>
 
 <ol>
 
@@ -51,6 +53,7 @@ Configure <a href="https://docs.repl.it/classrooms/webhooks">Repl</a> to use the
 </ul>
 
 
+<h3>Project Overview</h3>
 <dl>
  <dt>common.php</dt>
  <dd>Helper classes and other common functions that are shared across the project.  This includes the File and Data interface classes, and the Logger class for system logging functions.</dd>
