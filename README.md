@@ -46,13 +46,13 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
       Use <i>composer</i> to install the dependencies: <pre>composer install</pre>
     </li>
     <li>
-     Create the <i>main.users</i> file.  This is a simple text file with one MD5 hash per line of username:password. Use <a href="https://www.md5hashgenerator.com/">this</a> to create tokens.
+     Create the <i>main.users</i> file.  This is a simple text file:  Each line contains the MD5 hash of a <i>username:password</i>.  Use <a href="https://www.md5hashgenerator.com/">this</a> to create tokens.  Check <i>main.users.sample</i> for an example.
     </li>
     <li>
      Configure your <a href="https://repl.it">Repl.it</a> classroom webhook to POST to the <i>webhook.php</i> page.
     </li>
 </ol>
-< drop / mod 7 )
+
 
 
 <h3>Project Overview</h3>
