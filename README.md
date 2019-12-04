@@ -26,31 +26,31 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
 
 <ol>
 
-<li>Clone the project into the directory of your choice.</li>
+    <li>Clone the project into the directory of your choice.</li>
 
-<li>Create a data directory, and grant full write permissions:
-<pre>
-mkdir data
-chmod 0777 data
-</pre>
-</li>
+    <li>Create a data directory, and grant full write permissions:
+        <pre>
+        mkdir data
+        chmod 0777 data
+        </pre>
+    </li>
 
-<li>Use <i>composer</i> to install the dependencies:
-<pre>
-composer install
-</pre>
-</li>
+    <li>Use <i>composer</i> to install the dependencies:
+       <pre>
+        composer install
+        </pre>
+    </li>
 
-<li>
-Create the <i>main.users</i> file.  This is a simple text file with one MD5 hash per line of username:password. Use <a href="https://www.md5hashgenerator.com/">this</a> to create tokens.
-</li>
+    <li>
+    Create the <i>main.users</i> file.  This is a simple text file with one MD5 hash per line of username:password. Use <a href="https://www.md5hashgenerator.com/">this</a> to create tokens.
+    </li>
 
 
-<li>
-Configure <a href="https://docs.repl.it/classrooms/webhooks">Repl</a> to use the <i>webhook.php</i> as the webhook submission endpoint.
-</li>
+    <li>
+        Configure <a href="https://docs.repl.it/classrooms/webhooks">Repl</a> to use the <i>webhook.php</i> as the webhook submission endpoint.
+    </li>
 
-</ul>
+</ol>
 
 
 <h3>Project Overview</h3>
