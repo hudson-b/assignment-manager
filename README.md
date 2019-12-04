@@ -1,7 +1,8 @@
 # assignment-manager
-Integration / Manager for Repl.it -> Style grading -> Gradebook Export to Moodle
+Integration / Manager for Repl.it -> Style grading 
 
 <h3>Videos</h3>
+<hr>
 <dl>
  <dt>Milestone One Presentation</dt>
  <dd>https://prezi.com/view/u9u9PJc6mZ8OPWKJFFIo/</dd>
@@ -15,6 +16,7 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
 
 
 <h3>Demo Site</h3>
+<hr>
 <dl>
  <dt>URL</dt><dd>https://faculty.lynchburg.edu/hudson_b/assignment-manager-demo</dd>
  <dt>User</dt><dd>guest></dd>
@@ -23,7 +25,7 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
 
 
 <h3>Installation</h3>
-
+<hr>
 <ol>
 
     <li>Clone the project into the directory of your choice.</li>
@@ -38,13 +40,12 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
     <li>Use <i>composer</i> to install the dependencies:
        <pre>
         composer install
-        </pre>
+       </pre>
     </li>
 
     <li>
     Create the <i>main.users</i> file.  This is a simple text file with one MD5 hash per line of username:password. Use <a href="https://www.md5hashgenerator.com/">this</a> to create tokens.
     </li>
-
 
     <li>
         Configure <a href="https://docs.repl.it/classrooms/webhooks">Repl</a> to use the <i>webhook.php</i> as the webhook submission endpoint.
