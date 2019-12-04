@@ -24,31 +24,38 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
 </dl>
 
 
+<h3>Requirements</h3>
+<hr>
+<ul>
+ <li>PHP 7.2 or better</li>
+ <li>Webserver of choice (Nginx is suggested)</li>
+ <li><a href="https://repl.it">Repl.it</a> classroom</li>
+ <li><a href="https://getcomposer.org">Composer</a> dependency manager</li>
+</ul>
+
+
 <h3>Installation</h3>
 <hr>
 <ol>
 
-    <li>Clone the project into the directory of your choice.</li>
-
-    <li>Create a data directory, and grant full write permissions:
-        <pre>
-        mkdir data
-        chmod 0777 data
-        </pre>
-    </li>
-
-    <li>Use <i>composer</i> to install the dependencies:
-       <pre>
-        composer install
-       </pre>
+    <li>
+     Clone the project into the directory of your choice:  git clone hudson-b/assignment-manager
     </li>
 
     <li>
-    Create the <i>main.users</i> file.  This is a simple text file with one MD5 hash per line of username:password. Use <a href="https://www.md5hashgenerator.com/">this</a> to create tokens.
+      Create a data directory, and grant full write permissions:    mkdir data &&  chmod 0777 data
     </li>
 
     <li>
-        Configure <a href="https://docs.repl.it/classrooms/webhooks">Repl</a> to use the <i>webhook.php</i> as the webhook submission endpoint.
+      Use <i>composer</i> to install the dependencies: composer install
+    </li>
+
+    <li>
+     Create the <i>main.users</i> file.  This is a simple text file with one MD5 hash per line of username:password. Use <a href="https://www.md5hashgenerator.com/">this</a> to create tokens.
+    </li>
+
+    <li>
+        Configure <a href="https://docs.repl.it/classrooms/webhooks">Repl.it/a> to use the <i>webhook.php</i> of your site as the webhook submission endpoint.
     </li>
 
 </ol>
