@@ -12,38 +12,43 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0
 </pre>
 
 
-Demo
------------
-https://faculty.lynchburg.edu/hudson_b/assignment-manager-demo
-User :  guest
-Pass :  demo
+<h5>Demo Site</h5>
+<dl>
+ <dt>URL</dt><dd>https://faculty.lynchburg.edu/hudson_b/assignment-manager-demo</dd>
+ <dt>User</dt><dd>guest></dd>
+ <dt>Password</dt><dd>demo</dd>
+</dl>
 
 
+<h5>Installation</h5>
 
-Installation
-------------
+<ol>
 
-Clone the project into the directory of your choice
+<li>Clone the project into the directory of your choice.</li>
 
-Create a data directory, and grant full write permissions:
+<li>Create a data directory, and grant full write permissions:
 <pre>
 mkdir data
 chmod 0777 data
 </pre>
+</li>
 
-Use <i>composer</i> to install the dependencies:
+<li>Use <i>composer</i> to install the dependencies:
 <pre>
 composer install
 </pre>
+</li>
 
+<li>
 Create the <i>main.users</i> file.  This is a simple text file with one MD5 hash per line of username:password. Use <a href="https://www.md5hashgenerator.com/">this</a> to create tokens.
-
-<pre>
-d3c3b5cb55d3c6d0c6122eedccc3dcf3
-</pre>
+</li>
 
 
+<li>
 Configure <a href="https://docs.repl.it/classrooms/webhooks">Repl</a> to use the <i>webhook.php</i> as the webhook submission endpoint.
+</li>
+
+</ul>
 
 
 <dl>
