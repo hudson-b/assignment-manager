@@ -48,14 +48,18 @@ var Module = {
      default : return '';
     }
   },
+
   "dialog" : function( config ) {
+     config['className'] = 'bootbox-dialog';
      Module['_dialog_'] = bootbox.dialog( config )
      return Module['_dialog_'];
   },
+
   "alert" : function( config ) {
      Module['_dialog_'] = bootbox.alert( config )
      return Module['_dialog_'];
   },
+
   "confirm" : function( config ) {
 
      if( typeof config == "string" ) config = { "message" : config, "buttons" : "ok" , "callback" : function() {} }
@@ -276,9 +280,9 @@ var Module = {
 
                if( ! depth ) depth = 0;
 
-               var div = $('<div></div>', { "class" : "grader-container" } );
+               var div = $('<div></div>', { "class" : "grader-container grader-depth-" + depth } );
 
-               var title = $('<span></span>', {"class" : "grader-item grader-depth-" + depth } );
+               var title = $('<span></span>' );
 
                var badgeScore = gradeObject['score'] || false;
                if ( ! ( badgeScore === false ) ) {
@@ -471,6 +475,7 @@ var Module = {
           "info" : $('<i></i>', { "class" : "fas fa-info-circle",    "style" : "color:tan" })
       },
 
+
  
      "submissions" : {
              "icon" : "fab fa-leanpub",
@@ -532,7 +537,7 @@ var Module = {
              "columns" : [
                   { "data" : "id", "title" : "Rubric ID", "render" : function(d,t,r) { return d || r['file'];}  },
                   { "data" : "title", "title" : "Title", "render" : function(d,t,r) { return d || '(include only)' }  },
-                  { "data" : "file_info.modified", "title" : "Last Modified" }
+                  { "data" : "file_info.modified", "title" : "Last Modified",  }
               ],
              "buttons" : [
                          'refresh',
@@ -581,7 +586,6 @@ var Module = {
              ]
 
      },
-
 
       "log" : {
              "icon" : "fas fa-list",

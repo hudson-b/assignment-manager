@@ -74,22 +74,42 @@ var Tester = function( sourceValue ) {
                       "hasBetween" : function( compareFrom, compareTo ) {
                         return ( this.hasMoreThan( compareFrom ) && this.hasFewerThan( compareTo ) );
                       },
-                      "contains" : function( compareTo ) {
+
+                      "hasValue" : function( compareTo ) {
+                        return ( (this.value).includes( compareTo ) );
+                      },
+                      "hasKey" : function( compareTo ) {
+                        return ( compareTo in (this.value) );
+                      },
+
+                      "contains" : function( compareTo, searchItem ) {
+
+                           searchItem = searchItem || 'value';
+
                            if( $.isArray( compareTo ) ) {
+
+                               console.log('Array comparing', compareTo);
                                original = this;
                                result = true;
+
                                $.each( compareTo, function( i, compareTo ) {
-                                   if( ! ( compareTo in original.value ) ) {
-                                      result = false;
-                                      return false;
-                                   }
+                                      checkItem = ( searchItem == 'key' ) ? original.hasKey( compareTo ) : original.hasValue( compareTo ); 
+                                      if( ! checkItem ) {
+                                        result = false;
+                                        return false;
+                                     }
                                });
 
+
                            } else {
-                              result = ( compareTo in this.value ); // Check the keys only.
+                              console.log('String comparing', compareTo, searchItem);
+                              result = ( searchItem == 'key' ) ? this.hasKey( compareTo ) : this.hasValue( compareTo ); 
                            }
+
+                           console.log('Returning ', result );
                            return result;
                       },
+
                       "notContains" : function( compareTo ) {
                         return ! ( (this.value).indexOf( compareTo ) > -1 );
                       }              
@@ -267,7 +287,7 @@ var Grader = function ( submission, rubric ) {
                              testItem = testConfig['source'] ||          // at the test level
                                         testGroupConfig['source'] ||     // .. or at the test group level
                                         sectionConfig['source'] ||       // .. or at the section level
-                                        "__";                         // Give up and go home
+                                        "__";                            // Give up and go home
 
 
                              // We must have something to test..
