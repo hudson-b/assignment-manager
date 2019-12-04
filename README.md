@@ -55,7 +55,7 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
     </li>
 
     <li>
-        Configure <a href="https://docs.repl.it/classrooms/webhooks">Repl.it/a> to use the <i>webhook.php</i> of your site as the webhook submission endpoint.
+     Configure your <a href="https://repl.it">Repl.it</a> classroom webhook to POST to the <i>webhook.php</i> page.
     </li>
 
 </ol>
