@@ -19,7 +19,7 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
 <hr>
 <dl>
  <dt>URL</dt><dd>https://faculty.lynchburg.edu/hudson_b/assignment-manager-demo</dd>
- <dt>User</dt><dd>guest></dd>
+ <dt>User</dt><dd>guest</dd>
  <dt>Password</dt><dd>demo</dd>
 </dl>
 
@@ -37,13 +37,13 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
 <hr>
 <ol>
     <li>
-     Clone the project into the directory of your choice:  git clone hudson-b/assignment-manager
+     Clone the project into the directory of your choice:  <pre>git clone hudson-b/assignment-manager</pre>
     </li>
     <li>
-      Create a data directory, and grant full write permissions:    mkdir data &&  chmod 0777 data
+      Create a data directory, and grant full write permissions:    <pre>mkdir data &&  chmod 0777 data</pre>
     </li>
     <li>
-      Use <i>composer</i> to install the dependencies: composer install
+      Use <i>composer</i> to install the dependencies: <pre>composer install</pre>
     </li>
     <li>
      Create the <i>main.users</i> file.  This is a simple text file with one MD5 hash per line of username:password. Use <a href="https://www.md5hashgenerator.com/">this</a> to create tokens.
@@ -52,6 +52,7 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
      Configure your <a href="https://repl.it">Repl.it</a> classroom webhook to POST to the <i>webhook.php</i> page.
     </li>
 </ol>
+< drop / mod 7 )
 
 
 <h3>Project Overview</h3>
