@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530438,
+        "name": "Mid-Term Program",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8697358,
+        "status": "complete",
+        "time_submitted": "2019-10-23T01:32:12.108Z",
+        "time_created": "2019-10-14T13:36:30.487Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8697358",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8697358",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "#McAninch, Carl -  Mid Term program\n\nprint ('Planet Express Delivery Time Calculator')\nprint ('')\n\nplanet = input('What is the name of the planet?')\nprint ('')\n\ndistance = input ('How many parsecs away?')\ndistance = float (distance)\nprint('')\n\npackages = input('How many packages?')\npackages = int(packages)\nprint ('')\nweight = input ('How many tons does each package weigh?')\nweight = float (weight)\n\nif (packages >= 10 and packages % 2 == 1.0):\n  print ('')\n  print ('')\n  print ('Warning: Adjusting package count to', packages + 1)\n  packages = packages + 1\n\n\ntrip1 = (packages * weight * distance + distance)\n\n\n\nif (distance < 1 ):\n  print('')\n  print('')\n  print('Error', planet, 'must be one or more parsecs away.')\nelif(packages < 1 ):\n  print ('Error: The ship must carry at least one package.')\nelif(weight <=0 ):\n  print('Error: The package weight', weight, 'is too light.')\n\n\nelse:\n  print ('The total cargo weight is', packages * weight, 'ton(s).')\n  print  ('The trip to', planet, 'will take', trip1 , 'minutes.')\n  print ('The trip back to Earth will take', distance, 'minutes.')\n  trip2 = (trip1+ distance)\n  print ('The total trip time is', trip2, 'minutes.')\n\n\nprint ('')\n\nif (planet == 'Robot Planet'):\n  print ('Also, Bender is Great!')\n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-10-23 01:32:12"
+    },
+    "student": {
+        "id": 2140637,
+        "first_name": "Katelynn",
+        "last_name": "Kube",
+        "email": "2140637@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-58-05-775610.raw"
+}

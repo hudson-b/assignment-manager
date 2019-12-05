@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530438,
+        "name": "Mid-Term Program",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8755390,
+        "status": "complete",
+        "time_submitted": "2019-10-28T13:18:42.472Z",
+        "time_created": "2019-10-16T13:09:37.104Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8755390",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8755390",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "# Murray, Roxi - Mid Term Program\n\nprint(\"Planet Express Delivery Time Calculator\")\n\nplanetName = input(\"What is the name of the planet?\")\nparsecsAway = input(\"How many parsecs away?\")\nparsecsAway = float(parsecsAway)\npackageNumber = input(\"How many packages?\")\npackageNumber = int(packageNumber)\npackageWeight = input(\"How many tons does each package weigh?\")\npackageWeight = float(packageWeight)\n\n# number of packages must be even when more than 10\n# if it is not even when more than 10, add 1 and display a message\n# if the planet is Robot Planet, display \"Also, Bender is great!\" after the calculations\ntotalWeight = packageWeight * packageNumber\ntotalWeight = float(totalWeight)\nslowDown = (totalWeight * parsecsAway)\nslowDown = float(slowDown)\nminutesToEarth = parsecsAway\nminutesToEarth = float(minutesToEarth)\nminutesToPlanet = parsecsAway + slowDown\nminutesToPlanet = float(minutesToPlanet)\ntotalMinutes = minutesToEarth + minutesToPlanet\n\nremainder = packageNumber % 2\n\nif(parsecsAway < 1):\n    print(\"Error:\", planetName, \"must be one or more parsecs away.\")\nelif(packageWeight < 0):\n    print(\"Error: The package weight\", packageWeight, \"is too light.\")\nelif(packageNumber < 1):\n    print(\"Error: The ship must carry at least one package.\")\nelse:\n    if(packageNumber > 10 and remainder > 0):\n        packageNumber = packageNumber + 1\n        print(\"Warning: Adjusting package count to\", packageNumber)\n        totalWeight = packageWeight * packageNumber\n        totalWeight = float(totalWeight)\n        slowDown = (totalWeight * parsecsAway)\n        slowDown = float(slowDown)\n        minutesToEarth = parsecsAway\n        minutesToEarth = float(minutesToEarth)\n        minutesToPlanet = parsecsAway + slowDown\n        minutesToPlanet = float(minutesToPlanet)\n        totalMinutes = minutesToEarth + minutesToPlanet\n    else:\n        pass\n    print(\"The total cargo weight is\", totalWeight, \"ton(s).\")\n    print(\"The trip to\", planetName, \"will take\", minutesToPlanet, \"minutes.\")\n    print(\"The trip back to Earth will take\", minutesToEarth, \"minutes.\")\n    print(\"The total trip time is\", totalMinutes, \"minutes.\")\n    \nif(planetName == \"Robot Planet\"):\n    print(\"Also, Bender is great!\")\n\n\n\n# minutes to earth = parsecsAway\n# total cargo weight = packageWeight *packageNumber\n# decreased speed because of cargo = total cargo weight *parsecsAway\n# minutes to planet = parsecsAway + decreased speed\n\n# HIS NOTES IN THE SHARED REPL ARE BELOW IN COMMENTS (mine are above):\n\n# minutesToPlanet = minutesToPlanet + slowDown\n# print (minutesToPlanet)\n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-10-28 13:18:42"
+    },
+    "student": {
+        "id": 2140646,
+        "first_name": "Shizuko",
+        "last_name": "Stocks",
+        "email": "2140646@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-58-05-819993.raw"
+}

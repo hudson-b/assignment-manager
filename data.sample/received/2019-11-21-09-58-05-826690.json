@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530438,
+        "name": "Mid-Term Program",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8729139,
+        "status": "complete",
+        "time_submitted": "2019-10-22T16:19:39.498Z",
+        "time_created": "2019-10-15T15:30:49.436Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8729139",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8729139",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "# Fee, Allan Mid Term Program 2019-16-10\n\nprint('Planet Express Delivery Time Calculator')\n\nPlanetName = input('What is the name of the planet?')\n\nprint('')\n\nDistance = input('How many parsecs away?')\nDistance = float(Distance)\n\nprint('')\n\nNumberPackages = input('How many packages?')\nNumberPackages = int(NumberPackages)\n\nprint('')\n\nWeight = input('How many tons does each package weigh?')\nWeight = float(Weight)\nprint('')\n\nif((NumberPackages >= 10 and NumberPackages % 2 == 1.0)):\n  print('')\n  print('Warning: Adjusting package count to',NumberPackages + 1)\n  NumberPackages = NumberPackages + 1\n  NumberPackages = int(NumberPackages)\n  print('The total cargo weight is',Weight * NumberPackages,'ton(s).')\n  print('The trip to',PlanetName,'will take',(Weight * NumberPackages + 1) * (Distance),'minutes.')\n  print('The trip back to Earth will take',Distance,'minutes.')\n  TotalTrip = ((Weight * NumberPackages + 1) * (Distance) + (Distance))\n  print('The total trip time is',TotalTrip,'minutes.')\n  \nelif(PlanetName == 'Robot Planet'):\n  print('The total cargo weight is',Weight * NumberPackages,'ton(s).')\n  print('The trip to',PlanetName,'will take',(Weight * NumberPackages + 1) * (Distance),'minutes.')\n  print('The trip back to Earth will take',Distance,'minutes.')\n  TotalTrip = ((Weight * NumberPackages + 1) * (Distance) + (Distance))\n  print('The total trip time is',TotalTrip,'minutes')\n  print('Also, Bender is great!')\n  \nelif(Distance < 1):\n  print('Error:',PlanetName,'must be one or more parsecs away')\n  \nelif(Distance and NumberPackages >=1 and (Weight >= .01)):\n  print('The total cargo weight is',Weight * NumberPackages,'ton(s).')\n  print('The trip to',PlanetName,'will take',(Weight * NumberPackages + 1) * (Distance),'minutes.')\n  print('The trip back to Earth will take',Distance,'minutes.')\n  TotalTrip = ((Weight * NumberPackages + 1) * (Distance) + (Distance))\n  print('The total trip time is',TotalTrip,'minutes')\n  \nelif(NumberPackages == 0):\n  print('Error: The ship must carry at least one package')\n  \nelif(Weight < 0):\n  print('Error: The package weight',Weight,'is too light')"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-10-22 16:19:39"
+    },
+    "student": {
+        "id": 2140648,
+        "first_name": "Theodore",
+        "last_name": "Teasley",
+        "email": "2140648@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-58-05-826690.raw"
+}

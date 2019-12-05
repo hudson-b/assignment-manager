@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530423,
+        "name": "Control : 4) If \/ Boolean Logic",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9535525,
+        "status": "complete",
+        "time_submitted": "2019-11-21T22:28:53.477Z",
+        "time_created": "2019-11-21T22:18:45.739Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9535525",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9535525",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "#Brandon Sureda\n#21-11-19\n\ninteger = input (\"Enter an integer:\")\n\ninteger = int (integer)\n\nif integer >= 100 and integer <=999:\n    print (integer, (\"is a three digit number\"))\nelse:\n    print (integer, (\"is something else\" ))\n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-21 22:28:53"
+    },
+    "student": {
+        "id": 2140655,
+        "first_name": "Denese",
+        "last_name": "Drucker",
+        "email": "2140655@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-05-29-44-466213.raw"
+}

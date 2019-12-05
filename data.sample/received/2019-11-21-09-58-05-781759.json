@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530438,
+        "name": "Mid-Term Program",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8696440,
+        "status": "submitted_incomplete",
+        "time_submitted": "2019-10-22T17:27:41.909Z",
+        "time_created": "2019-10-14T12:57:55.091Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8696440",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8696440",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "print (\"Planet Express Delivery Time Calculator\")\n\n#Kachornvanich, Justin \n\n#Setting Variables\nPlanet = str(input(\"What is the name of the planet?\"))\nParsec = float(input(\"How many parsecs away?\"))\nPackages = float(input(\"How many packages?\"))\nWeight = float(input(\"How many tons does each package weigh?\"))\nTimeToHome = Parsec\nSpeed = 1\nTime = (Parsec *  Weight * Packages + TimeToHome)\nTotalWeight = (Weight * Packages)\nTotalTime = (Parsec *  Weight * Packages + TimeToHome + TimeToHome)\n\nprint (\"\")                                                                                  #Blank Space\n\nif (Parsec < 1):\n  print (\"Error: The ship must travel at least one parsec.\")\n  \n  \nelif (Packages < 1):\n  print (\"Error: The ship must carry at least one package\")  \nelif (Weight < 1):\n  print (\"Error: The package  weight\", Weight,\"is too light\")\nelif (Packages > 10):\n  Packages = Packages + 1\n  TotalWeight = (Weight * Packages)\n  TotalTime = (Parsec *  Weight * Packages + TimeToHome + TimeToHome)\n  print (\"Warning: Adjusted package count to\", Packages)\n  print (\"The total cargo Weight is\", TotalWeight, \"ton(s).\")\n  print (\"The trip to\", Planet, \"will take\", Time,\"minutes.\")\n  print (\"The trip back to Earth will take\", Parsec, \"minutes.\"  )\n  print (\"The total trip time is\", TotalTime,\"minutes.\")\n  \nelse:\n  print(\"\")\n  print (\"The total cargo weight is\", Weight, \"ton(s).\")\n  print (\"The trip to\", Planet, \"will take\", Time,\"minutes.\")\n  print (\"The trip back to Earth will take\", Parsec, \"minutes.\"  )\n  print (\"The total trip time is\", TotalTime,\"minutes.\")\n  \nif (Planet == \"Robot Planet\"):\n  print(\"Also, Bender is great!\")\n\n\n\n\n\n\n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-10-22 17:27:41"
+    },
+    "student": {
+        "id": 2140638,
+        "first_name": "Iona",
+        "last_name": "Izzard",
+        "email": "2140638@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-58-05-781759.raw"
+}

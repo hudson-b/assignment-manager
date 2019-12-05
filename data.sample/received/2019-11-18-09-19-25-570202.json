@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530431,
+        "name": "For : 3) Sum of even\/odd in a range",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9288528,
+        "status": "complete",
+        "time_submitted": "2019-11-18T14:15:11.467Z",
+        "time_created": "2019-11-11T14:41:12.883Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9288528",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9288528",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "StrtNum = int (input (\"Starting number?\"))\n\nwhile (True):\n    EndNum = int (input (\"Ending number?\"))\n    if (EndNum <= StrtNum):\n        print (\"Ending number must be greater than\", StrtNum)\n        continue\n    else:\n        break \n\nprint (\"\")\nprint (\"In the range\", StrtNum, \"to\", EndNum)\n\nNumberofEven=0\nNumberofOdd=0\nSUm1=0\nSUm2=0\nfor counter in range (StrtNum, EndNum+1):\n    if (counter==0): continue\n    Floor=counter % 2\n    if (Floor==0):\n        SUm1=(SUm1+counter)\n        NumberofEven=(NumberofEven+1)\n        \n    if (Floor!=0):\n        SUm2= (SUm2+counter)\n        NumberofOdd=(NumberofOdd+1)\n\nprint (\"There are\",NumberofEven, \"even numbers with a sum of\", SUm1)\nprint (\"There are\",NumberofOdd, \"odd numbers with a sum of\", SUm2)\n#for x in range (StartNum, EndNum+1):\n    #total= ( total + x )"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-18 09:19:25"
+    },
+    "student": {
+        "id": 2140652,
+        "first_name": "Euna",
+        "last_name": "Eifert",
+        "email": "2140652@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-18-09-19-25-570202.raw"
+}

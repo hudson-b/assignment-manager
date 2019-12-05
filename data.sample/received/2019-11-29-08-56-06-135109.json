@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530431,
+        "name": "For : 3) Sum of even\/odd in a range",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9670812,
+        "status": "complete",
+        "time_submitted": "2019-11-30T00:56:42.468Z",
+        "time_created": "2019-11-30T00:23:19.828Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9670812",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9670812",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "startingNumber = int ( input(\"Starting number?\") ) \nendingNumber = int ( input(\"Ending number?\") )\n\nwhile ( endingNumber <= startingNumber):\n    print (\"Ending number must be greater than\", startingNumber)\n    endingNumber = int ( input(\"Ending number?\") )\nprint ( \"In the range\", startingNumber, \"to\", endingNumber)\ncountEven = 0\ncountOdd = 0\nsumEven = 0 \nsumOdd = 0\nend = int (endingNumber + 1)\nfor counter in range (startingNumber, end):\n    if ( counter == 0): continue\n    if ( counter % 2 == 0): \n        countEven = countEven + 1\n    else: \n        countOdd = countOdd + 1\n    \n    if ( counter % 2 == 0): \n        sumEven = int (sumEven + counter)\n    else: \n        sumOdd = int (sumOdd + counter)\nprint ( \"There are\", countEven, \"even numbers with a sum of \", sumEven)\nprint ( \"There are\", countOdd, \"odd numbers with a sum of \", sumOdd)\n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-30 00:56:42"
+    },
+    "student": {
+        "id": 2140650,
+        "first_name": "Clay",
+        "last_name": "Colton",
+        "email": "2140650@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-29-08-56-06-135109.raw"
+}

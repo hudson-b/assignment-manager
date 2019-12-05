@@ -1,0 +1,35 @@
+{      
+         "id" : "test-variables",
+
+         "tests" : [
+
+                 {  
+                    "title" : "Check number of variables",
+                    "source" : "variable",
+                    "match" : "first",
+                    "scoring" : [
+                      { "hasFewerThan" : 4,  "message" : "Found only {count} variable(s), expected 4 or more.",   "score" : -3 },
+                      { "hasFewerThan" : 2,  "message" : "Found only one variable!  Needed 4 or more.",   "score" : -5 },
+                      "Your code used {count} variables."
+                    ]
+                },
+
+                {  
+                    "title" : "Check quality of variable names",
+                    "each" : "variable",
+                    "match" : "first",
+                    "scoring" : [
+                       { "isUpperCase" : true,  "message" : "<b>{value}</b> is uppercase!  Consider using mixed case next time." },
+                       { "isLowerCase" : true,  "message" : "<b>{value}</b> is lowercase!  Consider using mixed case next time." },
+                       { "isShorterThan" : 4,  "message" : "<b>{value}</b> is pretty short for a variable name.  Consider something more descriptive." },
+                       { "hasDigits" : true,  "message" : "<b>{value}</b> contains digits.  Try to avoid this naming scheme, when possible." },
+                       { "message" : "<b>{value}</b> is a good variable name!", "icon" : "pass" }
+                     ]
+                }
+
+
+          ]
+
+}
+
+

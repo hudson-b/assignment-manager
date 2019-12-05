@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530430,
+        "name": "For : 1) Simple Sum Counter",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9196176,
+        "status": "complete",
+        "time_submitted": "2019-11-12T21:11:27.829Z",
+        "time_created": "2019-11-06T13:50:42.454Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9196176",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9196176",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "StartNum=input (\"Starting number?\")\nEndNum=input (\"Ending number?\")\n\nStartNum= int(StartNum)\nEndNum = int(EndNum)\n\nwhile (True):\n    if (EndNum>StartNum):\n        break\n    else:\n        print (\"Ending number must be greater than\", StartNum)\n        EndNum= int (input (\"Ending number?\"))\n        continue\n\ntotal=0\nfor x in range (StartNum, EndNum+1):\n    total= ( total + x )\n    \nprint (\"\")\nprint (\"The sum of numbers from\", StartNum, \"to\", EndNum, \"is\", total)\n    \n    \n    \n    \n    \n    \n        "
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-12 21:11:27"
+    },
+    "student": {
+        "id": 2140652,
+        "first_name": "Euna",
+        "last_name": "Eifert",
+        "email": "2140652@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-15-11-01-29-254183.raw"
+}

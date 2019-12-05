@@ -1,0 +1,80 @@
+{
+    "id": "sample",
+
+    "title": "Sample Rubric",
+
+    "mode" : {
+         "name" : "python",
+         "extra_keywords" : [ "random", "randint" ]
+    },
+
+    "score" : 50,
+
+    "sections": [
+
+         { "title" : "Variables", 
+           "description" : "Use of variables in your program",
+           "tests" : [
+                 {  
+                    "title" : "Check number of variables",
+                    "source" : "variable",
+                    "match" : "first",
+                    "scoring" : [
+                      { "hasFewerThan" : 4,  "message" : "Found only {count} variable(s), expected 4 or more.",   "score" : 2 },
+                      { "hasFewerThan" : 2,  "message" : "Found only one variable!  Needed 4 or more.",   "score" : 1 },
+                      { "message" : "Your code used {count} variables.", "score" : 5 }
+                    ]
+                },
+
+                {  
+                    "title" : "Check quality of variable names",
+                    "each" : "variable",
+                    "match" : "first",
+                    "scoring" : [
+                       { "isUpperCase" : true,  "message" : "<b>{value}</b> is all uppercase!  Consider using mixed case next time.", "score" : -1 },
+                       { "isLowerCase" : true,  "message" : "<b>{value}</b> is all lowercase!  Consider using mixed case next time." },
+                       { "isShorterThan" : 4,  "message" : "<b>{value}</b> is a bit short for a variable name, but otherwise OK." },
+                       { "hasDigits" : true,  "message" : "<b>{value}</b> contains digits.  Try to avoid this naming scheme, when possible." },
+                       { "message" : "<b>{value}</b> is a good variable name!", "icon" : "pass" }
+                     ]
+                }
+           ]
+         },
+
+
+
+        {  "title" : "Fundamental Programming",
+           "description" : "Use of instructed techniques",
+           "points" : 10,
+           "tests" : [
+               {   
+                    "title" : "Use of complete if statement (if/elif/else)",
+                    "source" : "keyword",
+                    "scoring" : [
+                      { "contains" : ["if","elif", "else"],    "message" : "Found a complete if statement (if/elif/else)", "icon" : "pass"  } ,
+                      { "contains" : ["if","elif"],            "message" : "Found a partial if statement (if/elif), missing else", "icon" : "warn" , "score" : -1 } ,
+                      { "contains" : "if",                     "message" : "Found only a bare-bones if statement (if), without elif,else", "icon" : "warn", "score" : -2  } ,
+                      { "message" : "Could not find an if statement at all!", "score" : -5 }
+                   ]
+
+                },
+
+                {   
+                    "title" : "Use of while  (while/continue/break)",
+                    "source" : "keyword",
+                    "scoring" : [
+                      { "contains" : ["while","continue","break"],    "message" : "Found while, continue and break!", "icon" : "pass"  } ,
+                      { "contains" : ["while","continue"],            "message" : "Found while and continue, no break.", "icon" : "warn" , "score" : -1 } ,
+                      { "contains" : "while",                         "message" : "Found only a basic while statement.", "icon" : "warn" , "score" : -2 } ,
+                      { "message" : "Could not find a while loop at all!", "score" : -5 }
+                   ]
+
+                }
+
+          ]
+        }
+
+
+     ]
+
+}

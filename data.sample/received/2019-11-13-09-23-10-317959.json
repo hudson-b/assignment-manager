@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530433,
+        "name": "Functions : 2) Simple Calculations",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9342997,
+        "status": "complete",
+        "time_submitted": "2019-11-13T14:23:10.098Z",
+        "time_created": "2019-11-13T14:08:39.650Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9342997",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9342997",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "\ndef addNumbers ( x, y ):\n    return x + y\n  \ndef multiplyNumbers ( x, y ):\n    return x * y \n\n\nwhile ( True ):\n  \n  firstNum = int( input( \"Enter a number (0 to exit): \" )) \n  \n  if ( firstNum == 0 ): break\n  \n  secondNum = int( input( \"Enter another number: \" ))\n\n  sumTotal = addNumbers ( firstNum, secondNum )\n  multiplyTotal = multiplyNumbers ( firstNum, secondNum )\n\n  print ( firstNum, \"+\", secondNum, \"=\", sumTotal )\n  print ( firstNum, \"*\", secondNum, \"=\", multiplyTotal )\n  \n  \nprint ( \"All Done.\" )  \n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-13 14:23:10"
+    },
+    "student": {
+        "id": 2140635,
+        "first_name": "Teresia",
+        "last_name": "Tanksley",
+        "email": "2140635@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-15-11-01-29-323415.raw"
+}

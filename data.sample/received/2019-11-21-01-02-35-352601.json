@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530428,
+        "name": "While : 4)  Factorial",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9185873,
+        "status": "complete",
+        "time_submitted": "2019-11-21T18:02:18.275Z",
+        "time_created": "2019-11-06T01:13:53.862Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9185873",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9185873",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "\nwhile( True  ):\n\n      Number = int(input(\"Enter a number (0 to exit):\"))\n      \n      if (Number == 0):\n            print (\"Done.\")\n            break\n          \n      elif (Number < 0):  \n            print(\"Error: Must be greater than 0\")\n\n      else:\n       \n            initialNumber = Number\n          \n            accumulator = Number\n            counter = Number  \n          \n            while ( counter >= 1 ):\n          \n                print (accumulator, \"x\", (counter - 1 ))\n                accumulator = (accumulator * (counter - 1))\n                \n                counter = (counter - 1)\n            \n                if( counter ==  1): break\n          \n            print ( initialNumber, \"factorial is\", accumulator)\n\n\n      print(\"\")"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-21 18:02:18"
+    },
+    "student": {
+        "id": 2140638,
+        "first_name": "Iona",
+        "last_name": "Izzard",
+        "email": "2140638@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-01-02-35-352601.raw"
+}

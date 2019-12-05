@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530428,
+        "name": "While : 4)  Factorial",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8903350,
+        "status": "submitted_incomplete",
+        "time_submitted": "2019-11-13T14:20:30.300Z",
+        "time_created": "2019-10-23T13:27:25.058Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8903350",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8903350",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "numberOne=int(input(\"Enter a number (0 to exit):\"))\nfactorial=numberOne\n\nwhile(numberOne< 0):\n    print('Error: Must be greater than 0')\n    numberOne=int(input(\"Enter a number (0 to exit):\"))\nif(numberOne==0):\n    print(\"Done.\")\n\ncounter=numberOne\nfactorial=numberOne\nwhile (counter > 1):\n    print(factorial, \"x\", counter-1 )\n    factorial=factorial*(counter-1)\n    counter=counter-1\n\nif(numberOne>0):\n    print(numberOne, \"factorial is\", factorial)\n    "
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-13 14:20:30"
+    },
+    "student": {
+        "id": 2140643,
+        "first_name": "Genny",
+        "last_name": "Galles",
+        "email": "2140643@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-15-11-01-29-300812.raw"
+}

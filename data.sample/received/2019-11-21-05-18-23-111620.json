@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530422,
+        "name": "Control : 3) Positive,Negative,Zero",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9062584,
+        "status": "complete",
+        "time_submitted": "2019-11-21T22:18:21.308Z",
+        "time_created": "2019-10-30T18:15:15.724Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9062584",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9062584",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "# brandon sureda\n# 30-10-19\n\nnumber = input (\" Enter an integer: \")\n\nnumber = int (number)\n\nif (number > 0):\n    print (number, (\"is positive\"))\nelif (number < 0):\n    print (number, (\"is negative\"))\n\nelif (number == 0):\n    print (\"0 is zero\")"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-21 22:18:21"
+    },
+    "student": {
+        "id": 2140655,
+        "first_name": "Denese",
+        "last_name": "Drucker",
+        "email": "2140655@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-05-18-23-111620.raw"
+}

@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530432,
+        "name": "Functions : 1) Bottles of Slurm Revisited",
+        "type": "manual"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9287773,
+        "status": "submitted",
+        "time_submitted": "2019-11-13T14:43:47.883Z",
+        "time_created": "2019-11-11T14:11:43.870Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9287773",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9287773",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "def printBottles ( bottles ):\n\n  bottles = int(input(\"How many starting bottles? \"))\n\n  while ( bottles < 1 ):\n    print( \"You must enter 1 or more bottles.\" )\n    print( \"\" )\n    bottles = int(input(\"How many starting bottles? \"))\n  \n  print ( \"\" )\n\n  for x in range (0, bottles):\n    print ( bottles, \"bottles of Slurm on the wall.\")\n    print ( bottles, \"bottles of Slurm..\")\n    print ( \"Take one down, pass it around..\")\n  \n    bottles = bottles - 1\n  \n    print ( bottles, \"bottles of Slurm on the wall.\")\n  \n    print ( \"\" )\n\n  print ( \"No more bottles of Slurm on the wall!\" )\n  \nprint ( printBottles ( None ) )"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-13 14:43:47"
+    },
+    "student": {
+        "id": 2140635,
+        "first_name": "Teresia",
+        "last_name": "Tanksley",
+        "email": "2140635@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-15-11-01-29-329240.raw"
+}

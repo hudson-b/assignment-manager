@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530433,
+        "name": "Functions : 2) Simple Calculations",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9435337,
+        "status": "complete",
+        "time_submitted": "2019-11-20T01:49:08.643Z",
+        "time_created": "2019-11-18T13:57:13.805Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9435337",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9435337",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "# Peterson, Holly \n\ndef addNumbers (X,Y):\n    return( X + Y)\n    \ndef multiplyNumbers (X,Y):\n    return (X * Y)\n\nwhile(True):\n\n    numberA = int(input(\"Enter a number(0 to exit): \"))\n    if(numberA == 0):break\n    \n    numberB = int(input(\"Enter another number: \"))\n    if(numberB == 0):break\n    \n    addedNumbers = addNumbers(numberA, numberB)\n    print(numberA,\"+\",numberB,\"=\",addedNumbers)\n    \n    multipliedNumbers = multiplyNumbers(numberA, numberB)\n    print(numberA,\"*\",numberB,\"=\", multipliedNumbers)\n\nprint(\"All Done.\")"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-19 20:49:21"
+    },
+    "student": {
+        "id": 2140654,
+        "first_name": "Birdie",
+        "last_name": "Becenti",
+        "email": "2140654@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-19-08-49-21-177946.raw"
+}

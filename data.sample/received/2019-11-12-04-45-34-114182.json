@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530429,
+        "name": "For : 2) Bottles of Slurm",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9326310,
+        "status": "complete",
+        "time_submitted": "2019-11-12T21:45:34.781Z",
+        "time_created": "2019-11-12T20:45:56.634Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9326310",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9326310",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "while (True):\n    NumBottles= int (input (\"How many starting bottles?\"))\n    if (NumBottles<1):\n        print (\"You must enter 1 or more bottles\")\n        print (\"\")\n        continue\n    if (NumBottles>0):\n        break\nprint (\"\")\n\nendBottle=0\nfor counter in range (NumBottles,endBottle,-1):\n    print (counter, \"bottles of Slurm on the wall.\")\n    print (counter, \"bottles of Slurm..\")\n    print (\"Take one down, pass it around..\")\n    print (counter-1, \"bottles of Slurm on the wall.\")\n    print (\"\")\n\nprint (\"No more bottles of Slurm on the wall!\")"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-12 21:45:34"
+    },
+    "student": {
+        "id": 2140652,
+        "first_name": "Euna",
+        "last_name": "Eifert",
+        "email": "2140652@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-15-11-01-29-256459.raw"
+}

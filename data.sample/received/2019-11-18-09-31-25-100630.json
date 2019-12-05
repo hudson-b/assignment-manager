@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530436,
+        "name": "Import : 1) Secret Number Revisited",
+        "type": "manual"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9435637,
+        "status": "submitted",
+        "time_submitted": "2019-11-18T14:29:24.900Z",
+        "time_created": "2019-11-18T14:04:51.986Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9435637",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9435637",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "import random\nrandomOne = random.randint (1, 20)\nrandomTwo = random.randint (5, 10)\n\nprint (\"I am thinking of anumber between 1 and 20\")\nprint (\"You have\", randomTwo, \"guesses.\")\n\n\nSecret = randomOne\nGuesses = randomTwo\ncounter = 1\nprint(\" \")\n\nwhile( counter <= Guesses ):\n  prompt  = \"Guess #\" + str(counter) + \"? \"\n  theGuess = int( input( prompt ) )\n  if ( theGuess == Secret):\n    print (\"Yes!\")\n    break\n  elif (theGuess > Secret):\n    print (theGuess, \"is too high\")\n    counter = counter + 1\n  elif (theGuess < Secret):\n    print (theGuess, \"is too low\")\n    counter = counter + 1\n  else:\n    print (\"No, my number is not\", theGuess)\n    counter = counter + 1\n\nprint (\"The secret number was\", Secret) \n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-18 09:31:25"
+    },
+    "student": {
+        "id": 2140638,
+        "first_name": "Iona",
+        "last_name": "Izzard",
+        "email": "2140638@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-18-09-31-25-100630.raw"
+}

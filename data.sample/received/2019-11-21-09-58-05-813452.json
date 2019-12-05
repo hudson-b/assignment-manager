@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530438,
+        "name": "Mid-Term Program",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8696898,
+        "status": "abandoned",
+        "time_submitted": "2019-10-18T13:07:06.649Z",
+        "time_created": "2019-10-14T13:21:05.526Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8696898",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8696898",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "# Harris, Ethan - Mid Term Program\n\nprint(\"Planet Express Delivery Time Calculator\")\nprint(\" \")\nplanetName = input(\"What is the name of the planet?\")\nparsecsAway = float(input(\"How many parsecs away?\"))\nnumberPackages = int(input(\"How many packages?\"))\nnumberTons = float(input(\"How many tons does each package weigh?\"))\ntotalWeight = float(numberPackages * numberTons)\ntotalWeightodd = float((numberPackages + 1) * numberTons)\n\n# Blank Line\nprint(\" \")\n\n# Validations\n\nif (parsecsAway < 1):\n    print(\"Error:\", planetName, \"must be one or more parsecs away.\")\n\nelif (numberPackages < 1):\n    print(\"Error: The ship must carry at least one package.\")\n    \nelif (numberTons <= 0):\n    print(\"Error: The package weight\", numberTons, \"is too light.\")\n    \n# If odd number of packags over 9\nelse:\n    if((numberPackages % 2) != 0) and (numberPackages > 9):\n        print(\"Warning: Adjusting package count to\", numberPackages + 1)\n        totalWeightodd = float((numberPackages + 1) * numberTons)\n        print(\"The total cargo weight is\", totalWeightodd, \"ton(s).\")\n        tripTime = ((totalWeightodd) * (parsecsAway)) + parsecsAway\n        print(\"The trip to\", planetName, \"will take\", tripTime, \"minutes.\")\n\n# If even number of packages over 9\n   \n    else:\n        print(\"The total cargo weight is\", totalWeight, \"ton(s).\")\n        tripTime = ((totalWeight) * (parsecsAway)) + parsecsAway\n        print(\"The trip to\", planetName, \"will take\", tripTime, \"minutes.\")\n\n  \n    tripBack = float(parsecsAway)\n    print(\"The trip back to Earth will take\", tripBack, \"minutes.\")\n\n    tripTotal = (tripTime + tripBack)\n    print(\"The total trip time is\", tripTotal, \"minutes.\")\n\n# Robot Planet\n\nif (planetName == \"Robot Planet\"):\n    print(\"Also, Bender is great!\")\n    \n\n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-10-18 13:07:06"
+    },
+    "student": {
+        "id": 2140643,
+        "first_name": "Genny",
+        "last_name": "Galles",
+        "email": "2140643@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-58-05-813452.raw"
+}

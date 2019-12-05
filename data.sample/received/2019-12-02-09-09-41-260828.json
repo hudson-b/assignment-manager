@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530417,
+        "name": "Control : 8) Shape area",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8903389,
+        "status": "complete",
+        "time_submitted": "2019-12-02T14:09:40.560Z",
+        "time_created": "2019-10-23T13:28:11.336Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8903389",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8903389",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "sides=input('How many sides?')\nsides=int(sides)\n# Prompt for the number of sides\nif (sides==0):\n    radius = input ( 'What is the radius of the circle?')\n    radius = float(radius)\n    print( 'The area of your circle is', 3.14*radius*radius)\n    print('The circumference of your circle is', 2*3.14*radius)\nelif (sides==4):\n    length= input('What is the length of each side?')\n    length=float(length)\n    print('The area of your square is', length*length)\nelse:\n    print('Sorry, only circles and squares are allowed.')\n# For circles, gather the radius, calculate stuff and display the result\n\n# For squares, gather the side length, calculate stuff, and display the result\n\n# Otherwise, show the error message\n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-12-02 14:09:40"
+    },
+    "student": {
+        "id": 2140642,
+        "first_name": "Kelvin",
+        "last_name": "Kuehner",
+        "email": "2140642@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-12-02-09-09-41-260828.raw"
+}

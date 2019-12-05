@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530438,
+        "name": "Mid-Term Program",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8696520,
+        "status": "submitted_incomplete",
+        "time_submitted": "2019-11-03T18:34:39.956Z",
+        "time_created": "2019-10-14T13:01:34.470Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8696520",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8696520",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "#Ferris Alex - Mid Term Program\n\nprint ('Planet Express Delivery Time Calculator')\n\nplanetName = input(\"What is the name of the planet?\")\n\ndistance = input('How many parsecs away?')\ndistance = float( distance )\n\nnumberofPackages = input('How many packages?')\nnumberofPackages = float( numberofPackages )\n\ntons = input('How many tons does each package weigh?')\ntons = float( tons )\n\n#Error checks\nif( numberofPackages < 1):\n    print( 'Error: The ship must carry at least one package.' )\n\nelif( tons <= 0 ):\n    print( 'Error: The package weight', tons, 'is too light.' )\n    \nelif( distance < 1 ):\n    print( 'Error:', planetName, ' must be one or more parsecs away.' )\n    \n    Output = ( numberofPackages % 2 )\nelif( (numberofPackages > 10) and (not( Output == 0 )) ):\n    numberofPackages = numberofPackages + 1\n    print( \"Warning: Adjusting package count to\", numberofPackages )\n\n#The Calculations\n\nelse:\n    print()\n    totalWeight = ( tons * numberofPackages )\n    print( 'The total cargo weight is', totalWeight, ' ton(s).')\n    \n    slowDown = ( totalWeight * distance )\n    minutestoPlanet = ( distance + slowDown )\n    print( 'The trip to' ,planetName, ' will take' ,minutestoPlanet,' minutes.')\n    \n    print( 'The trip back to Earth will take' ,distance, 'minutes.')\n    \n    totalTime = ( distance + minutestoPlanet )\n    print ( 'The total trip time is', totalTime )\n\n    if( planetName == 'Robot Planet'):\n        print( 'Also, Bender is great!' )"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-03 18:34:39"
+    },
+    "student": {
+        "id": 2140661,
+        "first_name": "Loraine",
+        "last_name": "Lasiter",
+        "email": "2140661@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-58-05-876147.raw"
+}

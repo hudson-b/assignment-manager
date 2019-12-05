@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530427,
+        "name": "While : 3)  Secret Number",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9053269,
+        "status": "complete",
+        "time_submitted": "2019-12-02T14:58:28.356Z",
+        "time_created": "2019-10-30T13:14:33.501Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9053269",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9053269",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "secretNumber = input (\"What is my secret number?\")\nsecretNumber = int (secretNumber)\n\nnumberGuess = input (\"How many guesses?\")\nnumberGuess = int (numberGuess )\nprint (\"\")\n\ncounter = 1\npromt = \"Guess #\" + str (counter) + \"?\"\nguess = int (input (promt) )\ncounter = counter + 1\n\nif (secretNumber == guess):\n    print (\"Yes!\", \"The secret number was\", secretNumber)\nelse :\n    print (\"No, my number is not\", guess)\n    \n    while (counter <= numberGuess):\n      promt = \"Guess #\" + str (counter) + \"?\"\n      guess = int ( input (promt) )\n      counter = counter + 1 \n      if (secretNumber == guess):\n        print (\"Yes!\")\n        break\n      if (secretNumber != guess):\n        print (\"No, my number is not\", guess)\n    print (\"The secret number was\", secretNumber)"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-12-02 14:58:28"
+    },
+    "student": {
+        "id": 2140649,
+        "first_name": "Marg",
+        "last_name": "Marston",
+        "email": "2140649@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-12-02-09-58-46-554721.raw"
+}

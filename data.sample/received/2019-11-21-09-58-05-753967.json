@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530438,
+        "name": "Mid-Term Program",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9198161,
+        "status": "submitted_incomplete",
+        "time_submitted": "2019-11-08T04:47:05.212Z",
+        "time_created": "2019-11-06T14:49:21.026Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9198161",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9198161",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "# Richardson, Chris - [Mid Term Program]\n# 2019-10-28\n\n\n\nprint (\"Planet Express Delivery Time Calculator\")\n\nplanetone = input(\"What is the name of the planet?\")\nparsecsone = input (\"How many parsecs away?\")\npackagesone = input (\"How many packages?\")\ntonsone = input (\"How many tons does each package weigh?\")\n\nparsecsone = float(parsecsone)\ntonsone = float(tonsone)\npackagesone = int(packagesone)\n\ntimeone = (tonsone + parsecsone)\ntimeone = float (timeone)\n  \ncargoweightone = (tonsone * packagesone)\ncargoweightone = float(cargoweightone)\n  \ntripone = (cargoweightone * parsecsone + parsecsone)\ntripone = float(tripone)\n  \ntotaltripone = (tripone + parsecsone)\ntotaltripone = float(totaltripone)\n\n\n\n\nisplanetone = str(\"Robot Planet\")\n\n#Proer Validation showing Error messages\n\n\nif (tonsone < 0):\n  print (\"Error: The package weight\", tonsone, \"is too light.\")\n  \n\nelif (packagesone == 0):\n  print (\"Error: the ship must carry at least one package.\")\n  \n\nelif (parsecsone < 1):\n  print (planetone, \"must be one or more parsecs away.\")\n\n  # Print Commands\n  \nelif (packagesone > 10 and packagesone % 2):\n  packagestwo = packagesone + 1\n  cargoweighttwo = (tonsone * packagestwo)\n  cargoweighttwo = float (cargoweighttwo)\n  triptwo =(cargoweighttwo * parsecsone + parsecsone)\n  triptwo = float(triptwo)\n  totaltriptwo =(triptwo + parsecsone)\n  totaltriptwo = float (totaltriptwo)\n  print (\"Warning: Adjsuting package count to\", packagestwo)\n  print (\"The total cargo weight is\", cargoweighttwo, \"ton(s).\")\n  print (\"The trip to\", planetone, \"will take\", triptwo, \" minutes.\")\n  print (\"The trip back to Earth will take\", parsecsone, \"minutes.\")\n  print (\"The total trip time is \", totaltriptwo, \"minutes.\")\n  \n  \nelse: \n  print (\"The total cargo weight is\", cargoweightone, \"ton(s).\")\n  print (\"The trip to\", planetone, \"will take\", tripone, \" minutes.\")\n  print (\"The trip back to Earth will take\", parsecsone, \"minutes.\")\n  print (\"The total trip time is \", totaltripone, \"minutes.\") \n  \n\n      \nif (planetone == isplanetone):\n  print (\"Also, Bender is great!\")\n\n\n \n\n\n      \n    \n    \n  \n    "
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-08 04:47:05"
+    },
+    "student": {
+        "id": 2140634,
+        "first_name": "Phebe",
+        "last_name": "Prewitt",
+        "email": "2140634@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-58-05-753967.raw"
+}

@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 4299433,
+        "name": "Quiz : 2019-11-13",
+        "type": "manual"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9342939,
+        "status": "submitted",
+        "time_submitted": "2019-11-13T14:20:35.122Z",
+        "time_created": "2019-11-13T14:06:34.043Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9342939",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9342939",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "\nstartNum = 100\nendNum = 1\nwhile(startNum > endNum + 1):\n    print(startNum)\n    startNum = startNum -5"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-13 14:20:35"
+    },
+    "student": {
+        "id": 2140636,
+        "first_name": "Isaac",
+        "last_name": "Irving",
+        "email": "2140636@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-15-11-01-29-306413.raw"
+}

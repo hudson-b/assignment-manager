@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530443,
+        "name": "Import : 2) Roll 'dem Bones",
+        "type": "manual"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9435885,
+        "status": "abandoned",
+        "time_submitted": "2019-11-27T14:21:01.736Z",
+        "time_created": "2019-11-18T14:13:29.050Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9435885",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9435885",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "import random\n\n# This function is provided for you\ndef showDie( value ):\n\n   dieTop = \",-----,\\n\"\n\n   dieFaces=[ \"|     |\\n|  *  |\\n|     |\\n\",\n              \"|*    |\\n|     |\\n|    *|\\n\",\n              \"|*    |\\n|  *  |\\n|    *|\\n\",\n              \"|*   *|\\n|     |\\n|*   *|\\n\",\n              \"|*   *|\\n|  *  |\\n|*   *|\\n\",\n              \"|*   *|\\n|*   *|\\n|*   *|\\n\" ]\n\n   dieBottom=\"'-----'\\n\"\n\n   print ( dieTop + dieFaces[ value-1 ] + dieBottom )\n\ndef rollDie():\n  rolls = int( input(\"Number of rolls (0 to exit)?\"))\n  count=rolls\n  y=0\n  if(count>0):\n    x=random.randint(1,6)\n    showDie(x)\n    count=count-1\n    y=y+x\n  print(\"Total:\",y)\n\nwhile(True):  \n  rollDie()\n\n  \n\n\n      "
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-27 14:21:01"
+    },
+    "student": {
+        "id": 2140645,
+        "first_name": "Vincenzo",
+        "last_name": "Vandyne",
+        "email": "2140645@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-27-09-21-18-709306.raw"
+}

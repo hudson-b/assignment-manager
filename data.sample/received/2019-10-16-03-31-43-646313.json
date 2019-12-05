@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 4126588,
+        "name": "Attendance : 2019-10-16",
+        "type": "manual"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8764999,
+        "status": "submitted",
+        "time_submitted": "2019-10-16T19:31:43.701Z",
+        "time_created": "2019-10-16T19:31:38.544Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8764999",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8764999",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "#\n3\n\n3"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-10-16 19:31:43"
+    },
+    "student": {
+        "id": 2031895,
+        "first_name": "Reid",
+        "last_name": "Reddish",
+        "email": "2031895@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-15-11-01-29-243575.raw"
+}

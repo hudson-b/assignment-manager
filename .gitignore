@@ -1,5 +1,6 @@
-data
 vendor
 composer.lock
+data/manager.log
+data/received/*.json
 main.users
 

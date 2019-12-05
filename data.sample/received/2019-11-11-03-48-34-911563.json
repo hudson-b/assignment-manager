@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530430,
+        "name": "For : 1) Simple Sum Counter",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9287775,
+        "status": "complete",
+        "time_submitted": "2019-11-11T20:48:34.286Z",
+        "time_created": "2019-11-11T14:11:51.469Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9287775",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9287775",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "numberOne = int(input(\"Starting number? \"))\nnumberTwo = int(input(\"Ending number? \"))\nNumbers = range(numberOne, numberTwo + 1)\nSum = sum(Numbers)\nprint(\"\")\n\nfor counter in range (numberOne, numberTwo + 1):\n  if (numberOne >= numberTwo) or (numberTwo < numberOne):\n    print(\"Ending number must be greater than\", numberOne)\n    numberTwo = (int(input(\"Ending number? \")))\n    Numbers = range(numberOne, numberTwo + 1)\n    Sum = sum(Numbers)\n    print (\"The sum of numbers from\", numberOne, \"to\", numberTwo, \"is\", Sum)\n    break\n  elif (numberOne < numberTwo):\n    print (\"The sum of numbers from\", numberOne, \"to\", numberTwo, \"is\", Sum)\n    break\n  elif (numberOne == numberTwo):\n    break"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-11 20:48:34"
+    },
+    "student": {
+        "id": 2140638,
+        "first_name": "Iona",
+        "last_name": "Izzard",
+        "email": "2140638@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-15-11-01-29-247446.raw"
+}

@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530431,
+        "name": "For : 3) Sum of even\/odd in a range",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9405351,
+        "status": "complete",
+        "time_submitted": "2019-11-17T02:14:04.027Z",
+        "time_created": "2019-11-15T18:48:09.853Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9405351",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9405351",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "# Peterson, Holly \n\nstart = int(input(\"Starting number? \"))\nend = int(input(\"Ending number? \"))\n\nwhile(end <= start):\n    print(\"Ending number must be greater than\",start)\n    end = int(input(\"Ending number? \"))\n\nevenCounter = 0 \nevenSum = 0\n\noddCounter = 0 \noddSum = 0\n\nfor i in range(start,end + 1):\n    \n    if(i%2 == 0 and i != 0):\n        \n        evenSum = i + evenSum \n        evenCounter = evenCounter + 1 \n    \n    if(i%2 == 1):\n        \n        oddSum = i +oddSum\n        oddCounter = oddCounter + 1\n        \nprint(\"\\nIn the range\",start,\"to\",end)\n\nprint(\"There are\",evenCounter,\"even numbers with a sum of\",evenSum,)\n    \nprint(\"There are\",oddCounter,\"odd numbers with a sum of\",oddSum,)"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-16 21:15:31"
+    },
+    "student": {
+        "id": 2140654,
+        "first_name": "Birdie",
+        "last_name": "Becenti",
+        "email": "2140654@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-16-09-15-31-485727.raw"
+}

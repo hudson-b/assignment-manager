@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530438,
+        "name": "Mid-Term Program",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8696460,
+        "status": "complete",
+        "time_submitted": "2019-10-24T17:43:46.994Z",
+        "time_created": "2019-10-14T12:58:50.676Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8696460",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8696460",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "print(\"Planet Express Delivery Time Calculator\")\nprint(\"\")\n\nNameOfPlanet=input(\"What is the name of the planet? \")\n\nParsecDistance=input(\"How many parsecs away? \")\nParsecDistance=float(ParsecDistance)\n\nNumberOfPackages=input(\"How many packages? \")\nNumberOfPackages=int(NumberOfPackages)\n\nPackageWeight=input(\"How many tons does each package weigh? \")\nPackageWeight=float(PackageWeight)\n\nprint(\"\")\n\nif(ParsecDistance < 1):\n   print(\"Error:\" , NameOfPlanet, \"must be one or more parsecs away.\")\n   \nelif(NumberOfPackages < 1):\n   print(\"Error: The ship must carry at least one package.\")\n   \nelif(PackageWeight <= 0): \n   print(\"Error: The package weight\", PackageWeight,\"is too light.\")\n\nelse:\n    iseven= (  ( NumberOfPackages % 2 ) == 0 )\n    isodd = ( not iseven )\n    if(  (NumberOfPackages > 10)  and (isodd == True )  ):\n      NumberOfPackages = NumberOfPackages + 1\n      print(\"Warning: Adjusting package count to\",NumberOfPackages)\n    \n    totalWeight = PackageWeight * NumberOfPackages\n    minutesToEarth = ParsecDistance\n    \n    minutesToPlanet = ParsecDistance\n    slowDown = ( totalWeight * ParsecDistance )\n\n    minutesToPlanet = minutesToPlanet + slowDown\n    TotalTripTime=minutesToEarth + minutesToPlanet\n\n    print(\"The total cargo weight is\", totalWeight, \"ton(s).\")\n    print(\"The trip to\",NameOfPlanet,\"will take\",minutesToPlanet,\"minutes.\")\n    print(\"The trip back to Earth will take\",minutesToEarth,\"minutes.\")\n    print(\"The total trip time is\",TotalTripTime,\"minutes.\")\n\n    if(NameOfPlanet==\"Robot Planet\"):\n        print('Also, Bender is great!')\n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-10-24 17:43:46"
+    },
+    "student": {
+        "id": 2140639,
+        "first_name": "Santana",
+        "last_name": "Stitt",
+        "email": "2140639@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-58-05-787980.raw"
+}

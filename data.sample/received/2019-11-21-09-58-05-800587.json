@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530438,
+        "name": "Mid-Term Program",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8696430,
+        "status": "submitted_incomplete",
+        "time_submitted": "2019-10-31T15:39:26.908Z",
+        "time_created": "2019-10-14T12:57:23.723Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8696430",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8696430",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "# Shand, Molly - Mid Term Program\n\nprint (\"Planet Express Delivery Time Calculator\")\nprint (\" \")\n\nplanetName = input (\"What is the name of the planet?\")\nparsecs = float (input (\"How many parsecs away?\"))\npackages = float (input (\"How many packages?\"))\npackageWeight = float (input (\"How many tons does each package weigh?\"))\n\nprint (\" \")\n\nif (packages < 1):\n    print (\"Error: The ship must carry at least one package.\")\n    \nelif (packageWeight <= 0):\n    print (\"Error: The package weight\", packageWeight, \"is too light.\")\n    \nelif (parsecs < 1): \n    print (\"Error:\", planetName, \"must be one or more parsecs away.\")\n    \nelif (packages > 10 and packages % 2 > 0):\n    print (\"Warning: Adjusting package count to\", packages + 1)\n    packages = packages + 1 \n\nwhile (packages > 10 and packages % 2 > 0):\n    print (\"Warning: Adjusting package count to\", packages + 1)\n    packages = packages + 1 \n    \n            \nelse:\n    tonsOfcargo = (packages * packageWeight)\n    print (\"The total cargo weight is\", tonsOfcargo, \"ton(s).\")\n    tripTo = ((tonsOfcargo * parsecs) + parsecs)\n    print (\"The trip to\", planetName, \"will take\", tripTo, \"minutes.\")\n    tripBack = parsecs\n    print (\"The trip back to Earth will take\", tripBack, \"minutes.\")\n    roundTrip = (tripTo + tripBack)\n    print (\"The total trip time is\", roundTrip, \"minutes.\")\n        \nif (planetName == \"Robot Planet\"):\n    print (\"Also, Bender is great!\")\n      \n\n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-10-31 15:39:26"
+    },
+    "student": {
+        "id": 2140641,
+        "first_name": "Ina",
+        "last_name": "Inniss",
+        "email": "2140641@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-58-05-800587.raw"
+}

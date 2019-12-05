@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530433,
+        "name": "Functions : 2) Simple Calculations",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9287534,
+        "status": "complete",
+        "time_submitted": "2019-11-13T14:15:21.386Z",
+        "time_created": "2019-11-11T14:00:59.871Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9287534",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9287534",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "def addNumbers(x,y):\n  print(x,\"+\",y,\"=\",x+y)\ndef multiplyNumbers (x,y):\n  print(x,\"*\",y,\"=\",x*y)\nx=int(input(\"Enter a number (0 to exit):\"))\nwhile(x!=0):\n  y=int(input(\"Enter another number:\"))\n  if (y>x) and (x<0):\n    print(y,\"is greater than\",x)\n    addNumbers(x,y)\n    multiplyNumbers(x,y)\n  else:\n    addNumbers(x,y)\n    multiplyNumbers(x,y)\n  x=int(input(\"Enter a number (0 to exit):\"))\nprint(\"All Done.\")"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-13 14:15:21"
+    },
+    "student": {
+        "id": 2140645,
+        "first_name": "Vincenzo",
+        "last_name": "Vandyne",
+        "email": "2140645@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-15-11-01-29-284938.raw"
+}

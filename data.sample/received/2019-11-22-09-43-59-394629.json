@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530431,
+        "name": "For : 3) Sum of even\/odd in a range",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9296581,
+        "status": "complete",
+        "time_submitted": "2019-11-22T14:40:55.068Z",
+        "time_created": "2019-11-11T20:48:40.833Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9296581",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9296581",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "numberOne = int( input(\"Starting number? \"))\nnumberTwo = int( input(\"Ending number? \"))\ntotal = 0\nprint (\"\")\n\n#While Loop\nwhile (True):                                                   \n  if (numberOne >= numberTwo):\n    print (\"Ending number must be greater than\", numberOne)\n    numberTwo = int(input(\"Ending number? \"))\n  elif (numberTwo > numberOne):\n    print (\"\")\n    print (\"In the range\", numberOne, \"to\", numberTwo) \n    break\n\ntotalEven = 0\ntotalOdd = 0\ncountEven = 0\ncountOdd = 0\nfor number in range(numberOne, numberTwo + 1):               #For Loop\n  if (number == 0): continue\n  if (number % 2 == 0):\n    countEven = countEven + 1\n    totalEven = totalEven + number\n  else:\n    countOdd = countOdd + 1\n    totalOdd = totalOdd + number\n\nprint (\"There are\", countEven, \"even numbers with a sum of\", totalEven)\nprint (\"There are\", countOdd, \"odd numbers with a sum of\", totalOdd)\n        \n\n\n\n\n\n        \n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-22 14:40:55"
+    },
+    "student": {
+        "id": 2140638,
+        "first_name": "Iona",
+        "last_name": "Izzard",
+        "email": "2140638@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-22-09-43-59-394629.raw"
+}

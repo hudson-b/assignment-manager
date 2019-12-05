@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530434,
+        "name": "Functions : 3) Return Values",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9300726,
+        "status": "complete",
+        "time_submitted": "2019-11-23T00:20:46.383Z",
+        "time_created": "2019-11-12T02:05:56.087Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9300726",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9300726",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "def phrase (x):\n  if (x == \"\"):\n    print (\"All Done.\")\n  else:\n    print (x * Repeats)\n\nString = str(input(\"Enter a string (blank to exit):\"))\n\nwhile (True):\n  if (String == \"\"):\n    print (\"All Done.\")\n    break\n  else:\n    Repeats = int(input(\"How many repeats? \")) \n    phrase (String)\n    print(\"\")\n    String = str(input(\"Enter a string (blank to exit): \"))\n \n    \n  \n  "
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-23 00:20:46"
+    },
+    "student": {
+        "id": 2140638,
+        "first_name": "Iona",
+        "last_name": "Izzard",
+        "email": "2140638@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-22-07-21-24-781215.raw"
+}

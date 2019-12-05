@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530438,
+        "name": "Mid-Term Program",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8696519,
+        "status": "complete",
+        "time_submitted": "2019-10-25T12:58:33.466Z",
+        "time_created": "2019-10-14T13:01:31.135Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8696519",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8696519",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "#Dawson,Mitchell- Mid Term Program\nprint (\"Planet Express Delivery Time Calculator\")\n\nPlanetName= input(\"What is the name of the planet?\")\n\nnumberOfParsecs=input(\"How many parsecs away?\")\n\nnumberOfPackages=input (\"How many packages?\")\n\nweightPerPackage=input (\"How many tons does each package weigh?\")\n\n\nnumberOfParsecs=float(numberOfParsecs)\nnumberOfPackages=float(numberOfPackages)\nweightPerPackage=float(weightPerPackage)\n\nprint(\"\")\n\n\n\n\nif (numberOfParsecs<1):\n    print (\"Error:\" ,PlanetName, 'must be one or more parsecs away.')\nelif (numberOfPackages<1):\n    print('Error: The ship must carry at least one package.')\nelif (weightPerPackage<0):\n    print ('Error: The package weight', weightPerPackage, 'is too light.')\n    \nelse:\n\n    numberOffood=(numberOfPackages)\n    if (numberOfPackages>10):\n        numberOffood=(numberOffood%2)\n        if (numberOffood!=0):\n            numberOffood=(numberOfPackages+1)\n            numberOffood=int(numberOffood)\n            print (\"Warning: Adjusting package count to\", numberOffood)\n            numberOfPackages=(numberOffood)\n            numberOfPackages=float(numberOfPackages)\n\n    totalWeight=(weightPerPackage*numberOfPackages)\n    minutesToEarth = (numberOfParsecs)\n    minutesToPlanet = (numberOfParsecs)\n    slowDown = ( totalWeight * numberOfParsecs )\n    minutesToPlanet = (minutesToPlanet + slowDown)\n    totalTriptime = (minutesToPlanet+minutesToEarth)\n\n\n    print (\"The total cargo weight is\", totalWeight,\"ton(s).\")\n\n    print (\"The trip to\", PlanetName, \"will take\", minutesToPlanet,\"minutes.\")\n\n    print (\"The trip back to Earth will take\", numberOfParsecs, \"minutes.\")\n\n    print (\"The total trip time is\", totalTriptime, \"minutes\")\n\n\n    if (PlanetName==\"Robot Planet\"):\n        print (\"Also, Bender is great!\")\n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-10-25 12:58:33"
+    },
+    "student": {
+        "id": 2140652,
+        "first_name": "Euna",
+        "last_name": "Eifert",
+        "email": "2140652@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-58-05-847824.raw"
+}

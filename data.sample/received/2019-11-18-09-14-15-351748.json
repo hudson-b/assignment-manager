@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530436,
+        "name": "Import : 1) Secret Number Revisited",
+        "type": "manual"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9435537,
+        "status": "submitted",
+        "time_submitted": "2019-11-18T14:13:25.786Z",
+        "time_created": "2019-11-18T14:02:20.462Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9435537",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9435537",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "print(\"I am thinking of a number between 1 and 20\")\nimport random\nx=random.randint(1,20)\nguess=random.randint(5,10)\ny=1\nprint(\"You have\",guess,\"guesses.\")\nprint(\"\")\n\nwhile(y<=guess):\n  y=str(y)\n  check=input('Guess #'+y+\"?\")\n  check=int(check)\n  y=int(y)\n  if(check==x):\n    print('Yes!')\n    break\n  elif(check>x):\n    print(check,\"is too high\")\n    y=y+1\n  elif(check<x):\n    print(check,\"is too low\")\n    y=y+1\nprint(\"The secret number was\",x)"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-18 09:14:15"
+    },
+    "student": {
+        "id": 2140645,
+        "first_name": "Vincenzo",
+        "last_name": "Vandyne",
+        "email": "2140645@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-18-09-14-15-351748.raw"
+}

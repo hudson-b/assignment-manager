@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530435,
+        "name": "While : 2) Validation Loop",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9053431,
+        "status": "complete",
+        "time_submitted": "2019-12-02T14:38:28.937Z",
+        "time_created": "2019-10-30T13:20:16.900Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9053431",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9053431",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "startnum=input('Starting number?')\nendnum=input('Ending number?')\nstartnum=int(startnum)\nendnum=int(endnum)\nif(endnum>startnum):\n    print(endnum, 'is greater than', startnum)\nelse:\n    while(endnum<startnum):\n        print('Sorry,', endnum, 'is not greater than', startnum)\n        endnum = input('Ending number?')\n        endnum=int(endnum)\n    print(endnum, 'is greater than', startnum)\n\n    "
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-12-02 14:38:28"
+    },
+    "student": {
+        "id": 2140642,
+        "first_name": "Kelvin",
+        "last_name": "Kuehner",
+        "email": "2140642@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-12-02-09-39-15-100471.raw"
+}

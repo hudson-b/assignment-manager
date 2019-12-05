@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530424,
+        "name": "Control : 5) If \/ Multiple Comparisons",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9535629,
+        "status": "complete",
+        "time_submitted": "2019-11-21T22:47:12.917Z",
+        "time_created": "2019-11-21T22:29:02.991Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9535629",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9535629",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "#Brandon Sureda\n#21-11-19\n\nnumberA = input (\"Enter an integer:\")\nnumberB = input (\"Enter an integer:\")\nnumberA = int (numberA)\nnumberB = int (numberB)\n\nif numberA >= 100 and numberB >= 100:\n    print ((\"Both\"),numberA , (\"and\"),numberB , (\"are large.\"))\nelif numberA < 100 and numberB < 100:\n    print ((\"Both\"),numberA , (\"and\"),numberB , (\"are small.\"))\nelif numberA >= 100 and numberB < 100:\n    print (numberA , (\"is large.\"), numberB , (\"is small.\"))\nelse:\n    print (numberA , (\"is small.\"), numberB , (\"is large.\"))\n    "
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-21 22:47:12"
+    },
+    "student": {
+        "id": 2140655,
+        "first_name": "Denese",
+        "last_name": "Drucker",
+        "email": "2140655@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-05-51-23-682508.raw"
+}

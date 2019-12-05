@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530430,
+        "name": "For : 1) Simple Sum Counter",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9493945,
+        "status": "complete",
+        "time_submitted": "2019-11-22T02:34:23.755Z",
+        "time_created": "2019-11-20T14:23:59.353Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9493945",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9493945",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "num1 = input('Starting number?')\nnum1 = int(num1)\nprint ('')\nnum2 = input ('Ending number?')\nnum2 = int(num2)\nprint ('')\nprint ('')\nif (num2 <= num1):\n  print ('Ending number must be greater than', num1)\n  num2 = int(input(\"Ending number?\"))\n  \nrange (num1, num2 + 1)\nsumofnums = sum(range (num1 , num2 + 1 ))\nprint ('The sum of numbers from', num1, 'to', num2, ' is ', sumofnums)"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-22 02:34:23"
+    },
+    "student": {
+        "id": 2140637,
+        "first_name": "Katelynn",
+        "last_name": "Kube",
+        "email": "2140637@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-44-58-112297.raw"
+}

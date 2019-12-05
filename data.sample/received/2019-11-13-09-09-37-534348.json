@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530431,
+        "name": "For : 3) Sum of even\/odd in a range",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9197902,
+        "status": "complete",
+        "time_submitted": "2019-11-13T14:09:37.392Z",
+        "time_created": "2019-11-06T14:43:18.522Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9197902",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9197902",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "number = 0\nisEven = 0\nisOdd = 0\nevenCount = 0\noddCount = 0\nstartNumber = int(input(\"Starting number? \"))\nendNumber = int(input(\"Ending number? \"))\n\nwhile((endNumber < startNumber) or (endNumber == startNumber)):\n    print(\"Ending number must be greater than\", startNumber)\n    endNumber = int(input(\"Ending number? \"))\n    \n\nprint(\"In the range\", startNumber, \"to\", endNumber)\n\nfor counter in range (startNumber, endNumber + 1):\n    \n    if(counter == 0): continue\n    \n    if(counter % 2 == 0):\n        isEven = isEven + counter\n        evenCount = evenCount + 1\n        \n        \n    else:\n        isOdd = isOdd + counter\n        oddCount = oddCount + 1\n        \n        \nprint(\"There are\", evenCount, \"even numbers with a sum of\", isEven)\nprint(\"There are\", oddCount, \"odd numbers with a sum of\", isOdd)\n    \n    \n    \n    \n\"\"\"    \n    isEven = ( ( counter % 2 ) == 0)\n    isOdd = not isEven\n    print(counter)\n    number = number + counter\n    \nprint(\"Total is,\", number)\nprint(isEven)\nprint(isOdd)\n\n\n  \n    \n        \n\n    \n\n \n\naccumulator = 0\nstartValue = int(input(\"Starting number? \"))\nendValue =  int(input(\"Ending number? \"))\nstepValue = -1               \nfor counter in range( startValue, endValue-stepValue, stepValue):\n    print( counter )\n    accumulator = accumulator + counter\n\n    print( \"Total is\", accumulator)\n\n    isEven = ( ( counter % 2 ) == 0)\n\n    isOdd = not isEven\n    \n   \n\"\"\""
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-13 14:09:37"
+    },
+    "student": {
+        "id": 2140640,
+        "first_name": "Jeanetta",
+        "last_name": "Jeffress",
+        "email": "2140640@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-15-11-01-29-279798.raw"
+}

@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3971630,
+        "name": "Test Assignment",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 151901,
+        "name": "Test Integration",
+        "webhook_secret": "fe15abba-2915-4df8-a609-08dc54917d0e"
+    },
+    "submission": {
+        "id": 9424720,
+        "status": "abandoned",
+        "time_submitted": "2019-11-17T17:01:14.096Z",
+        "time_created": "2019-11-17T17:01:03.461Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9424720",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9424720",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "\n\n# Testing\n# Squirrels are great\n\nprint(\"Some Text\")\n"
+            }
+        ],
+        "number": 8,
+        "time_received": "2019-11-17 12:03:44"
+    },
+    "student": {
+        "id": 379036,
+        "first_name": "Jacinto",
+        "last_name": "Jain",
+        "email": "379036@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-17-12-03-44-428251.raw"
+}

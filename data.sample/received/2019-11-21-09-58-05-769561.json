@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530438,
+        "name": "Mid-Term Program",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8755418,
+        "status": "submitted_incomplete",
+        "time_submitted": "2019-11-01T03:16:52.027Z",
+        "time_created": "2019-10-16T13:11:19.531Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8755418",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8755418",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "print(\"Walsh, Steven - Mid Term Program\")\n\nprint(\"\")\n\nprint( \"Planet Express Delivery Time Calculator\")\n\nprint(\"\")\n\n#Input\nplanet = input(\"What is the name of the planet?\")\nparsecs = float(input(\"How many parsecs away?\"))\npackages = int(input(\"How many packages?\"))\ntons = float(input(\"How many tons does each package weigh?\"))\n\nprint(\"\")\n\n#Error Messages\nif parsecs < 1:\n  print(\"Error:\", planet, \"must be one or more parsecs away.\")\nif packages <= 0:\n  print(\"Error: The ship must carry at least one package.\")\nif tons <= 0:\n  print(\"Error: The package weight\", tons, \"is too light.\")\n  \nprint(\"\")\n  \n#Warning Message\nif packages > 10:\n  if packages%2 != 0:\n    print(\"Warning: Adjusting package count to\", packages + 1)\n    packages += 1\n\n#Trip Time Calculations\ntripTime1 = tons * packages * parsecs + parsecs\nfinalTript = tripTime1 + parsecs\nfinalTript = float(finalTript)\n\n#Cargo Weight Calculations\ncargoWeight = packages * tons\n\n#Float Conversions\ntripTime1 = float(tripTime1)\nparsecs = float(parsecs)\n\n#Final Calculations\nprint(\"The total cargo weight is\", cargoWeight, \"ton(s)\")\nprint(\"The trip to\", planet, \"will take\", tripTime1, \"minutes.\")\nprint(\"The trip back to Earth will take\", parsecs, \"minutes.\")\nprint(\"The total trip time is\", finalTript, \"minutes.\")\n\n#Robot Planet\nif planet == \"Robot Planet\":\n  print(\"Also, Bender is great\")"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-01 03:16:52"
+    },
+    "student": {
+        "id": 2140636,
+        "first_name": "Isaac",
+        "last_name": "Irving",
+        "email": "2140636@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-58-05-769561.raw"
+}

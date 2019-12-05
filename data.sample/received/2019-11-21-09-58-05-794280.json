@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530438,
+        "name": "Mid-Term Program",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8695161,
+        "status": "complete",
+        "time_submitted": "2019-10-20T17:44:17.448Z",
+        "time_created": "2019-10-14T11:56:36.077Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8695161",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8695161",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "# Lofaso, Jacob - Mid Term Program\n\nprint(\"Planet Express Delivery Time Calculator\")\n\nprint(\" \")\n\nplanet = input(\"What is the name of the planet? \")\nparsecs = float(input(\"How many parsecs away? \"))\npackages = float(input(\"How many packages? \"))\nweight = float(input(\"How many tons does each package weigh? \"))\n\n\ntotalWeight = float(weight * packages)\ntimeThere = ((parsecs * totalWeight) + parsecs)\ntimeBack = float(parsecs)\ntotalTime = float(timeThere + timeBack)\n\nprint(\" \")\n\n#Checking to see if number of parsecs is less than one\nif(parsecs < 1):\n    print(\"Error:\", planet, \"must be one or more parsecs away.\")\n    \n#Checking to see if number of packages is less than one\nelif(packages < 1):\n    print(\"Error: The ship must carry at least one package.\")\n    \n#Checking to see if the weight is too low\nelif(weight <= 0):\n    print(\"Error: The package weight\", weight, \"is too light.\")\n    \n#Checking to see if the number of packages needs to be adjusted\nelif((packages > 10) and (packages % 2) != 0):\n    packagesAdjusted = int(packages + 1)\n    weightAdjusted = float(weight * packagesAdjusted)\n    timeThereAdjusted = float((parsecs * weightAdjusted) + parsecs)\n    totalTimeAdjusted = timeThereAdjusted + timeBack\n    print(\"Warning: Adjusting package count to\", packagesAdjusted)\n    \n    print(\"The total cargo weight is\", weightAdjusted, \"ton(s).\")\n    \n    print(\"The trip to \", planet, \"will take\", timeThereAdjusted, \"minutes.\")\n    \n    print(\"The trip back to Earth will take\", timeBack, \"minutes.\") \n    \n    print(\"The total trip time is\", totalTimeAdjusted, \"minutes.\")\n    \n    if(planet == \"Robot Planet\"):\n        print(\"Also, Bender is great!\")\n\n#If all the other checks pass, this prints        \nelse:     \n    print(\"The total cargo weight is\", totalWeight, \"ton(s).\")\n    \n    print(\"The trip to\", planet, \"will take\", timeThere, \"minutes.\")\n    \n    print(\"The trip back to Earth will take\", timeBack, \"minutes.\")\n    \n    print(\"The total trip time is\", totalTime, \"minutes.\")\n        \n    if(planet == \"Robot Planet\"):\n        print(\"Also, Bender is great!\")\n    \n\n\n\n\n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-10-20 17:44:17"
+    },
+    "student": {
+        "id": 2140640,
+        "first_name": "Jeanetta",
+        "last_name": "Jeffress",
+        "email": "2140640@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-58-05-794280.raw"
+}

@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530433,
+        "name": "Functions : 2) Simple Calculations",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9301287,
+        "status": "complete",
+        "time_submitted": "2019-11-23T00:21:24.298Z",
+        "time_created": "2019-11-12T02:38:13.952Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9301287",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9301287",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "numberOne = int(input(\"Enter a number (0 to exit): \"))\n\n\ndef number (x):\n  numberTwo = int(input(\"Enter another number: \"))\n  Sum = (x + numberTwo)\n  Product = (x * numberTwo)\n  print (x, \"+\", numberTwo, \"=\", Sum)\n  print (x, \"*\", numberTwo, \"=\", Product)\n  \n  \nwhile (True):\n  if (numberOne == 0):\n    print ( \"All Done.\" )\n    break\n  else:  \n    number (numberOne)\n    numberOne = int(input(\"Enter a number (0 to exit): \"))\n    \n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-23 00:21:24"
+    },
+    "student": {
+        "id": 2140638,
+        "first_name": "Iona",
+        "last_name": "Izzard",
+        "email": "2140638@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-22-07-23-31-286859.raw"
+}

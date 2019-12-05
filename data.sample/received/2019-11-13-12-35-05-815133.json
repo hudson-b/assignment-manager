@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530427,
+        "name": "While : 3)  Secret Number",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9053301,
+        "status": "complete",
+        "time_submitted": "2019-11-13T17:35:05.277Z",
+        "time_created": "2019-10-30T13:15:29.511Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9053301",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9053301",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "secretnumber = int (input ('What is my secret number? '))\nmaximumguesses = int (input('How many guesses? '))\n\nfor Number in range(1, maximumguesses + 1):\n  thePrompt = 'Guess #' + str (Number) + '?'\n  theGuess = int(input(thePrompt))\n  if(theGuess == secretnumber):\n    print ('Yes! The secret number was', secretnumber)\n    break\n  if (not(theGuess == secretnumber)):\n    print('No, my number is not', theGuess)\n  if (Number == maximumguesses):\n    print('The secret number was', secretnumber)\n\n\n  "
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-13 17:35:05"
+    },
+    "student": {
+        "id": 2140637,
+        "first_name": "Katelynn",
+        "last_name": "Kube",
+        "email": "2140637@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-15-11-01-29-335227.raw"
+}

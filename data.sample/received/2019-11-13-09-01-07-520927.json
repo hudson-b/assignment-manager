@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 4299433,
+        "name": "Quiz : 2019-11-13",
+        "type": "manual"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9342686,
+        "status": "submitted",
+        "time_submitted": "2019-11-13T14:01:07.269Z",
+        "time_created": "2019-11-13T13:58:46.697Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9342686",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9342686",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "#11-13-19 Mills, Sara\n\ncolor = \"\"\nwhile ( color != \"Purple\"):\n    color = input ( \"Enter a color name:\")\nprint (\"Done.\")\n\n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-13 14:01:07"
+    },
+    "student": {
+        "id": 2140650,
+        "first_name": "Clay",
+        "last_name": "Colton",
+        "email": "2140650@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-15-11-01-29-261054.raw"
+}

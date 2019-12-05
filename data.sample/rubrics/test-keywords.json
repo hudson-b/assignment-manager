@@ -1,0 +1,18 @@
+{
+  "id" : "test-keywords",
+  
+  "tests" : [
+                {   
+                    "source" : "keyword",
+                    "scoring" : [
+                      { "contains" : "and",    "message" : "Found the <b>and</b> logical operator!", "icon" : "pass", "score" : 1 },
+                      { "notContains" : "if",    "message" : "Could not find any <b>if</b> statements!", "icon" : "fail", "score" : -1 },
+                      { "notContains" : "elif",  "message" : "Could not find any <b>elif</b> statements!", "icon" : "fail", "score" : -1 },                
+                      { "notContains" : "else",  "message" : "Could not find any <b>else</b> statements!", "icon" : "fail", "score" : -1 }
+                     ]
+                }
+
+  ]
+
+}
+

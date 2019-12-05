@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 4299433,
+        "name": "Quiz : 2019-11-13",
+        "type": "manual"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9342724,
+        "status": "submitted",
+        "time_submitted": "2019-11-13T14:21:04.231Z",
+        "time_created": "2019-11-13T14:00:30.751Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9342724",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9342724",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "countDown = 100\nwhile (countDown >= 0):\n    print(countDown)\n    countDown = countDown - 5\n    if countDown == 25: continue #Note: My current issue: how do I skip 25?\n    if countDown == 0:\n        print(\"Done\")\n        break"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-13 14:21:04"
+    },
+    "student": {
+        "id": 2140653,
+        "first_name": "Teodoro",
+        "last_name": "Thatcher",
+        "email": "2140653@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-15-11-01-29-320497.raw"
+}

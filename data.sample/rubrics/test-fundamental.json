@@ -1,0 +1,31 @@
+{
+  "id" : "test-fundamental",
+  
+  "tests" : [
+                {   
+                    "title" : "Use of complete if statement (if/elif/else)",
+                    "source" : "keyword",
+                    "scoring" : [
+                      { "contains" : ["if","elif", "else"],    "message" : "Found a complete if statement (if/elif/else)", "icon" : "pass"  } ,
+                      { "contains" : ["if","elif"],            "message" : "Found a partial if statement (if/elif), missing else", "icon" : "warn" , "score" : -1 } ,
+                      { "contains" : "if",                     "message" : "Found a bare-bones if statement (if), missing elif,else", "icon" : "warn", "score" : -2  } ,
+                      { "message" : "Could not find an if statement at all!", "score" : -5 }
+                   ]
+
+                },
+
+                {   
+                    "title" : "Use of while  (while/continue/break)",
+                    "source" : "keyword",
+                    "scoring" : [
+                      { "contains" : ["while","continue","break"],    "message" : "Found while, continue and break!", "icon" : "pass"  } ,
+                      { "contains" : ["while","continue"],            "message" : "Found while and continue, no break.", "icon" : "warn" , "score" : -1 } ,
+                      { "message" : "Could not find a while loop at all!", "score" : -5 }
+                   ]
+
+                }
+
+  ]
+
+}
+

@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 4299433,
+        "name": "Quiz : 2019-11-13",
+        "type": "manual"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 9342788,
+        "status": "submitted",
+        "time_submitted": "2019-11-13T14:20:33.674Z",
+        "time_created": "2019-11-13T14:02:03.695Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9342788",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9342788",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "print (\"enter a color name:\")\ninput = someColor\nif someColor is purple \nprint (\"done\")\n  \n\n  "
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-11-13 14:20:33"
+    },
+    "student": {
+        "id": 2140660,
+        "first_name": "Ruthie",
+        "last_name": "Rizzi",
+        "email": "2140660@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "data\/raw\/2019-11-15-11-01-29-303535.raw"
+}

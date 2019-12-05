@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3971630,
+        "name": "Test Assignment",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 151901,
+        "name": "Test Integration",
+        "webhook_secret": "fe15abba-2915-4df8-a609-08dc54917d0e"
+    },
+    "submission": {
+        "id": 9522175,
+        "status": "submitted_incomplete",
+        "time_submitted": "2019-11-21T14:49:33.683Z",
+        "time_created": "2019-11-21T14:49:20.494Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/9522175",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/9522175",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "# Here is my program\nprint(\"hey\")\nprint(\"Some Text\")\n"
+            }
+        ],
+        "number": 13,
+        "time_received": "2019-11-21 09:51:34"
+    },
+    "student": {
+        "id": 379036,
+        "first_name": "Jacinto",
+        "last_name": "Jain",
+        "email": "379036@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-51-34-391139.raw"
+}

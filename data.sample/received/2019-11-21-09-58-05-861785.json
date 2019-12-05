@@ -1,0 +1,36 @@
+{
+    "assignment": {
+        "id": 3530438,
+        "name": "Mid-Term Program",
+        "type": "input_output"
+    },
+    "classroom": {
+        "id": 140061,
+        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
+        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+    },
+    "submission": {
+        "id": 8902677,
+        "status": "submitted_incomplete",
+        "time_submitted": "2019-10-31T15:14:17.714Z",
+        "time_created": "2019-10-23T13:04:37.264Z",
+        "teacher_url": "https:\/\/repl.it\/teacher\/submissions\/8902677",
+        "student_url": "https:\/\/repl.it\/student\/submissions\/8902677",
+        "files": [
+            {
+                "name": "main.py",
+                "content": "# Sureda Brandon- Mid Term Program\n#10-30-19\n\nprint (  \"Planet Express Delivery Time Calculator\")\n\n#variable inputs\n\nplanet = input (  'What is the name of the planet?'  )\n\nparsecsaway = input (  'How many parsecs away?'  )\nparsecsaway = float (  parsecsaway  )\n\nnumberofpackages = input (  'How many packages?'  )\nnumberofpackages = float (  numberofpackages  )\n\nwhightofpackage = input (  'How many tons does each package weigh?'  )\nwhightofpackage = float (  whightofpackage  )\n\ntotalweight =   (  numberofpackages*whightofpackage  )\n\ntimetoplanet = (totalweight+1)*(parsecsaway)\n\ntimebackhome = (  parsecsaway  )\n\n\n\n#total cargo weight\nif (  whightofpackage>0  ):\n    print (  \"The total cargo weight is\",  (  whightofpackage  )*(  numberofpackages  ), (  \"ton(s).\"  )  )\nelif (  whightofpackage==0  ):\n     print (  \"Error: The package weight\", (  whightofpackage  ), \"is to light.\"  )\n     \n     #trip to planet\n    if (  parsecsaway>1  ):\n        print (  \"The trip to\"  ), parsecsaway, (  \"will take\"  ), timetoplanet, (  \"minutes.\"  )\n    elif (  parsecsaway==1  ):\n        print (  \"The trip to\"  ), parsecsaway, (  \"will take\"  ), timetoplanet, (  \"minutes.\"  )\n        \n        #back home\n        if (1==1):\n            print (  \"The trip back to Earth will take\"  ), timebackhome, (  \"minutes.\"  )\n            \n            #total time\n            if (2==2):\n                print (  \"The total trip time is\"  ), timetoplanet+timebackhome, (  \"minutes.\"  )\n                \n                #Benders the real god\n                if (  planet==Robot Planet ):\n                    print (  \"Also,Bender is great!\"  )\n                    \n                    #number of packages\n                    if (  numberofpackages>0  ):\n                        print (\"\")\n                    elif (  numberofpackages<0  ):\n                        print (  \"Error: The ship must carry at least one package.\"  )\n                    else:\n                        print (  \"Error: The ship must carry at least one package.\"  )\n                \n                else:\n                    print (\"\")\n            else:\n                print (\"your probaly a god\")\n            \n        else:\n            print (  \"your magical\"  )\n\n    else:\n        print (  (  \"Error\"  ), parsecsaway, (\"must be one or more parsecs away.\"))\n\nelse:\n    print (  \"Error: The package weight\", (  whightofpackage  ), \"is to light.\"  )\n\n\n\n\n"
+            }
+        ],
+        "number": 1,
+        "time_received": "2019-10-31 15:14:17"
+    },
+    "student": {
+        "id": 2140655,
+        "first_name": "Denese",
+        "last_name": "Drucker",
+        "email": "2140655@fake-student.edu"
+    },
+    "event_name": "student_submits_assignment",
+    "raw": "raw\/2019-11-21-09-58-05-861785.raw"
+}
