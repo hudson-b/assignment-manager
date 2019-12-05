@@ -41,6 +41,8 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
     </li>
     <li>
       Create a data directory, and grant full write permissions:    <pre>mkdir data &&  chmod 0777 data</pre>
+      <div>or</div>
+      Rename the <i>data.sample</i> directory to <i>data</i>.  This provides sample rubrics and submissions for exploration.
     </li>
     <li>
       Use <i>composer</i> to install the dependencies: <pre>composer install</pre>
