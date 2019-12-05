@@ -6,8 +6,8 @@
     },
     "classroom": {
         "id": 140061,
-        "name": "2019-20 \/ C S 131 \/ Fundamentals of Programming",
-        "webhook_secret": "37adbc6c-c798-45ac-808b-8dbb6cb3791b"
+        "name": "Sample Classrom",
+        "webhook_secret": "01234567890"
     },
     "submission": {
         "id": 9062584,

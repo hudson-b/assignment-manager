@@ -6,8 +6,8 @@
     },
     "classroom": {
         "id": 151901,
-        "name": "Test Integration",
-        "webhook_secret": "fe15abba-2915-4df8-a609-08dc54917d0e"
+        "name": "Sample Classrom",
+        "webhook_secret": "01234567890"
     },
     "submission": {
         "id": 9522175,
