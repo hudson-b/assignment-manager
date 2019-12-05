@@ -6,8 +6,8 @@
     },
     "classroom": {
         "id": 151901,
-        "name": "Sample Classrom",
-        "webhook_secret": "01234567890"
+        "name": "Another Classroom",
+        "webhook_secret": "01234567890.151901"
     },
     "submission": {
         "id": 9424720,
