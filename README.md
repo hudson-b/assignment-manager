@@ -46,7 +46,9 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
      Clone the project into the directory of your choice:  <pre>git clone https://github.com/hudson-b/assignment-manager.git</pre>
     </li>
 
-    <li>Rename the <i>data.sample</i> directory to <i>data</i>: <pre>mv data.sample data</pre></li>
+    <li>
+       Rename the <i>data.sample</i> directory to <i>data</i>:  <pre>mv data.sample data</pre>
+    </li>
 
     <li>
       Set the properties on the data directory: <pre>chmod 0777 data -R</pre>
