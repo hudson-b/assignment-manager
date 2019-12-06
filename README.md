@@ -46,13 +46,11 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
      Clone the project into the directory of your choice:  <pre>git clone https://github.com/hudson-b/assignment-manager.git</pre>
     </li>
     <li>
-      To explore the project's sample data:
-      <ul>
+      To explore the project's sample data:<ul>
        <li>Rename the <i>data.sample</i> directory to <i>data</i>: <pre>mv data.sample data</pre></li>
       </ul>
       
-      To prepare the project for actual usage:
-       <ul>
+      To prepare the project for actual usage:<ul>
            <li>Ccreate an empty data directory: <pre>mkdir data</pre></li>
            <li>Configure your <a href="https://repl.it">Repl.it</a> classroom webhook to POST to the <i>webhook.php</i> page.</li>
        </ul>
