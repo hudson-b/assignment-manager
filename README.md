@@ -60,7 +60,7 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
 </div>
 
 <div>
-5. Modify the <i>main.users</i> file.  This is a simple text file.  Each line contains the MD5 hash of a <i>username:password</i>.  For example, to add the user <b>test</b> with password <b>thing</b>, create an MD5 of test:thing and add it to <i>main.users</i>.   Use <a href="https://www.md5hashgenerator.com/">this site</a> to create tokens.  Check <i>main.users.sample</i> for an example, it contains the MD5 hash for guest:demo.
+5 (optional). Create a <i>main.users</i> file.  This is a simple text file.  Each line contains the MD5 hash of a <i>username:password</i>.  For example, to add the user <b>test</b> with password <b>thing</b>, create an MD5 of test:thing and add it to <i>main.users</i>.   Use <a href="https://www.md5hashgenerator.com/">this site</a> to create tokens.  Check <i>main.users.sample</i> for an example, it contains the MD5 hash for guest:demo.  If no <i>main.users</i> file exists, the default credentials are guest:demo
 </div>
 
 
