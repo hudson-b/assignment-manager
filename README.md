@@ -47,8 +47,6 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
     </li>
     <li>
       If you want to explore the project, rename the <i>data.sample</i> directory to <i>data</i>: <pre>mv data.sample data</pre>
-    </li>
-    <li>
       If you want to prepare the project for actual usage, create an empty data directory: <pre>mkdir data</pre>
     </li>
     <li>
