@@ -1,6 +1,12 @@
 # assignment-manager
 Integration / Manager for Repl.it -> Style grading 
 
+<h3>Project Goals</h3>
+This project provides a flexible mechanism for grading student code style.  For example, checking the quality of variable names (all lower/upper case), or
+verifying that comments are present, or even checking for the usage of a particular technique such a in place modification or a special keyword usage.  The
+<i>rubric</i> structure defines a collection of tests that examine the code in any number of ways.  You can store as many rubrics as needed.  
+Student code is submitted to the project from the site <i>Repl.it</i> using their <a href="">webhook</a> event.  
+
 <h3>Videos</h3>
 <hr>
 <dl>
@@ -75,9 +81,6 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
 
  <dt>grader.js</dt>
  <dd>The primary Javascript object for grading submissions, Grader includes comprehensive testing functions and analysis features to parse rubrics and grade submissions.</dd>
-
- <dt>client.js</dt>
- <dd>Client side presentation layer objects, primarily for display formatting and other global includes.</dd>
 
  <dt>login.get / login.css</dt>
  <dd>The primary HTML and style for the project’s administrative page.</dd>
