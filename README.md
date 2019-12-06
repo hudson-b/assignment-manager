@@ -42,20 +42,22 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
 <h3>Installation</h3>
 <hr>
 <ol>
+
     <li>
-     Clone the project into the directory of your choice:  <pre>git clone https://github.com/hudson-b/assignment-manager.git</pre>
+     Clone the project into the directory of your choice:<pre>git clone https://github.com/hudson-b/assignment-manager.git</pre>
     </li>
 
     <li>
-       Rename the <i>data.sample</i> directory to <i>data</i>:  <pre>mv data.sample data</pre>
+       Rename the <i>data.sample</i> directory to <i>data</i>:<pre>mv data.sample data</pre>
+       .. or create a new, empty <i>data</i> directory.
     </li>
 
     <li>
-      Set the properties on the data directory: <pre>chmod 0777 data -R</pre>
+      Set the properties on the data directory:<pre>chmod 0777 data -R</pre>
     </li>
 
     <li>
-      Use <i>composer</i> to install the dependencies: <pre>composer install</pre>
+      Use <i>composer</i> to install the dependencies:<pre>composer install</pre>
     </li>
 
     <li>
