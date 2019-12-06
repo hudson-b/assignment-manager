@@ -7,18 +7,8 @@ verifying that comments are present, or even checking for the usage of a particu
 <i>rubric</i> structure defines a collection of tests that examine the code in any number of ways.  You can store as many rubrics as needed.  
 Student code is submitted to the project from the site <i>Repl.it</i> using their <a href="">webhook</a> event.  
 
-<h3>Videos</h3>
-<hr>
-<dl>
- <dt>Milestone One Presentation</dt>
- <dd>https://prezi.com/view/u9u9PJc6mZ8OPWKJFFIo/</dd>
- <dt>Milestone Two Videos</dt>
- <dd>
-Part 1 : Repl.it / Teacher Role : https://youtu.be/E4kbeCdJKYg<br>
-Part 2 : Repl.it / Student Role : https://youtu.be/_9f2dhUxQoI<br>
-Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
- </dd>
-</dl>
+<h3>Presentation Video</h3>
+https://www.youtube.com/playlist?list=PLxin6nRt8bolA9lgspeJZkxSX0zITcS-D
 
 
 <h3>Demo Site</h3>
