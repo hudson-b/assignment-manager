@@ -96,16 +96,22 @@ FUNCTION OPTIONS() {
            $data = Data::classrooms( $_GET ?? [] );
            break;
 
+       case 'gradebook' :
+           $data = Data::gradebook( ['classroom' => $_GET[$item ]  ] );
+           break;
+
        default:
            $data = Data::submissions( $_GET ?? [] );
            break;
  
-           break;
+
 
     }
   return $data;
     
 }
+
+
 
 
 
@@ -143,11 +149,29 @@ FUNCTION POST( $sampleData=false ) {
              break;
 
 
-         case "grade" :
-            $codeText = $_POST['code'] ?? '';
-            $rubricKey = $_POST['rubric'] ?? ''; 
-            $data = Grader::score(  $codeText, $rubricKey );
+
+         case "graded" :
+
+            $graded = $_POST['data'] ?? [];
+            $graded['graded_date'] =  date('Y-m-d h:i:s');
+
+            $submissionID = $graded['submission'];
+            $record = Data::submissions( ['submission' => $submissionID ] );
+
+            if( $record ) {
+                $record = $record[0];
+
+                $record['graded'] = $graded;
+                $fileName = $record['file'];
+                File::write( $fileName, $record );
+
+                $data = ['message' => 'Saved grade for ' . $submissionID , 'record' => $record ];
+
+            } else {
+                $data = ['message' => 'Could not find submission id ' . $submissionID ];
+            }
             break;
+
 
 
          case "rubric" :
@@ -159,9 +183,13 @@ FUNCTION POST( $sampleData=false ) {
             }
 
             $rubric = json_decode( $rubricContent, true );
+
             if ( ! array_key_exists( 'id',  $rubric ) ) {
                $data = [ 'valid' => false, 'error' => 'Each rubric must have an `id` property.' ];
   
+            } else if ( ! array_key_exists( 'title',  $rubric ) ) {
+               $data = [ 'valid' => false, 'error' => 'Each rubric must have a `title` property.' ];
+
             } else {
                $fileName = 'rubrics/' . $rubric['id'] . '.json';
                File::write( $fileName, $rubricContent ); // Write the raw data to preserve formatting

@@ -286,10 +286,13 @@ class Data {
 
            // Explode any includes
            foreach( ($parsed['sections'] ?? [] ) as $sectionKey => $sectionConfig ) {
-             $includeID = $sectionConfig['include'] ?? false;
-             if( $includeID ) {
-                $includeConfig = self::rubrics( ['id' => $includeID ] );
-                $parsed['sections'][$sectionKey]['included'] = $includeConfig;
+             $includeList = $sectionConfig['include'] ?? false;
+             if( $includeList ) {
+                if( ! is_array($includeList ) ) $includeList = [$includeList];
+                foreach( $includeList as $includeID ) {
+                  $includeConfig = self::rubrics( ['id' => $includeID ] );
+                  $parsed['sections'][$sectionKey]['included'] = $includeConfig;
+                }
              }
            }
 
@@ -341,14 +344,6 @@ class Data {
            $parsed['file_info'] = File::info( $fileReceived );
 
 
-         // Add the grader structure
-           $parsed['grader']=[
-             'status' => 'ungraded',
-             'date' => '',
-             'grade' => '',
-             'detail' => []
-          ];
-
           // Toss in the bucket
           $data[] = $parsed;
 
@@ -358,6 +353,42 @@ class Data {
 
   }
 
+
+
+  public static function gradebook( $filter=[] ) {
+
+    $submissions = self::submissions( $filter );
+ 
+    // Pluck out the grader
+    $gradebook = [];
+    foreach( $submissions as $submission ) {
+
+         $graded = $submission['graded'] ?? false;
+         if( ! $graded ) continue;
+
+         $classroom = $submission['classroom'];
+         $classroomName = $classroom['name'];
+
+         $student = $submission['student'];
+         $studentID = $student['id'];
+         $studentEmail = $student['email'];
+         $studentName = $student['name'];
+ 
+         $studentGrades = ( $gradebook[ $studentID ] ??
+                           [ 'classroom' => $classroomName, 'id' => $studentID, 'email' => $studentEmail, 'name' => $student['last_name'] . ', ' . $student['first_name'] ] );
+ 
+         $assignment = $submission['assignment'];
+         $assignmentID = $assignment['id'];
+         $assignmentName = $assignment['name'];
+         $studentGrades[ $assignmentName ] = $graded['score'];
+
+         $gradebook[ $studentID ] = $studentGrades;
+
+    }
+    return array_values( $gradebook );
+
+
+  }
 
 
 

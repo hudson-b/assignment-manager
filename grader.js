@@ -224,6 +224,7 @@ var Grader = function ( submission, rubric ) {
                "title" : rubric['title'] || rubric['file'],
                "student" : submission['student']['last_name'] + ', ' + submission['student']['first_name'],
                "assignment" : submission['assignment']['name'],
+               "submission" : submission['submission']['id'],
                "submission_number" : submission['number'] || '1',
                "submitted" : submission['submission']['time_submitted'],
                "score" : ( rubric['score'] || 0 ),
@@ -252,8 +253,9 @@ var Grader = function ( submission, rubric ) {
 
                // Add in any included configurations for this section
                $.each(  ( sectionConfig['included'] || [] ), function( includeNumber, includeConfig ) {
-                   sectionTestGroups.push( includeConfig );
+                     sectionTestGroups.push( includeConfig );
                });
+              console.log( sectionTestGroups );
 
 
               // Walk each test group

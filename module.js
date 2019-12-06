@@ -49,6 +49,7 @@ var Module = {
     }
   },
 
+
   "dialog" : function( config ) {
      config['className'] = 'bootbox-dialog';
      Module['_dialog_'] = bootbox.dialog( config )
@@ -113,17 +114,22 @@ var Module = {
 
        });
 
+
        $("a.classroom-selector").click( function(e) {
            e.preventDefault();
+
            classroomRecord=$(this).data('classroom');
+
            customConfig = {
               'title' : classroomRecord['name'],
               'ajax' : function( data, callback, settings ) {
                           Module.fetchData( {'classroom' : classroomRecord['id'] } )
                          .then( function(d) {   callback( {'data' : d }); } );
-                       }
+                       },
+              'classroom' : classroomRecord
            }
            Module.showSchema( 'submissions', customConfig );
+
        });
      
    },
@@ -197,7 +203,8 @@ var Module = {
                                      Module.gradeSubmission( record );
                                      return false;
                                 }
-                             },
+                             }
+
                         }
 
                    }).on('shown.bs.modal', function(e) {
@@ -267,16 +274,14 @@ var Module = {
               codeEditor.refresh();
           }
 
-          // Go get the analysis of the current code window
+          // Go get the analysis of the current code window and stored it in the rubric
           rubric['analysis'] = Parser( codeEditor, 'api' );
 
           // Grade that sucker
           graded = Grader( submission , rubric );
 
-          console.log('grade object', graded );
 
-
-         var formatResults = function( gradeObject, depth ) {
+          var formatResults = function( gradeObject, depth ) {
 
                if( ! depth ) depth = 0;
 
@@ -302,6 +307,7 @@ var Module = {
                title.appendTo( div );
  
                $.each( gradeObject['results'] || [], function( i,item ) {
+                   if( ! item ) return;
                    div.append(  formatResults( item, depth+1 ) );
                });
 
@@ -314,9 +320,28 @@ var Module = {
 
           formatted = formatResults( graded, 0 );
 
-          console.log( formatted );        
+          // console.log( formatted );        
           container.append( formatted );
 
+          container.append( "<hr>" );
+          buttonSave = $("<span></span>", { "class" : "btn btn-success btn-block" } )
+            .data( 'graded', graded )
+            .text("Save To Gradebook")
+            .on('click', function() {
+                   
+                 id = $(this).data('id');
+                 graded = $(this).data('graded');
+
+                 Module.postData( 'graded=true', graded )
+                    .then( function(d) {
+                           Module['_dialog_'].modal('hide');                
+                           $(".btn-refresh").click();
+                     });
+
+            });
+
+          container.append( buttonSave );
+          
 
    },
 
@@ -487,6 +512,44 @@ var Module = {
              "buttons" : [
                         'refresh',
                         {
+                          "text" : '<i class="fa fa-book"></i>&nbsp;Gradebook', 
+                          "className" : "btn btn-sm btn-outline-primary",
+                          "action" : function( button, datatable, buttonNode, buttonConfig) {
+
+                               settings = datatable.settings().init();
+                               classroomID = settings['classroom']['id'];
+                               classroomName = settings['classroom']['name'];
+
+                               // Walk all visible rows
+                               gradebook = {};
+                               data = datatable.rows({ "filter" : 'applied' } ).data();
+                               $.each( data, function(i, record  ) {
+
+                                      if( ! ( 'graded' in record ) ) return;
+
+                                      studentID = record['student']['id'];
+                                      if ( ! ( studentID in gradebook ) ) {
+                                        gradebook[ studentID ] = { 'classroom' : record['classroom']['name'], 'email' : record['student']['email'],'name' : record['student']['last_name']+', '+record['student']['first_name'] }
+                                      }
+
+                                      gradebook[studentID][ record['assignment']['name'] ] = record['graded']['score'];
+
+                               });
+                                                                                                      
+                               now = moment().format('YYYY-MM-DD-HH-mm');
+                               download( JSON.stringify( gradebook , null, 2 ), "gradebook_" + classroomName + "_" + now + ".json", "application/json" );
+
+                               /*
+                               Module.fetchData( { "gradebook" : classroomID  } )
+                                .then( function(d) {
+                                   now = moment().format('YYYY-MM-DD-HH-mm');
+                                   download( JSON.stringify( d , null, 2 ), "gradebook_" + classroomName + "_" + now + ".json", "application/json" );
+                                 });
+                               */
+
+                           }
+                        },
+                        {
                           "extend" : "selected", 
                           "text" : '<i class="fa fa-user"></i>&nbsp;View Submission', 
                           "className" : "btn btn-sm btn-outline-info",
@@ -494,11 +557,7 @@ var Module = {
                                record = datatable.rows({ "selected" : true } ).data()[0];
                                Module.showSubmission( record );
                              }
-                        },
-                        {
-                          "text" : '<i class="fa fa-book"></i>&nbsp;Gradebook', 
-                          "className" : "btn btn-sm btn-outline-info",
-                        },
+                        }
               ],
              "columns" : [
 
@@ -509,16 +568,34 @@ var Module = {
                      dd = o['time_received'] || o['time_submitted'];
                      return moment(dd).format('YYYY-MM-DD hh:mma'); } 
                },
-               { "data" : "assignment.name",  "title" : "Assignment" },
+               { "data" : "assignment.name",  "title" : "Assignment" , "class" : "filter", "orderable" : false },
                { "data" : "submission.number",  "title" : "Submission<br>Number"},
                { "data" : "student", 
                  "title" : "Student", 
                   "render" : function(d) { return d.last_name + ', ' + d.first_name; } 
                },
                { "data" : "submission.status",  "title" : "Submission<br>Status" },
-               { "data" : "grader.status",  "title" : "Grade<br>Status" },
-               { "data" : "grader.grade",  "title" : "Grade" }
-              ]
+               { "data" : null, 
+                 "title" : "Graded",
+                 "render" : function( d,t,r ) {
+                      graded = ( r['graded'] || false);
+                      return (graded) ? moment(graded['graded_date']).format('YYYY-MM-DD hh:mma') : ''; 
+                  },
+               },
+               { "data" : null, 
+                 "title" : "Score",
+                 "render" : function( d,t,r ) {
+                      graded = ( r['graded'] || {} );
+                      return  graded['score'] || '';
+                  },
+               }
+              ],
+             "initComplete" : function () {
+                this.api().columns(".filter" ).every( function () {
+                     Module['schemas']['_filter_']( this );
+                });
+             }
+
        },
 
 
