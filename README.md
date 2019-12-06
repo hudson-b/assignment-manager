@@ -46,10 +46,13 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
      Clone the project into the directory of your choice:  <pre>git clone https://github.com/hudson-b/assignment-manager.git</pre>
     </li>
     <li>
-      Create a data directory, and grant full write permissions:    <pre>mkdir data &&  chmod 0777 data</pre>
-      <div>or</div>
-      Rename the <i>data.sample</i> directory to <i>data</i>.  This provides sample rubrics and submissions for exploration.
+      If you want to explore the project, rename the <i>data.sample</i> directory to <i>data</i>: <pre>mv data.sample data</pre>
     </li>
+    <li>
+      If you want to prepare the project for actual usage, create an empty data directory: <pre>mkdir data</pre>
+    </li>
+    <li>
+      Set the properties on the data directory: <pre>chmod 0777 data -R</pre>
     <li>
       Use <i>composer</i> to install the dependencies: <pre>composer install</pre>
     </li>
