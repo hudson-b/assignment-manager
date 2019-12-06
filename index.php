@@ -26,9 +26,7 @@ if( ( $method == 'GET' ) && ( isset($_GET['logout'] ) ) ) {
 
    $loginToken = md5( $userToken . ':' . $passwordToken );
 
-   $validTokens = ( file("main.users", FILE_IGNORE_NEW_LINES) ?? [] );
-
-   if( empty( $validTokens ) ) $validTokens = [ '5c241aaec8f939e82157c859c080abb8' ];  // guest:demo
+   $validTokens = file_exists("main.users") ?  file("main.users", FILE_IGNORE_NEW_LINES) : [ '5c241aaec8f939e82157c859c080abb8' ]; // guest:demo
 
    if( empty( $validTokens ) ) {
      $loginMessage =  "Missing users file!  Create one.";
