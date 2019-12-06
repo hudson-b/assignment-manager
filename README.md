@@ -43,7 +43,7 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
 <hr>
 <ol>
     <li>
-     Clone the project into the directory of your choice:  <pre>git clone hudson-b/assignment-manager</pre>
+     Clone the project into the directory of your choice:  <pre>git clone https://github.com/hudson-b/assignment-manager.git</pre>
     </li>
     <li>
       Create a data directory, and grant full write permissions:    <pre>mkdir data &&  chmod 0777 data</pre>
