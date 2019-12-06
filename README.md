@@ -41,21 +41,24 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
 
 <h3>Installation</h3>
 <hr>
-<ol>
+<ul>
     <li>
-     Clone the project into the directory of your choice:  <pre>git clone https://github.com/hudson-b/assignment-manager.git</pre>
+     First, clone the project into the directory of your choice:  <pre>git clone https://github.com/hudson-b/assignment-manager.git</pre>
     </li>
-    <li>
-      To explore the project's sample data:<ul>
-       <li>Rename the <i>data.sample</i> directory to <i>data</i>: <pre>mv data.sample data</pre></li>
-      </ul>
-      
-      To prepare the project for actual usage:<ul>
-           <li>Ccreate an empty data directory: <pre>mkdir data</pre></li>
-           <li>Configure your <a href="https://repl.it">Repl.it</a> classroom webhook to POST to the <i>webhook.php</i> page.</li>
-       </ul>
+</ul>
 
-    </li>
+<b>To explore the project's sample data:</b>
+<ul>
+  <li>Rename the <i>data.sample</i> directory to <i>data</i>: <pre>mv data.sample data</pre></li>
+</ul>
+
+<b>To prepare for actual usage:</b>
+<ul>
+  <li>Create an empty data directory: <pre>mkdir data</pre> </li>
+  <li>Configure your <a href="https://repl.it">Repl.it</a> classroom webhook to POST to the <i>webhook.php</i> page.</li>
+</ul>
+
+<ul>
     <li>
       Set the properties on the data directory: <pre>chmod 0777 data -R</pre>
     <li>
@@ -65,7 +68,7 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
      Create the <i>main.users</i> file.  This is a simple text file.  Each line contains the MD5 hash of a <i>username:password</i>.  For example, to create the user <b>test</b> with password <b>thing</b>, create an MD5 of test:thing and add it to <i>main.users</i>.
      Use <a href="https://www.md5hashgenerator.com/">this site</a> to create tokens.  Check <i>main.users.sample</i> for an example.
     </li>
-</ol>
+</ul>
 
 
 
