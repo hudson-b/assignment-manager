@@ -16,12 +16,13 @@
 
          <div class="col-sm-12 col-md-9 col-lg-6 col-xl-5">
 
-               <form action="?" method="POST"> 
+               <form action="?" method="POST" autocomplete="off"> 
+                  <input autocomplete="off" name="hidden" type="text" style="display:none;">
                   <ul class="list-group">
-	            <li class="list-group-item bg-primary"><h5 class="text-light"><i class="fas fa-graduation-cap"></i> Assignment Manager</h5></li>
-                     <li class="list-group-item"><input name="user" type="text" class="form-control" placeholder="User Name" value="<!--user-->"></li>
-                     <li class="list-group-item"><input name="password" type="password" class="form-control" placeholder="Password"></li>
-                     <li class="list-group-item"><button name="login" value="login" type="submit" class="btn btn-success">Login</button><div><!--message--></div></li>
+	               <li class="list-group-item bg-primary"><h5 class="text-light"><i class="fas fa-graduation-cap"></i> Assignment Manager</h5></li>
+                      <li class="list-group-item"><input autocomplete="off" name="user" type="text" class="form-control" placeholder="User Name" value="<!--user-->"></li>
+                      <li class="list-group-item"><input autocomplete="off" name="password" type="password" class="form-control" placeholder="Password"></li>
+                      <li class="list-group-item"><button name="login" value="login" type="submit" class="btn btn-success">Login</button><div><!--message--></div></li>
                   </ul>
                </form>
  

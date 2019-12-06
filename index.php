@@ -14,7 +14,17 @@ Logger::init( "admin" );
 
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
+
 // Authentication handler
+if ( file_exists("main.users") ) {
+    $validTokens = file( "main.users", FILE_IGNORE_NEW_LINES);
+
+} else {
+    $validTokens = [ '5c241aaec8f939e82157c859c080abb8' ]; // guest:demo
+    $loginMessage = "Note: Default login is enabled.  You should create your own <i>main.users</i> file (see project documentation for details).";
+}
+
+
 if( ( $method == 'GET' ) && ( isset($_GET['logout'] ) ) ) {
    session_destroy();
    $method = 'LOGIN';
@@ -25,8 +35,6 @@ if( ( $method == 'GET' ) && ( isset($_GET['logout'] ) ) ) {
    $passwordToken =  ( $_POST['password'] ?? '' );
 
    $loginToken = md5( $userToken . ':' . $passwordToken );
-
-   $validTokens = file_exists("main.users") ?  file("main.users", FILE_IGNORE_NEW_LINES) : [ '5c241aaec8f939e82157c859c080abb8' ]; // guest:demo
 
    if( empty( $validTokens ) ) {
      $loginMessage =  "Missing users file!  Create one.";
@@ -40,12 +48,14 @@ if( ( $method == 'GET' ) && ( isset($_GET['logout'] ) ) ) {
    } else if ( in_array( $loginToken, $validTokens ) ) {
         $_SESSION['user'] = $_POST['user'];
         $method='GET';
+
    } else {
         session_destroy();
         $loginMessage = "Not a valid user, or incorrect password.";
         $method='LOGIN';
    }
 }
+
 
 if( ! ( $_SESSION['user'] ?? false )  ) {
   $method = 'LOGIN';
