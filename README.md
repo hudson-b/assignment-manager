@@ -46,8 +46,17 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
      Clone the project into the directory of your choice:  <pre>git clone https://github.com/hudson-b/assignment-manager.git</pre>
     </li>
     <li>
-      If you want to explore the project, rename the <i>data.sample</i> directory to <i>data</i>: <pre>mv data.sample data</pre>
-      If you want to prepare the project for actual usage, create an empty data directory: <pre>mkdir data</pre>
+      To explore the project's sample data:
+      <ul>
+       <li>Rename the <i>data.sample</i> directory to <i>data</i>: <pre>mv data.sample data</pre></li>
+      </ul>
+      
+      To prepare the project for actual usage:
+       <ul>
+           <li>Ccreate an empty data directory: <pre>mkdir data</pre></li>
+           <li>Configure your <a href="https://repl.it">Repl.it</a> classroom webhook to POST to the <i>webhook.php</i> page.</li>
+       </ul>
+
     </li>
     <li>
       Set the properties on the data directory: <pre>chmod 0777 data -R</pre>
@@ -55,11 +64,8 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
       Use <i>composer</i> to install the dependencies: <pre>composer install</pre>
     </li>
     <li>
-     Create the <i>main.users</i> file.  This is a simple text file:  Each line contains the MD5 hash of a <i>username:password</i>.  For example, to create the user <b>test</b> with password <b>thing</b>, create an MD5 of test:thing and add it to <i>main.users</i>.
+     Create the <i>main.users</i> file.  This is a simple text file.  Each line contains the MD5 hash of a <i>username:password</i>.  For example, to create the user <b>test</b> with password <b>thing</b>, create an MD5 of test:thing and add it to <i>main.users</i>.
      Use <a href="https://www.md5hashgenerator.com/">this site</a> to create tokens.  Check <i>main.users.sample</i> for an example.
-    </li>
-    <li>
-     Configure your <a href="https://repl.it">Repl.it</a> classroom webhook to POST to the <i>webhook.php</i> page.
     </li>
 </ol>
 
