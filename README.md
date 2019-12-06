@@ -14,7 +14,7 @@ https://www.youtube.com/playlist?list=PLxin6nRt8bolA9lgspeJZkxSX0zITcS-D
 <h3>Demo Site</h3>
 <hr>
 <dl>
- <dt>URL</dt><dd>https://faculty.lynchburg.edu/hudson_b/assignment-manager-demo</dd>
+ <dt>URL</dt><dd>https://faculty.lynchburg.edu/hudson_b/demo/assignment-manager</dd>
  <dt>User</dt><dd>guest</dd>
  <dt>Password</dt><dd>demo</dd>
 </dl>
