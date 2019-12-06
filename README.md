@@ -41,31 +41,28 @@ Part 3 : Project demo : https://youtu.be/rAQVYo93CG0<br>
 
 <h3>Installation</h3>
 <hr>
-<ol>
 
-    <li>
-     Clone the project into the directory of your choice:<pre>git clone https://github.com/hudson-b/assignment-manager.git</pre>
-    </li>
+<div>
+1. Clone the project into the directory of your choice:<pre>git clone https://github.com/hudson-b/assignment-manager.git</pre>
+</div>
 
-    <li>
-       Rename the <i>data.sample</i> directory to <i>data</i>:<pre>mv data.sample data</pre>
+<div>
+2. Rename the <i>data.sample</i> directory to <i>data</i>:<pre>mv data.sample data</pre>
        .. or create a new, empty <i>data</i> directory.
-    </li>
+</div>
 
-    <li>
-      Set the properties on the data directory:<pre>chmod 0777 data -R</pre>
-    </li>
+<div>
+3. Set the properties on the data directory:<pre>chmod 0777 data -R</pre>
+</div>
 
-    <li>
-      Use <i>composer</i> to install the dependencies:<pre>composer install</pre>
-    </li>
+<div>
+4. Use <i>composer</i> to install the dependencies:<pre>composer install</pre>
+</div>
 
-    <li>
-     Modify the <i>main.users</i> file.  This is a simple text file.  Each line contains the MD5 hash of a <i>username:password</i>.  For example, to add the user <b>test</b> with password <b>thing</b>, create an MD5 of test:thing and add it to <i>main.users</i>.
-     Use <a href="https://www.md5hashgenerator.com/">this site</a> to create tokens.  Check <i>main.users.sample</i> for an example, it contains the MD5 hash for guest:demo.
-    </li>
+<div>
+5. Modify the <i>main.users</i> file.  This is a simple text file.  Each line contains the MD5 hash of a <i>username:password</i>.  For example, to add the user <b>test</b> with password <b>thing</b>, create an MD5 of test:thing and add it to <i>main.users</i>.   Use <a href="https://www.md5hashgenerator.com/">this site</a> to create tokens.  Check <i>main.users.sample</i> for an example, it contains the MD5 hash for guest:demo.
+</div>
 
-</ol>
 
 
 
